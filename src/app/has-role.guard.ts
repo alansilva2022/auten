@@ -13,5 +13,6 @@ export const hasRoleGuard: CanActivateFn = (route, state) => {
   const hasRole: boolean = expectedRoles.some((role) => userRole === role);
 
   //return true;
+  //verifica os papeis e se não estiver autorizado, redireciona para o componente não autorizado
   return hasRole || router.navigate(['naoautorizado']);
 };

@@ -12,6 +12,6 @@ export const routes: Routes = [
     {path: 'admin', component: AdminComponent, canActivate: [hasRoleGuard], data: {roles: [Role.admin]}}
     //canActive para verificar se o utilizador atual tem permissão para acessar o componente
     //data --> dados adicionais
-    //hasRoleGuard para a Route possa verificar se o utilizador pode acessar a esse componente
-    
+    //hasRoleGuard para a Route possa verificar se o utilizador pode acessar a este componente
+
 ];
