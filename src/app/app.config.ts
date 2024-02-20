@@ -1,9 +1,16 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration()]
+  providers: [provideRouter(routes), 
+              provideClientHydration(), 
+              importProvidersFrom(provideFirebaseApp(() => initializeApp({"projectId":"autent-5db11","appId":"1:1018635080099:web:236aeea9a1e6732949ca16","databaseURL":"https://autent-5db11-default-rtdb.firebaseio.com","storageBucket":"autent-5db11.appspot.com","apiKey":"AIzaSyAUKmMzSc-uBwwm-s3HZua6ptlQSyN6vIg","authDomain":"autent-5db11.firebaseapp.com","messagingSenderId":"1018635080099"}))), 
+              importProvidersFrom(provideAuth(() => getAuth())), 
+              importProvidersFrom(provideDatabase(() => getDatabase()))]
 };
