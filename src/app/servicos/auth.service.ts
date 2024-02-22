@@ -7,18 +7,17 @@ import { Usuario } from '../componentes/usuario';
 import { Observable } from 'rxjs';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService  {
 
   
-  firestore: Firestore = inject(Firestore);
+  //firestore: Firestore = inject(Firestore);
 
   authState$!: Observable<User | null>; //adicionado
   
-  constructor(private auth: Auth, private router: Router) { 
+  constructor(private auth: Auth, private router: Router, private firestore: Firestore) { 
   
   }
  
@@ -38,7 +37,7 @@ export class AuthService {
     return createUserWithEmailAndPassword(this.auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;  //obs.
-      const novoUsuario: Usuario = { nome: usuario.nome, password: usuario.password, role: usuario.role};
+      const novoUsuario: Usuario = { nome: usuario.nome, email: usuario.email, password: usuario.password, role: usuario.role};
       const usuarioCollection = collection(this.firestore, 'usuarios');
 
        
@@ -46,7 +45,7 @@ export class AuthService {
         
         console.log('Usuario cadastrado com sucesso! Documento ID:', docRef.id);
        
-        this.router.navigate(['']); // login
+        this.router.navigate(['']); // está sendo redirecionado para página home porque está vazio
        
       })}).catch(error =>{
         console.error('Erro ao cadastrar usuario', error);
