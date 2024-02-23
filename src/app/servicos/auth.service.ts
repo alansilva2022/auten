@@ -18,16 +18,17 @@ export class AuthService  {
   authState$!: Observable<User | null>; //adicionado
   
   constructor(private auth: Auth, private router: Router, private firestore: Firestore) { 
-  
+      
   }
  
   login(email: string, password: string){
     return signInWithEmailAndPassword(this.auth, email, password)
     .then(() => {
+      console.log('sucesso ao realizar login');
       this.router.navigate(['/home']);
     })
     .catch((error) => {
-      console.error('Erro de fazer login', error);
+      console.error('Erro de fazer login:', error);
     })
   }
 
@@ -45,7 +46,7 @@ export class AuthService  {
         
         console.log('Usuario cadastrado com sucesso! Documento ID:', docRef.id);
        
-        this.router.navigate(['']); // está sendo redirecionado para página home porque está vazio
+        this.router.navigate(['/login']); // está sendo redirecionado para página home porque está vazio
        
       })}).catch(error =>{
         console.error('Erro ao cadastrar usuario', error);
@@ -54,7 +55,7 @@ export class AuthService  {
 
   logout(){
     return signOut(this.auth).then(() =>{
-      this.router.navigate(['']); // login
+      this.router.navigate(['/login']); 
     }).catch((error) =>{
       console.error('Erro durante logout', error);
     })
@@ -84,6 +85,6 @@ export class AuthService  {
    // verificar qual o papel -- na realidade será a chamada a API--se acessar o componente admin vai dar não autorizado
    // return Role.admin; // permite acessar ao componente adm (administrativo)
 
-   return Role.usuario;
+   return Role.admin;
   }
 }
