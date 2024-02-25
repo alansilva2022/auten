@@ -1,10 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Role } from '../role';
 import { Router } from '@angular/router';
-import { Auth, User, createUserWithEmailAndPassword,signInWithEmailAndPassword, signOut} from '@angular/fire/auth'
+import { Auth, authState, createUserWithEmailAndPassword,signInWithEmailAndPassword, signOut} from '@angular/fire/auth'
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { Usuario } from '../componentes/usuario';
-import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -15,11 +14,13 @@ export class AuthService  {
   
   //firestore: Firestore = inject(Firestore);
 
-  authState$!: Observable<User | null>; //adicionado
+  //authState$!: Observable<User | null>; //adicionado
+
+
+  utilizadorAtual$ = authState(this.auth);  //obtenção do estado de autenticação e armazenando no utilizadorAtual
   
-  constructor(private auth: Auth, private router: Router, private firestore: Firestore) { 
-      
-  }
+  constructor(private auth: Auth, private router: Router, private firestore: Firestore) {  }
+
  
   login(email: string, password: string){
     return signInWithEmailAndPassword(this.auth, email, password)
@@ -38,7 +39,7 @@ export class AuthService  {
     return createUserWithEmailAndPassword(this.auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;  //obs.
-      const novoUsuario: Usuario = { nome: usuario.nome, email: usuario.email, password: usuario.password, role: usuario.role};
+      const novoUsuario: Usuario = { name: usuario.name, email: usuario.email, password: usuario.password, role: usuario.role};
       const usuarioCollection = collection(this.firestore, 'usuarios');
 
        
@@ -61,6 +62,7 @@ export class AuthService  {
     })
   }
   
+  /*
 
   //Obter o estado de autenticação
   getAuthState() {
@@ -78,6 +80,10 @@ export class AuthService  {
       }
     });
   }
+
+  */
+
+ 
 
 
   getUserRole(): Role{

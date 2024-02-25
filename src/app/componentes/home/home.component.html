@@ -1,4 +1,11 @@
 <p>home works!</p>
 
+<ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()">Sair</button>
+</ng-container>
 
-<button type="submit" (click)="logout()">Sair</button>
+<h3 *ngIf="user$ | async as user"> Bem vindo, {{user.email}}</h3>
+
+
+
+

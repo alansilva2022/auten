@@ -16,7 +16,7 @@ export class RegistrousuarioComponent {
   password: string = '';
   
   usuario: Usuario = {
-    nome: '',
+    name: '',
     email: '',
     password: '',
     role: 'usuario'

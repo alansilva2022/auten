@@ -1,1 +1,9 @@
-<p>admin works!</p>
+<p>Página do Administrador</p>
+
+<h3 *ngIf="user$ | async as user"> Bem vindo, {{user.email}}, 
+{{user.uid}}</h3>
+
+<!--UID É do usuário na autenticação (Firebase)-->
+
+
+
