@@ -11,12 +11,12 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeComponent {
 
-  //antes estava como private, mas para o html ter acesso foi preciso colocar como public
+ //antes estava como private, mas para o html ter acesso foi preciso colocar como public
   constructor(public authService: AuthService){}
 
   user$ = this.authService.utilizadorAtual$; //para ver o email logado
 
-  
+
 
   logout():void{
     this.authService.logout();

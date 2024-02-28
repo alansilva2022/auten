@@ -16,7 +16,7 @@ export class AuthService  {
 
   //authState$!: Observable<User | null>; //adicionado
 
-
+ 
   utilizadorAtual$ = authState(this.auth);  //obtenção do estado de autenticação e armazenando no utilizadorAtual
   
   constructor(private auth: Auth, private router: Router, private firestore: Firestore) {  }
@@ -25,7 +25,7 @@ export class AuthService  {
   login(email: string, password: string){
     return signInWithEmailAndPassword(this.auth, email, password)
     .then(() => {
-      console.log('sucesso ao realizar login');
+      console.log('sucesso ao realizar login');   
       this.router.navigate(['/home']);
     })
     .catch((error) => {
@@ -62,7 +62,7 @@ export class AuthService  {
     })
   }
   
-  /*
+ /*
 
   //Obter o estado de autenticação
   getAuthState() {
@@ -82,10 +82,10 @@ export class AuthService  {
   }
 
   */
-
  
 
 
+  
   getUserRole(): Role{
     // return Role.usuario;   
    // verificar qual o papel -- na realidade será a chamada a API--se acessar o componente admin vai dar não autorizado
