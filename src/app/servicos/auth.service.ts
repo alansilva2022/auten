@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Auth, authState, createUserWithEmailAndPassword,signInWithEmailAndPassword, signOut} from '@angular/fire/auth'
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { Usuario } from '../componentes/usuario';
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
 
 @Injectable({
@@ -15,6 +16,8 @@ export class AuthService  {
   //firestore: Firestore = inject(Firestore);
 
   //authState$!: Observable<User | null>; //adicionado
+
+  db = getFirestore(); //ADICIONADO 28/02/2024 - 23:41
 
  
   utilizadorAtual$ = authState(this.auth);  //obtenção do estado de autenticação e armazenando no utilizadorAtual
@@ -33,26 +36,27 @@ export class AuthService  {
     })
   }
 
-
-  // a ideia é fazer o cadastro (registro) do usuário tanto na coleção (Doc) quanto na autenticação.
+  
+  // a ideia é fazer o cadastro (registro) do usuário tanto na coleção (Doc) quanto na autenticação. OK!
   registro(email: string, password: string, usuario: Usuario){
     return createUserWithEmailAndPassword(this.auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;  //obs.
       const novoUsuario: Usuario = { name: usuario.name, email: usuario.email, password: usuario.password, role: usuario.role};
-      const usuarioCollection = collection(this.firestore, 'usuarios');
 
-       
-       return addDoc(usuarioCollection, novoUsuario).then(docRef => {
+      const ref = doc(this.db, "usuarios", userCredential.user.uid); // Esta linha está criando uma referência direta a um documento no Firestore associado ao usuário autenticado. Isso é útil quando você deseja armazenar informações adicionais do usuário no Firestore ou recuperar informações específicas relacionadas ao usuário.
         
-        console.log('Usuario cadastrado com sucesso! Documento ID:', docRef.id);
-       
-        this.router.navigate(['/login']); // está sendo redirecionado para página home porque está vazio
-       
-      })}).catch(error =>{
+
+      return setDoc(ref, novoUsuario).then(docRef =>{   // setDoc está cadastrando usuário
+        console.log('Usuario cadastrado com sucesso!');
+        this.router.navigate(['/login']); 
+      }
+
+      )}).catch(error =>{
         console.error('Erro ao cadastrar usuario', error);
        })
   }
+  
 
   logout(){
     return signOut(this.auth).then(() =>{
