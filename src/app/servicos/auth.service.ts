@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { Role } from '../role';
 import { Router } from '@angular/router';
-import { Auth, authState, createUserWithEmailAndPassword,signInWithEmailAndPassword, signOut} from '@angular/fire/auth'
+import { Auth, User, authState, createUserWithEmailAndPassword,getAuth,onAuthStateChanged,signInWithEmailAndPassword, signOut} from '@angular/fire/auth'
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { Usuario } from '../componentes/usuario';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -13,22 +14,47 @@ import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 export class AuthService  {
 
   
-  //firestore: Firestore = inject(Firestore);
-
-  //authState$!: Observable<User | null>; //adicionado
 
   db = getFirestore(); //ADICIONADO 28/02/2024 - 23:41
+
+  private currentUserSubject = new BehaviorSubject<Role | null>(null);
 
  
   utilizadorAtual$ = authState(this.auth);  //obtenção do estado de autenticação e armazenando no utilizadorAtual
   
-  constructor(private auth: Auth, private router: Router, private firestore: Firestore) {  }
+  constructor(private auth: Auth, private router: Router, private firestore: Firestore) { 
+
+    const aut = getAuth();
+
+    onAuthStateChanged(aut, async (user: User | null) => {
+      if (user) {
+        try {
+          const userRole = await this.getUserRole();
+          console.log('Papel do usuário:', userRole);
+
+          if (userRole) {
+           
+          } else {
+            console.error('Papel do usuário não encontrado.');
+            this.router.navigate(['/naoautorizado']);
+          }
+        } catch (error) {
+          console.error('Erro ao obter o papel do usuário:', error);
+          this.router.navigate(['/naoautorizado']);
+        }
+      } else {
+        this.currentUserSubject.next(null);
+      }
+    });
+
+   }
 
  
   login(email: string, password: string){
     return signInWithEmailAndPassword(this.auth, email, password)
     .then(() => {
       console.log('sucesso ao realizar login');   
+      console.log('Usuário autenticado:', this.auth.currentUser);
       this.router.navigate(['/home']);
     })
     .catch((error) => {
@@ -66,35 +92,37 @@ export class AuthService  {
     })
   }
   
- /*
-
-  //Obter o estado de autenticação
-  getAuthState() {
-    return this.authState$;
-  }
-
-  checkAuthState() {
-    this.authState$.subscribe(user => {
-      if (user) {
-        // O usuário está autenticado, redirecione para a página inicial
-        this.router.navigate(['/home']);
-      } else {
-        // O usuário não está autenticado, redirecione para a página de login
-        this.router.navigate(['']); //login
-      }
-    });
-  }
-
-  */
  
 
-
+  public async getUserRole(): Promise<Role> {
+    const auth = getAuth();
+    const user = auth.currentUser;
   
-  getUserRole(): Role{
-    // return Role.usuario;   
-   // verificar qual o papel -- na realidade será a chamada a API--se acessar o componente admin vai dar não autorizado
-   // return Role.admin; // permite acessar ao componente adm (administrativo)
-
-   return Role.admin;
+    if (user) {
+      const uid = user.uid;
+  
+      const firestore = getFirestore();
+      const userDocRef = doc(firestore, 'usuarios', uid);
+  
+      try {
+        const docSnapshot = await getDoc(userDocRef);
+        if (docSnapshot.exists()) {
+          const userRole = docSnapshot.data()['role'] as Role;
+          this.currentUserSubject.next(userRole);
+          return userRole;
+        } else {
+          console.error('Documento de usuário não encontrado no Firestore.');
+          return Role.Usuario; 
+        }
+      } catch (error) {
+        console.error('Erro ao obter o papel do usuário no Firestore:', error);
+        return Role.Usuario; 
+      }
+    } else {
+      console.error('Usuário não autenticado.');
+      return Role.Usuario; 
+    }
   }
+
+
 }

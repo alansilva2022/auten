@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Usuario } from '../usuario';
 import { AuthService } from '../../servicos/auth.service';
 import { FormsModule } from '@angular/forms';
+import { Role } from '../../role';
 
 @Component({
   selector: 'app-registrousuario',
@@ -19,7 +20,7 @@ export class RegistrousuarioComponent {
     name: '',
     email: '',
     password: '',
-    role: 'usuario'
+    role: Role.Usuario
   }
   constructor(private authService: AuthService){}
 
