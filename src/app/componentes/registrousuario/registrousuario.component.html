@@ -4,8 +4,16 @@
     <input type="text" [(ngModel)]="email" [(ngModel)]="usuario.email" placeholder="Digite seu email">
     <label>Senha:</label>
     <input type="password" [(ngModel)]="password" [(ngModel)]="usuario.password" placeholder="Digite a senha">
-    <label>Nome:</label>
+    <label>Nome Completo:</label>
     <input type="text" [(ngModel)]="usuario.name" placeholder="Digite o nome">
+    <label>Nome Usuário:</label>
+    <input type="text" [(ngModel)]="usuario.nomeUsuario" placeholder="Digite o nome do usuário">
+    <label>CPF:</label>
+    <input type="text" [(ngModel)]="usuario.cpf" placeholder="Digite o nome do usuário">
+    <label>Telefone:</label>
+    <input type="text" [(ngModel)]="usuario.telefone" placeholder="Digite o nome do usuário">
+    <label>Endereço:</label>
+    <input type="text" [(ngModel)]="usuario.endereco" placeholder="Digite o nome do usuário">
     <label>Role:</label>
    <select [(ngModel)]="usuario.role">
     <option value="usuario">Usuário</option>

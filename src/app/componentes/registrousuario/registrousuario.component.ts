@@ -20,7 +20,11 @@ export class RegistrousuarioComponent {
     name: '',
     email: '',
     password: '',
-    role: Role.Usuario
+    role: Role.Usuario,
+    nomeUsuario: '',
+    telefone: '',
+    cpf: '',
+    endereco: ''
   }
   constructor(private authService: AuthService){}
 
