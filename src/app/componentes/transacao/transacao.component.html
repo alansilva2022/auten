@@ -1,0 +1,37 @@
+<div>
+    <h2>Realizar Transação</h2>
+  
+    <form (ngSubmit)="realizarTransacao()">
+      <div>
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo" [(ngModel)]="transacao.tipo">
+          <option value="emprestimo">Empréstimo</option>
+          <option value="devolucao">Devolução</option>
+        </select>
+      </div>
+  
+      <div>
+        <label for="livroNome">Nome do Livro:</label>
+        <input id="livroNome" name="livroNome" [(ngModel)]="transacao.livroNome" (input)="buscarLivros(transacao.livroNome)">
+        <ul *ngIf="livrosEncontrados.length > 0">
+          <li *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</li>
+        </ul>
+      </div>
+  
+      <div>
+        <label for="usuarioNome">Nome do Usuário:</label>
+        <input id="usuarioNome" name="usuarioNome" [(ngModel)]="transacao.usuarioNome" (input)="buscarUsuarios(transacao.usuarioNome)">
+        <ul *ngIf="usuariosEncontrados.length > 0">
+          <li *ngFor="let usuario of usuariosEncontrados">{{ usuario.nomeUsuario }}</li>
+        </ul>
+      </div>
+  
+      <div>
+        <label for="quantidadeLivros">Quantidade de Livros:</label>
+        <input id="quantidadeLivros" name="quantidadeLivros" type="number" [(ngModel)]="transacao.quantidadeLivros">
+      </div>
+  
+      <button type="submit">Realizar Transação</button>
+    </form>
+  </div>
+  

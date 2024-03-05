@@ -9,6 +9,7 @@ import { LoginComponent } from './componentes/login/login.component';
 
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo} from '@angular/fire/auth-guard';
 import { CadastrarLivroComponent } from './componentes/cadastrar-livro/cadastrar-livro.component';
+import { TransacaoComponent } from './componentes/transacao/transacao.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
@@ -25,6 +26,7 @@ export const routes: Routes = [
     //hasRoleGuard para a Route possa verificar se o utilizador pode acessar a este componente
     {path: 'registro', component: RegistrousuarioComponent},
     {path: 'login', component: LoginComponent, ...canActivate(redirecionarParaHome)}, //se fizer login, redireciona para home
-    {path: 'cadastrarlivro', component: CadastrarLivroComponent}
+    {path: 'cadastrarlivro', component: CadastrarLivroComponent},
+    {path: 'transacao', component: TransacaoComponent}
   
 ];
