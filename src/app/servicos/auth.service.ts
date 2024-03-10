@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Role } from '../role';
 import { Router } from '@angular/router';
-import { Auth, User, authState, createUserWithEmailAndPassword,getAuth,onAuthStateChanged,signInWithEmailAndPassword, signOut} from '@angular/fire/auth'
+import { Auth, User, authState, createUserWithEmailAndPassword,getAuth,onAuthStateChanged,signInWithEmailAndPassword, signOut, updateProfile} from '@angular/fire/auth'
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { Usuario } from '../componentes/usuario';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
@@ -52,7 +52,17 @@ export class AuthService  {
  
   login(email: string, password: string){
     return signInWithEmailAndPassword(this.auth, email, password)
-    .then(() => {
+    .then(async () => {
+
+      const user = this.auth.currentUser;
+
+      if (user && user.displayName) {
+        // Configure o nome do usuário no Firebase
+        await updateProfile(user, {
+          displayName: user.displayName
+        });
+      }
+      
       console.log('sucesso ao realizar login');   
       console.log('Usuário autenticado:', this.auth.currentUser);
       this.router.navigate(['/home']);
@@ -68,6 +78,12 @@ export class AuthService  {
     return createUserWithEmailAndPassword(this.auth, email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;  //obs.
+
+
+      await updateProfile(user, {
+        displayName: usuario.nomeUsuario
+      });
+
       const novoUsuario: Usuario = { name: usuario.name, email: usuario.email, password: usuario.password, role: usuario.role, nomeUsuario: usuario.nomeUsuario,
       telefone: usuario.telefone, endereco: usuario.endereco, cpf: usuario.cpf
       };
@@ -125,6 +141,33 @@ export class AuthService  {
       return Role.Usuario; 
     }
   }
+
+
+  public async obterUsuarioAtual(): Promise<User | null> {
+    return new Promise((resolve, reject) => {
+      const aut = getAuth();
+      onAuthStateChanged(aut, (user: User | null) => {
+        resolve(user);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+
+  async obterNomeUsuario(): Promise<string> {
+    const auth = getAuth();
+    const user = auth.currentUser;
+  
+    if (user) {
+      console.log('Nome do usuário obtido:', user.displayName);
+      return user.displayName || '';
+    } else {
+      console.log('Usuário não autenticado.');
+      return '';
+    }
+  }
+
+
 
 
 }

@@ -1,5 +1,13 @@
 <div>
     <h2>Realizar Transação</h2>
+
+
+    <div *ngIf="usuarioLogado">
+      <p>Usuário Logado: {{ usuarioLogado }}</p>
+    </div>
+
+
+    
   
     <form (ngSubmit)="realizarTransacao()">
       <div>

@@ -6,6 +6,7 @@ import { Livro } from '../livro';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../servicos/auth.service';
 
 @Component({
   selector: 'app-transacao',
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
 })
 export class TransacaoComponent {
 
+  usuarioLogado: string = '';
     
   transacao: Transacao = {
     tipo: 'emprestimo',
@@ -23,13 +25,18 @@ export class TransacaoComponent {
     usuarioNome: '',
     data: '',
     quantidadeLivros: 0,
-    usuarioId: ''
+    usuarioId: '',
+    usuarioLogado:''
   };
 
   livrosEncontrados: Livro[] = [];
   usuariosEncontrados: Usuario[] = [];
 
-  constructor(private transacaoService: TransacaoService) {}
+  constructor(private authService: AuthService, private transacaoService: TransacaoService) {  //obter o usuário ao inicializar o componente
+    this.authService.obterNomeUsuario().then((nomeUsuario) => {
+      this.usuarioLogado = nomeUsuario;
+    });
+  }
 
   async buscarLivros(nomeLivro: string) {
     if (nomeLivro.trim() !== '') {
@@ -55,6 +62,11 @@ export class TransacaoComponent {
       // Agora tem o livroId e usuarioId, você pode continuar com a transação
       const dataAtual = new Date();
       this.transacao.data = formatarData(dataAtual);
+
+
+      const usuarioLogado = await this.transacaoService.obterUsuarioAtual();
+      this.transacao.usuarioLogado = usuarioLogado;
+
       const transacaoParaAdicionar: Transacao = { ...this.transacao, livroId, usuarioId }; 
       await this.transacaoService.adicionarTransacao(transacaoParaAdicionar);
 
@@ -65,7 +77,8 @@ export class TransacaoComponent {
         data: '',
         quantidadeLivros: 0,
         usuarioId: '',
-        tipo: 'emprestimo'
+        tipo: 'emprestimo',
+        usuarioLogado: ''
       };
 
       // Limpar os resultados da busca

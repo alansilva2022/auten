@@ -6,6 +6,7 @@ export interface Transacao {
     quantidadeLivros: number;
     livroId?: string;
     usuarioId: string;
+    usuarioLogado: string;
 }
 
 

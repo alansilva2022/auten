@@ -3,15 +3,25 @@ import { DocumentData, DocumentSnapshot, Firestore, addDoc, collection, doc, get
 import { Transacao } from '../componentes/transacao';
 import { Livro } from '../componentes/livro';
 import { Usuario } from '../componentes/usuario';
+import { AuthService } from './auth.service';
+import { getAuth } from '@angular/fire/auth';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransacaoService {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   firestore: Firestore = inject(Firestore);
+
+
+
+  async obterUsuarioAtual(): Promise<string> {
+    const usuarioAtual = await this.authService.obterUsuarioAtual();
+    return usuarioAtual?.uid || '';
+  }
 
   async adicionarTransacao(transacao: Transacao){
     const colecaotransacao = collection(this.firestore, 'transacoes');
@@ -168,4 +178,6 @@ export class TransacaoService {
     }
 
   }
+
+  
 }
