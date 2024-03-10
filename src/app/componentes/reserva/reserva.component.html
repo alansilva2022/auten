@@ -1,0 +1,22 @@
+<div>
+    <h2>Realizar Reserva</h2>
+
+    <div *ngIf="usuarioLogado">
+        <p>Usuário Logado: {{ usuarioLogado }}</p>
+      </div>
+
+
+      <form (ngSubmit)="realizarReserva()">
+    
+        <div>
+          <label for="livroNome">Nome do Livro:</label>
+          <input id="livroNome" name="livroNome" [(ngModel)]="reserva.livroNome" (input)="buscarLivros(reserva.livroNome)">
+          <ul *ngIf="livrosEncontrados.length > 0">
+            <li *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</li>
+          </ul>
+        </div>
+    
+        <button type="submit">Realizar Reserva</button>
+      </form>
+
+</div>

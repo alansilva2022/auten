@@ -10,6 +10,7 @@ import { LoginComponent } from './componentes/login/login.component';
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo} from '@angular/fire/auth-guard';
 import { CadastrarLivroComponent } from './componentes/cadastrar-livro/cadastrar-livro.component';
 import { TransacaoComponent } from './componentes/transacao/transacao.component';
+import { ReservaComponent } from './componentes/reserva/reserva.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
@@ -27,6 +28,7 @@ export const routes: Routes = [
     {path: 'registro', component: RegistrousuarioComponent,...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'login', component: LoginComponent, ...canActivate(redirecionarParaHome)}, //se fizer login, redireciona para home
     {path: 'cadastrarlivro', component: CadastrarLivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
-    {path: 'transacao', component: TransacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }}
+    {path: 'transacao', component: TransacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
+    {path: 'reserva', component: ReservaComponent, ...canActivate(redirecionarParaLogin)},
   
 ];
