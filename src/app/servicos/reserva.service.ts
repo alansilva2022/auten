@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { AuthService } from './auth.service';
-import { Firestore, addDoc, collection, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, QueryDocumentSnapshot, addDoc, collection, doc, getDoc, getDocs, query, where } from '@angular/fire/firestore';
 import { Reserva } from '../componentes/reserva';
 
 @Injectable({
@@ -36,5 +36,18 @@ export class ReservaService {
         throw error;
     }
   }
+
+  async exibirReservaUsuarioAtual(): Promise<Reserva[]> {
+    const user = await this.authService.obterUsuarioAtual();
+  
+    if (user) {
+      const consultarReserva = query(collection(this.firestore, 'reservas'), where('usuarioLogado', '==', user.uid));
+      const capturaInstantanea = await getDocs(consultarReserva);
+      return capturaInstantanea.docs.map((doc) => doc.data() as Reserva);
+    } else {
+      return [];
+    }
+  }
+  
 
 }

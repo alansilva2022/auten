@@ -11,6 +11,7 @@ import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo} from '@angular
 import { CadastrarLivroComponent } from './componentes/cadastrar-livro/cadastrar-livro.component';
 import { TransacaoComponent } from './componentes/transacao/transacao.component';
 import { ReservaComponent } from './componentes/reserva/reserva.component';
+import { MinhasreservasComponent } from './componentes/minhasreservas/minhasreservas.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
@@ -30,5 +31,6 @@ export const routes: Routes = [
     {path: 'cadastrarlivro', component: CadastrarLivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'transacao', component: TransacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'reserva', component: ReservaComponent, ...canActivate(redirecionarParaLogin)},
+    {path: 'reservaporusuario', component: MinhasreservasComponent, ...canActivate(redirecionarParaLogin)},
   
 ];
