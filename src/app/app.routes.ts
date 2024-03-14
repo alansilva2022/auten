@@ -12,6 +12,7 @@ import { CadastrarLivroComponent } from './componentes/cadastrar-livro/cadastrar
 import { TransacaoComponent } from './componentes/transacao/transacao.component';
 import { ReservaComponent } from './componentes/reserva/reserva.component';
 import { MinhasreservasComponent } from './componentes/minhasreservas/minhasreservas.component';
+import { ConsultausuarioComponent } from './componentes/consultausuario/consultausuario.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
@@ -32,5 +33,6 @@ export const routes: Routes = [
     {path: 'transacao', component: TransacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'reserva', component: ReservaComponent, ...canActivate(redirecionarParaLogin)},
     {path: 'reservaporusuario', component: MinhasreservasComponent, ...canActivate(redirecionarParaLogin)},
+    {path: 'buscarusuario', component: ConsultausuarioComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }}
   
 ];

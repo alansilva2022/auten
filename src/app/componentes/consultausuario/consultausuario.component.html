@@ -1,0 +1,20 @@
+<p>Consulta de Usuário</p>
+
+<div *ngIf="usuarioLogado">
+    <p>Usuário Logado: {{ usuarioLogado }}</p>
+  </div>
+
+<div>
+    <label for="usuarioNome">Nome do Usuário:</label>
+    <input id="usuarioNome" name="usuarioNome" [(ngModel)]="usuario.name" (input)="buscarUsuarios(usuario.name)">
+    <ul *ngIf="nomeEncontrados.length > 0">
+      <li *ngFor="let usuario of nomeEncontrados">
+        <div>
+            <p>Nome: {{ usuario.name }}</p>
+            <p>CPF: {{ usuario.cpf }}</p>
+            <p>Email: {{ usuario.email }}</p>
+        </div>
+      </li>
+    </ul>
+</div>
+
