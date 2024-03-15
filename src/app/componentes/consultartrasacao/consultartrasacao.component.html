@@ -1,0 +1,9 @@
+<h1> Consultar Transacoes </h1>
+
+<div *ngIf="usuarioLogado">
+    <p>Usuário Logado: {{ usuarioLogado }}</p>
+</div>
+
+<div *ngFor="let transacao of transacoes">
+    <p>{{ transacao.tipo }} - {{ transacao.livroNome }} - {{ transacao.usuarioNome }} - {{ transacao.data }} - {{ transacao.quantidadeLivros }}</p>
+</div>

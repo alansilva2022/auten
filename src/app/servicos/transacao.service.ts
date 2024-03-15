@@ -4,7 +4,7 @@ import { Transacao } from '../componentes/transacao';
 import { Livro } from '../componentes/livro';
 import { Usuario } from '../componentes/usuario';
 import { AuthService } from './auth.service';
-import { getAuth } from '@angular/fire/auth';
+
 
 
 @Injectable({
@@ -179,5 +179,31 @@ export class TransacaoService {
 
   }
 
+
   
+  async consultarTransacoes(): Promise<Transacao[]> {
+    const transacoesCollection = collection(this.firestore, 'transacoes');
+    const transacoesSnapshot = await getDocs(transacoesCollection);
+
+    const transacoes: Transacao[] = [];
+
+    transacoesSnapshot.forEach(doc => {
+      const transacaoData = doc.data();
+      const transacao: Transacao = {
+        tipo: transacaoData['tipo'],
+        livroNome: transacaoData['livroNome'],
+        usuarioNome: transacaoData['usuarioNome'],
+        data: transacaoData['data'],
+        quantidadeLivros: transacaoData['quantidadeLivros'],
+        livroId: transacaoData['livroId'],
+        usuarioId: transacaoData['usuarioId'],
+        usuarioLogado: transacaoData['usuarioLogado']
+      };
+      transacoes.push(transacao);
+    });
+
+    return transacoes;
+  }
+ 
 }
+  
