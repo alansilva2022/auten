@@ -1,0 +1,21 @@
+<h1>Pesquisar Livro</h1>
+
+<div>
+    <input type="text" [(ngModel)]="termoPesquisa" placeholder="Pesquisar..." (input)="pesquisarLivros()">
+</div>
+  
+<div *ngIf="livros.length > 0">
+    <h2>Resultados da Pesquisa</h2>
+    <ul>
+      <li *ngFor="let livro of livros">
+        <img [src]="livro.foto" alt="{{ livro.titulo }}">
+        <h3>{{ livro.titulo }}</h3>
+        <p>Autor: {{ livro.autor }}</p>
+        <p>Quantidade: {{ livro.quantidade }}</p>
+      </li>
+    </ul>
+</div>
+  
+<div *ngIf="livros.length === 0 && termoPesquisa">
+    <p>Nenhum livro encontrado para "{{ termoPesquisa }}"</p>
+</div>
