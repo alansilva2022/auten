@@ -31,8 +31,7 @@ export class LivroService {
   }
 
 
-  
- 
+
 
   async pesquisarLivros(termo: string): Promise<Livro[]> {
     const livros: Livro[] = [];
@@ -42,29 +41,29 @@ export class LivroService {
 
     if (termo) {
       // as consultas para título, autor e ISBN
-      const tituloQuery = query(livroColecao, where('titulo', '>=', termo), where('titulo', '<=', termo + '\uf8ff'));
-      const autorQuery = query(livroColecao, where('autor', '>=', termo), where('autor', '<=', termo + '\uf8ff'));
-      const isbnQuery = query(livroColecao, where('isbn', '>=', termo), where('isbn', '<=', termo + '\uf8ff'));
+      const tituloConsulta = query(livroColecao, where('titulo', '>=', termo), where('titulo', '<=', termo + '\uf8ff'));
+      const autorConsulta = query(livroColecao, where('autor', '>=', termo), where('autor', '<=', termo + '\uf8ff'));
+      const isbnConsulta = query(livroColecao, where('isbn', '>=', termo), where('isbn', '<=', termo + '\uf8ff'));
 
       // os resultados de cada consulta
-      const tituloResult = await this.executeQuery(tituloQuery);
-      const autorResult = await this.executeQuery(autorQuery);
-      const isbnResult = await this.executeQuery(isbnQuery);
+      const tituloResultado = await this.efetuarConsulta(tituloConsulta);
+      const autorResultado = await this.efetuarConsulta(autorConsulta);
+      const isbnResultado = await this.efetuarConsulta(isbnConsulta);
 
       // Combinar os resultados em uma única lista
-      livros.push(...tituloResult, ...autorResult, ...isbnResult);
+      livros.push(...tituloResultado, ...autorResultado, ...isbnResultado);
     }
 
     return livros;
   }
 
-  private async executeQuery(query: Query<DocumentData>): Promise<Livro[]> {
-    const result: Livro[] = [];
-    const querySnapshot = await getDocs(query);
+  private async efetuarConsulta(consulta: Query<DocumentData>): Promise<Livro[]> {
+    const resultado: Livro[] = [];
+    const consulta_instantanea = await getDocs(consulta);
 
-    querySnapshot.forEach((doc) => {
+     consulta_instantanea.forEach((doc) => {
       const livroData = doc.data();
-      result.push({
+      resultado.push({
         titulo: livroData['titulo'],
         ano_lancamento: livroData['ano_lancamento'],
         autor: livroData['autor'],
@@ -76,7 +75,7 @@ export class LivroService {
       });
     });
 
-    return result;
+    return resultado;
   }
 
 }
