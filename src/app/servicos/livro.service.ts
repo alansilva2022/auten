@@ -78,6 +78,31 @@ export class LivroService {
     return resultado;
   }
 
+
+  async relatorioLivro(): Promise<Livro[]> {
+    const livroCollection = collection(this.firestore, 'livros');
+    const livroSnapshot = await getDocs(livroCollection);
+
+    const livros: Livro[] = [];
+
+    livroSnapshot.forEach(doc => {
+      const livroData = doc.data();
+      const livro: Livro = {
+        ano_lancamento: livroData['ano_lancamento'],
+        titulo: livroData['titulo'],
+        autor: livroData['autor'],
+        isbn: livroData['isbn'],
+        sinopse: livroData['sinopse'],
+        editora: livroData['editora'],
+        quantidade: livroData['quantidade']
+      };
+      livros.push(livro);
+    });
+
+    return livros;
+  }
+
+
 }
 
 

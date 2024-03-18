@@ -15,6 +15,7 @@ import { MinhasreservasComponent } from './componentes/minhasreservas/minhasrese
 import { ConsultausuarioComponent } from './componentes/consultausuario/consultausuario.component';
 import { ConsultartrasacaoComponent } from './componentes/consultartrasacao/consultartrasacao.component';
 import { PesquisarlivroComponent } from './componentes/pesquisarlivro/pesquisarlivro.component';
+import { RelatoriolivroComponent } from './componentes/relatoriolivro/relatoriolivro.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
@@ -38,5 +39,6 @@ export const routes: Routes = [
     {path: 'buscarusuario', component: ConsultausuarioComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'historicotransacoes', component: ConsultartrasacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'pesquisarlivro', component: PesquisarlivroComponent},
+    {path: 'relatoriolivro', component: RelatoriolivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
   
 ];

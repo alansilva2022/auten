@@ -1,0 +1,9 @@
+<h1> Relatório de Livros</h1>
+
+<div *ngIf="usuarioLogado">
+    <p>Usuário Logado: {{ usuarioLogado }}</p>
+</div>
+
+<div *ngFor="let livro of livros">
+    <p>{{ livro.titulo}} - {{ livro.quantidade }} </p>
+</div>
