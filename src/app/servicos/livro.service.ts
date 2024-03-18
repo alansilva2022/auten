@@ -20,7 +20,7 @@ export class LivroService {
       editora: livro.editora,
       foto: livro.foto,
       sinopse: livro.sinopse,
-      quantidade: livro.quantidade
+      quantidade: livro.quantidade,
     }
     const livroColecao = collection(this.firestore, 'livros');
     return addDoc(livroColecao, novoLivro).then(docRef => {

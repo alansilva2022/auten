@@ -22,6 +22,7 @@ export class CadastrarLivroComponent {
   livroEditora: string = '';
   livroSinopse: string = '';
   livroQuantidade!: number;
+  livroData: string = '';
 
   livro: Livro = { titulo: '', ano_lancamento: '', autor: '', isbn: '', editora: '', sinopse: '', quantidade: 0, foto: ''};
   livro$!: Observable<Livro[]>;
@@ -36,6 +37,8 @@ export class CadastrarLivroComponent {
   adicionarLivro(){
     this.livro.foto = '';
     console.log("Adicionando Livro", this.livro);
+
+  
   }
 
   carregamento_de_foto(event: any){
@@ -45,6 +48,7 @@ export class CadastrarLivroComponent {
       const novoLivro: Livro = {titulo: this.livroTitulo,  ano_lancamento: this.livroAno, autor: this.livroAutor, isbn: this.livroIsbn,  editora: this.livroEditora, sinopse: this.livroSinopse, quantidade: this.livroQuantidade, foto: this.livro.foto};
       await this.livroServico.adicionarLivro(novoLivro);
       console.log("Livro adicionado com sucesso", novoLivro);
+
       this.livroTitulo = '';
       this.livroQuantidade = 0;
       this.livro.foto = '';
@@ -53,6 +57,8 @@ export class CadastrarLivroComponent {
       this.livroIsbn = '';
       this.livroEditora = '';
       this.livroSinopse = '';
+      this.livroData = '';
     });
   }
 }
+
