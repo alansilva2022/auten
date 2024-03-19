@@ -22,10 +22,23 @@ export class CadastrarLivroComponent {
   livroEditora: string = '';
   livroSinopse: string = '';
   livroQuantidade!: number;
-  livroData: string = '';
+  livroData: string = ''; //adicionado ???
 
-  livro: Livro = { titulo: '', ano_lancamento: '', autor: '', isbn: '', editora: '', sinopse: '', quantidade: 0, foto: ''};
+  livro: Livro = {
+     titulo: '', 
+     ano_lancamento: '',
+     autor: '', 
+     isbn: '', 
+     editora: '', 
+     sinopse: '', 
+     quantidade: 0, 
+     foto: '',
+     data: '', //adicionado
+    };
+
+
   livro$!: Observable<Livro[]>;
+
   firestore: Firestore = inject(Firestore);
 
   constructor(private livroServico: LivroService, private uploadFoto: UploadFotoService){
@@ -36,6 +49,8 @@ export class CadastrarLivroComponent {
 
   adicionarLivro(){
     this.livro.foto = '';
+    this.livro.data = ''; //adicionado
+
     console.log("Adicionando Livro", this.livro);
 
   
@@ -44,8 +59,24 @@ export class CadastrarLivroComponent {
   carregamento_de_foto(event: any){
     this.uploadFoto.uploadFoto(event.target.files[0], 'fotos/livro/').subscribe(async (url: string)=>{
       this.livro.foto = url;
+
+      const dataAtual = new Date();  //adicionado
+      this.livro.data = formatarData(dataAtual); //adicionado
+
       console.log("Carregamento de Foto - NovoLivro:", this.livro);
-      const novoLivro: Livro = {titulo: this.livroTitulo,  ano_lancamento: this.livroAno, autor: this.livroAutor, isbn: this.livroIsbn,  editora: this.livroEditora, sinopse: this.livroSinopse, quantidade: this.livroQuantidade, foto: this.livro.foto};
+      
+      const novoLivro: Livro = {
+          titulo: this.livroTitulo,  
+          ano_lancamento: this.livroAno, 
+          autor: this.livroAutor, 
+          isbn: this.livroIsbn, 
+          editora: this.livroEditora, 
+          sinopse: this.livroSinopse, 
+          quantidade: this.livroQuantidade, 
+          foto: this.livro.foto,
+          data: this.livro.data
+        };
+      
       await this.livroServico.adicionarLivro(novoLivro);
       console.log("Livro adicionado com sucesso", novoLivro);
 
@@ -57,8 +88,19 @@ export class CadastrarLivroComponent {
       this.livroIsbn = '';
       this.livroEditora = '';
       this.livroSinopse = '';
-      this.livroData = '';
+      this.livroData = ''; //adicionado
     });
   }
+}
+
+function formatarData(data: Date): string {
+  const dia = data.getDate().toString().padStart(2, '0');
+  const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // Os meses começam do zero
+  const ano = data.getFullYear();
+  const horas = data.getHours().toString().padStart(2, '0');
+  const minutos = data.getMinutes().toString().padStart(2, '0');
+  const segundos = data.getSeconds().toString().padStart(2, '0');
+
+  return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
 }
 

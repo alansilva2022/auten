@@ -7,4 +7,5 @@ export interface Livro {
     foto?: string;
     sinopse: string;
     quantidade: number;
+    data: string; //adicionado
 }

@@ -21,6 +21,7 @@ export class LivroService {
       foto: livro.foto,
       sinopse: livro.sinopse,
       quantidade: livro.quantidade,
+      data: livro.data  //adicionado
     }
     const livroColecao = collection(this.firestore, 'livros');
     return addDoc(livroColecao, novoLivro).then(docRef => {
@@ -71,7 +72,8 @@ export class LivroService {
         editora: livroData['editora'],
         foto: livroData['foto'],
         sinopse: livroData['sinopse'],
-        quantidade: livroData['quantidade']
+        quantidade: livroData['quantidade'],
+        data: livroData['data'], //adicionado
       });
     });
 
@@ -94,7 +96,8 @@ export class LivroService {
         isbn: livroData['isbn'],
         sinopse: livroData['sinopse'],
         editora: livroData['editora'],
-        quantidade: livroData['quantidade']
+        quantidade: livroData['quantidade'],
+        data: livroData['data'], //adicionado
       };
       livros.push(livro);
     });
