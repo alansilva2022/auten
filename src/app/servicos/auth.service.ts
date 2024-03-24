@@ -84,8 +84,14 @@ export class AuthService  {
         displayName: usuario.nomeUsuario
       });
 
-      const novoUsuario: Usuario = { name: usuario.name, email: usuario.email, password: usuario.password, role: usuario.role, nomeUsuario: usuario.nomeUsuario,
-      telefone: usuario.telefone, endereco: usuario.endereco, cpf: usuario.cpf
+      const novoUsuario: Usuario = { name: usuario.name, 
+                                    email: usuario.email, 
+                                    password: usuario.password, 
+                                    role: usuario.role, 
+                                    nomeUsuario: usuario.nomeUsuario,
+                                    telefone: usuario.telefone, 
+                                    endereco: usuario.endereco, 
+                                    cpf: usuario.cpf
       };
 
       const ref = doc(this.db, "usuarios", userCredential.user.uid); // Esta linha está criando uma referência direta a um documento no Firestore associado ao usuário autenticado. Isso é útil quando você deseja armazenar informações adicionais do usuário no Firestore ou recuperar informações específicas relacionadas ao usuário.
