@@ -1,6 +1,5 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -17,7 +16,13 @@ export const appConfig: ApplicationConfig = {
               importProvidersFrom(provideDatabase(() => getDatabase())), 
               importProvidersFrom(
                 provideFirebaseApp(() => 
-                  initializeApp({"projectId":"autent-5db11","appId":"1:1018635080099:web:236aeea9a1e6732949ca16","databaseURL":"https://autent-5db11-default-rtdb.firebaseio.com","storageBucket":"autent-5db11.appspot.com","apiKey":"AIzaSyAUKmMzSc-uBwwm-s3HZua6ptlQSyN6vIg","authDomain":"autent-5db11.firebaseapp.com","messagingSenderId":"1018635080099"})),
+                  initializeApp({"projectId":"autent-5db11",
+                                "appId":"1:1018635080099:web:236aeea9a1e6732949ca16",
+                                "databaseURL":"https://autent-5db11-default-rtdb.firebaseio.com",
+                                "storageBucket":"autent-5db11.appspot.com",
+                                "apiKey":"AIzaSyAUKmMzSc-uBwwm-s3HZua6ptlQSyN6vIg",
+                                "authDomain":"autent-5db11.firebaseapp.com",
+                                "messagingSenderId":"1018635080099"})),
                   provideFirestore(() => getFirestore()) //adicionaddo
                   ),
               importProvidersFrom(provideStorage(() => getStorage()))],
