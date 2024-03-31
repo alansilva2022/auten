@@ -1,11 +1,14 @@
 import { Injectable, inject } from '@angular/core';
-import { DocumentData, Firestore, Query, QuerySnapshot, addDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
+import { DocumentData, Firestore, Query, addDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
 import { Livro } from '../componentes/livro';
+import { Comentario } from '../componentes/comentario';
+import { User } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LivroService {
+ 
 
   firestore: Firestore = inject(Firestore);
 
@@ -21,7 +24,7 @@ export class LivroService {
       foto: livro.foto,
       sinopse: livro.sinopse,
       quantidade: livro.quantidade,
-      data: livro.data  //adicionado
+      data: livro.data 
     }
     const livroColecao = collection(this.firestore, 'livros');
     return addDoc(livroColecao, novoLivro).then(docRef => {
@@ -37,8 +40,6 @@ export class LivroService {
   async pesquisarLivros(termo: string): Promise<Livro[]> {
     const livros: Livro[] = [];
     const livroColecao = collection(this.firestore, 'livros');
-
-    let livrosQuery: Query<DocumentData> = livroColecao;
 
     if (termo) {
       // as consultas para título, autor e ISBN
@@ -73,7 +74,7 @@ export class LivroService {
         foto: livroData['foto'],
         sinopse: livroData['sinopse'],
         quantidade: livroData['quantidade'],
-        data: livroData['data'], //adicionado
+        data: livroData['data'],
       });
     });
 
@@ -97,7 +98,7 @@ export class LivroService {
         sinopse: livroData['sinopse'],
         editora: livroData['editora'],
         quantidade: livroData['quantidade'],
-        data: livroData['data'], //adicionado
+        data: livroData['data'], 
       };
       livros.push(livro);
     });
@@ -106,10 +107,34 @@ export class LivroService {
   }
 
 
+  adicionarComentario(usuario: User, livroId: string, texto: string): Promise<any> {
+    const dataAtual = new Date();
+
+    const comentario: Comentario = {
+      userId: usuario.uid,
+      texto: texto,
+      data: formatarData(dataAtual),
+      livroId: livroId
+    };
+
+    return addDoc(collection(this.firestore, 'comentarios'), comentario);
+  }
+
+
+
 }
 
 
 
- 
-  
+function formatarData(data: Date): string {
+  const dia = data.getDate().toString().padStart(2, '0');
+  const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // Os meses começam do zero
+  const ano = data.getFullYear();
+  const horas = data.getHours().toString().padStart(2, '0');
+  const minutos = data.getMinutes().toString().padStart(2, '0');
+  const segundos = data.getSeconds().toString().padStart(2, '0');
+
+  return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+}
+
 

@@ -16,6 +16,7 @@ import { ConsultausuarioComponent } from './componentes/consultausuario/consulta
 import { ConsultartrasacaoComponent } from './componentes/consultartrasacao/consultartrasacao.component';
 import { PesquisarlivroComponent } from './componentes/pesquisarlivro/pesquisarlivro.component';
 import { RelatoriolivroComponent } from './componentes/relatoriolivro/relatoriolivro.component';
+import { ComentarioComponent } from './componentes/comentario/comentario.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
@@ -40,5 +41,7 @@ export const routes: Routes = [
     {path: 'historicotransacoes', component: ConsultartrasacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'pesquisarlivro', component: PesquisarlivroComponent},
     {path: 'relatoriolivro', component: RelatoriolivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
+    {path: 'comentariolivro', component: ComentarioComponent, ...canActivate(redirecionarParaLogin)},
+  
   
 ];

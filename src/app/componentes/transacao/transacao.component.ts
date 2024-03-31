@@ -59,7 +59,7 @@ export class TransacaoComponent {
       const livroId = await this.transacaoService.obterLivroIdPorNome(this.transacao.livroNome);
       const usuarioId = await this.transacaoService.obterUsuarioIdPorNome(this.transacao.usuarioNome);
 
-      // Agora tem o livroId e usuarioId, você pode continuar com a transação
+      // Agora tem o livroId e usuarioId, continuar com a transação
       const dataAtual = new Date();
       this.transacao.data = formatarData(dataAtual);
 
@@ -70,7 +70,7 @@ export class TransacaoComponent {
       const transacaoParaAdicionar: Transacao = { ...this.transacao, livroId, usuarioId }; 
       await this.transacaoService.adicionarTransacao(transacaoParaAdicionar);
 
-      // Limpar os campos após a transação ser realizada com sucesso
+      // Limpar os campos após a transação 
       this.transacao = {
         livroNome: '',
         usuarioNome: '',

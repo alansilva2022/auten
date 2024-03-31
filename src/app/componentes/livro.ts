@@ -1,3 +1,6 @@
+import { Comentario } from "./comentario";
+
+
 export interface Livro {
     titulo: string;
     ano_lancamento: string;
@@ -7,5 +10,7 @@ export interface Livro {
     foto?: string;
     sinopse: string;
     quantidade: number;
-    data: string; //adicionado
+    data: string; 
+    comentarios?: Comentario[];  //adicionado
+    id?: string; 
 }
