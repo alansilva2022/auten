@@ -12,5 +12,6 @@ export interface Livro {
     quantidade: number;
     data: string; 
     comentarios?: Comentario[];  //adicionado
-    id?: string; 
+    id?: string; //adicionado
+    rating: 0; // adicionado
 }

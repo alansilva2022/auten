@@ -51,6 +51,16 @@ export class ComentarioComponent {
     }
   }
 
+
+  async classificarLivro(livroId: string, rating: number) {
+    try {
+      await this.livroService.adicionarRating(livroId, rating);
+      console.log('Livro classificado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao classificar o livro:', error);
+    }
+  }
+
    
   
 

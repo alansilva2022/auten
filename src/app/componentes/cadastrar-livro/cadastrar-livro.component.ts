@@ -22,7 +22,8 @@ export class CadastrarLivroComponent {
   livroEditora: string = '';
   livroSinopse: string = '';
   livroQuantidade!: number;
-  livroData: string = ''; //adicionado ???
+  livroData: string = ''; 
+  livroRating!: number;
 
   livro: Livro = {
      titulo: '', 
@@ -33,7 +34,8 @@ export class CadastrarLivroComponent {
      sinopse: '', 
      quantidade: 0, 
      foto: '',
-     data: '', //adicionado
+     data: '', 
+     rating: 0,
     };
 
 
@@ -74,7 +76,8 @@ export class CadastrarLivroComponent {
           sinopse: this.livroSinopse, 
           quantidade: this.livroQuantidade, 
           foto: this.livro.foto,
-          data: this.livro.data
+          data: this.livro.data,
+          rating: this.livro.rating
         };
       
       await this.livroServico.adicionarLivro(novoLivro);
@@ -88,7 +91,9 @@ export class CadastrarLivroComponent {
       this.livroIsbn = '';
       this.livroEditora = '';
       this.livroSinopse = '';
-      this.livroData = ''; //adicionado
+      this.livroData = ''; 
+      this.livroRating = 0;
+      
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { DocumentData, Firestore, Query, addDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
+import { DocumentData, Firestore, Query, addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Livro } from '../componentes/livro';
 import { Comentario } from '../componentes/comentario';
 import { User } from 'firebase/auth';
@@ -24,7 +24,8 @@ export class LivroService {
       foto: livro.foto,
       sinopse: livro.sinopse,
       quantidade: livro.quantidade,
-      data: livro.data 
+      data: livro.data,
+      rating: livro.rating
     }
     const livroColecao = collection(this.firestore, 'livros');
     return addDoc(livroColecao, novoLivro).then(docRef => {
@@ -75,6 +76,7 @@ export class LivroService {
         sinopse: livroData['sinopse'],
         quantidade: livroData['quantidade'],
         data: livroData['data'],
+        rating: livroData['rating']
       });
     });
 
@@ -99,6 +101,7 @@ export class LivroService {
         editora: livroData['editora'],
         quantidade: livroData['quantidade'],
         data: livroData['data'], 
+        rating: livroData['rating'],
       };
       livros.push(livro);
     });
@@ -119,6 +122,28 @@ export class LivroService {
 
     return addDoc(collection(this.firestore, 'comentarios'), comentario);
   }
+
+
+  async adicionarRating(livroId: string, rating: number): Promise<void> {
+    const livroRef = doc(this.firestore, 'livros', livroId);
+    const livroSnapshot = await getDoc(livroRef);
+
+    if (livroSnapshot.exists()) {
+        const livroData = livroSnapshot.data() as Livro;
+        
+        if (livroData.rating !== undefined) { //verificando que o rating existe no documento do firestore
+            const novoRating = (livroData.rating + rating) / 2; 
+
+            await setDoc(livroRef, { ...livroData, rating: novoRating });
+        } else {
+            console.error('Campo de rating não encontrado no documento do livro.');
+            throw new Error('Campo de rating não encontrado no documento do livro.');
+        }
+    } else {
+        console.error('Livro não encontrado.');
+        throw new Error('Livro não encontrado.');
+    }
+}
 
 
 
