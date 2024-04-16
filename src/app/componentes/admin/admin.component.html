@@ -10,11 +10,12 @@
 
 
 <nav class="menu-header">
-    <a class="menu-sup" pButton routerLink="/index" type="button" label="USUÁRIO"></a> 
+    //<h3 *ngIf="user$ | async as user"> LIB - ESCOLA 
+        {{user.uid}}</h3> 
     <label class="menu-sup"> | </label>
     <a class="menu-sup" pButton routerLink="/sobre" type="button" label="SAIR"></a>
 </nav>
 
 </div>
-<router-outlet></router-outlet>
+
 
