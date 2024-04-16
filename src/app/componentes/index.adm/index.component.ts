@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../servicos/auth.service';
 
 @Component({
   selector: 'app-index',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class IndexComponent {
 
-}
+  constructor(private authService: AuthService){}
+;
+  }
+
