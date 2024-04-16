@@ -1,9 +1,20 @@
-<p>Página do Administrador</p>
+<!--<p>Página do Administrador</p>
 
-<h3 *ngIf="user$ | async as user"> Bem vindo, {{user.email}}, 
+//<h3 *ngIf="user$ | async as user"> Bem vindo, {{user.email}}, 
 {{user.uid}}</h3>
 
-<!--UID É do usuário na autenticação (Firebase)-->
+--UID É do usuário na autenticação (Firebase)-->
+
+<div class="header">
+    <h1 class="title">LIB - ESCOLA</h1>
 
 
+<nav class="menu-header">
+    <a class="menu-sup" pButton routerLink="/index" type="button" label="USUÁRIO"></a> 
+    <label class="menu-sup"> | </label>
+    <a class="menu-sup" pButton routerLink="/sobre" type="button" label="SAIR"></a>
+</nav>
+
+</div>
+<router-outlet></router-outlet>
 
