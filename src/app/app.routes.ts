@@ -6,7 +6,6 @@ import { hasRoleGuard } from './has-role.guard';
 import { Role } from './role';
 import { RegistrousuarioComponent } from './componentes/registrousuario/registrousuario.component';
 import { LoginComponent } from './componentes/login/login.component';
-
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo} from '@angular/fire/auth-guard';
 import { CadastrarLivroComponent } from './componentes/cadastrar-livro/cadastrar-livro.component';
 import { TransacaoComponent } from './componentes/transacao/transacao.component';
