@@ -11,7 +11,7 @@ import { IndexComponent } from './componentes/index.adm/index.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet,AdminComponent, HomeComponent, NaoautorizadoComponent, RegistrousuarioComponent, IndexComponent],
+  imports: [CommonModule, RouterOutlet,AdminComponent, HomeComponent, NaoautorizadoComponent, RegistrousuarioComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
