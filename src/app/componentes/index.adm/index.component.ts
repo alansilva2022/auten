@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],      //Para usar *ngIf é preciso importar CommonModule
   templateUrl: './index.component.html',
-  //styleUrl: './index.component.scss'
+  styleUrl: './index.component.scss'
 })
 export class IndexComponent {
 
