@@ -32,6 +32,7 @@ export const routes: Routes = [
     //data --> dados adicionais
     //hasRoleGuard para a Route possa verificar se o utilizador pode acessar a este componente
     {path: 'registro', component: RegistrousuarioComponent,...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
+    //{path: 'registro', component: RegistrousuarioComponent,},
     {path: 'login', component: LoginComponent, ...canActivate(redirecionarParaHome)}, //se fizer login, redireciona para home
     {path: 'cadastrarlivro', component: CadastrarLivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'transacao', component: TransacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},

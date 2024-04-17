@@ -12,19 +12,13 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), 
               provideClientHydration(), 
-              importProvidersFrom(provideAuth(() => getAuth())), 
+              //importProvidersFrom(provideAuth(() => getAuth())), 
               importProvidersFrom(provideDatabase(() => getDatabase())), 
-              importProvidersFrom(
-                provideFirebaseApp(() => 
-                  initializeApp({"projectId":"autent-5db11",
-                                "appId":"1:1018635080099:web:236aeea9a1e6732949ca16",
-                                "databaseURL":"https://autent-5db11-default-rtdb.firebaseio.com",
-                                "storageBucket":"autent-5db11.appspot.com",
-                                "apiKey":"AIzaSyAUKmMzSc-uBwwm-s3HZua6ptlQSyN6vIg",
-                                "authDomain":"autent-5db11.firebaseapp.com",
-                                "messagingSenderId":"1018635080099"})),
-                  provideFirestore(() => getFirestore()) //adicionaddo
-                  ),
-              importProvidersFrom(provideStorage(() => getStorage()))],
+              //importProvidersFrom(
+                //provideFirebaseApp(() => 
+                  //initializeApp({})),
+                  //provideFirestore(() => getFirestore()) //adicionaddo
+                  //),
+              importProvidersFrom(provideStorage(() => getStorage())), importProvidersFrom(provideFirebaseApp(() => initializeApp({"projectId":"projetobiblioteca-2024tcc","appId":"1:575038282464:web:abb72903545aa6ee238e85","storageBucket":"projetobiblioteca-2024tcc.appspot.com","apiKey":"AIzaSyD_YGQ267pGW9dK99fAPXX7XbYaXA1TS_U","authDomain":"projetobiblioteca-2024tcc.firebaseapp.com","messagingSenderId":"575038282464"}))), importProvidersFrom(provideAuth(() => getAuth())), importProvidersFrom(provideFirestore(() => getFirestore())), importProvidersFrom(provideStorage(() => getStorage()))],
              
 };
