@@ -1,7 +1,7 @@
 <h1>Pesquisar Livro</h1>
 
 <div>
-    <input type="text" [(ngModel)]="termoPesquisa" placeholder="Pesquisar..." (input)="pesquisarLivros()">
+    <input type="text" [(ngModel)]="termoPesquisa" placeholder="Pesquisar..." (input)="pesquisarLivros(); onInput()">
 </div>
   
 <div *ngIf="livros.length > 0">
