@@ -37,4 +37,5 @@ export class PesquisarlivroComponent implements OnInit {
       this.carregarTodosLivros();
     
     }
+  }
 }
