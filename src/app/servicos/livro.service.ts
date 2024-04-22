@@ -102,6 +102,7 @@ export class LivroService {
         quantidade: livroData['quantidade'],
         data: livroData['data'], 
         rating: livroData['rating'],
+        foto: livroData['foto'], //adicionado
       };
       livros.push(livro);
     });
