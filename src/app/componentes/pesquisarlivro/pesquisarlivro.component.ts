@@ -25,10 +25,15 @@ export class PesquisarlivroComponent implements OnInit {
 
   async carregarTodosLivros() {
     this.livros = await this.livroService.pesquisarLivros('');
+    //this.livros = await this.livroService.relatorioLivro();
   }
 
   async pesquisarLivros() {
     this.livros = await this.livroService.pesquisarLivros(this.termoPesquisa);
   }
-
+  //onInput()  { //(quanto o input estiver vazio, carregara todos os livros)
+    //if(!this.termoPesquisa){
+      //this.carregarTodosLivros();
+    
+    //}
 }
