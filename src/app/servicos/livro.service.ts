@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { DocumentData, DocumentSnapshot, Firestore, Query, addDoc, collection, doc, getDoc, getDocs, orderBy, query, setDoc, where } from '@angular/fire/firestore';
+import { DocumentData, Firestore, Query, addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Livro } from '../componentes/livro';
 import { Comentario } from '../componentes/comentario';
 import { User } from 'firebase/auth';
@@ -44,38 +44,27 @@ export class LivroService {
 
     if (termo) {
 
-     
-      // as consultas para título, autor e ISBN
-      const tituloConsulta = query(livroColecao, where('titulo', '>=', termo), where('titulo', '<=', termo + '\uf8ff'));
-      const autorConsulta = query(livroColecao, where('autor', '>=', termo), where('autor', '<=', termo + '\uf8ff'));
-      const isbnConsulta = query(livroColecao, where('isbn', '>=', termo), where('isbn', '<=', termo + '\uf8ff'));
-       
-      // os resultados de cada consulta
-      const tituloResultado = await this.efetuarConsulta(tituloConsulta);
-      const autorResultado = await this.efetuarConsulta(autorConsulta);
-      const isbnResultado = await this.efetuarConsulta(isbnConsulta);
+      
+     // as consultas para título, autor e ISBN
+     const tituloConsulta = query(livroColecao, where('titulo', '>=', termo), where('titulo', '<=', termo + '\uf8ff'));
+     const autorConsulta = query(livroColecao, where('autor', '>=', termo), where('autor', '<=', termo + '\uf8ff'));
+     const isbnConsulta = query(livroColecao, where('isbn', '>=', termo), where('isbn', '<=', termo + '\uf8ff'));
+      
+     // os resultados de cada consulta
+     const tituloResultado = await this.efetuarConsulta(tituloConsulta);
+     const autorResultado = await this.efetuarConsulta(autorConsulta);
+     const isbnResultado = await this.efetuarConsulta(isbnConsulta);
 
 
-      // Combinar os resultados em uma única lista
-      livros.push(...tituloResultado, ...autorResultado, ...isbnResultado);
-    }
+     // Combinar os resultados em uma única lista
+     livros.push(...tituloResultado, ...autorResultado, ...isbnResultado);
+
+  }
 
     return livros;
-  }
+ }
  
   
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   private async efetuarConsulta(consulta: Query<DocumentData>): Promise<Livro[]> {
