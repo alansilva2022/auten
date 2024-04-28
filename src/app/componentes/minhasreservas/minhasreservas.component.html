@@ -1,7 +1,14 @@
 
+Minhas reservas
+<div *ngIf="usuarioLogado">
+    <p>Usuário Logado: {{ usuarioLogado }}</p>
+  </div>
+
 
 <div *ngFor="let reserva of reservas">
     <p>{{reserva.livroNome}} -- {{reserva.data}}</p>
 
 </div>
+
+<a  href='/home'><button>Voltar</button></a>
 

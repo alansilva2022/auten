@@ -17,7 +17,9 @@ export class AuthService  {
 
   db = getFirestore(); //ADICIONADO 28/02/2024 - 23:41
 
-  private currentUserSubject = new BehaviorSubject<Role | null>(null);
+  //private currentUserSubject = new BehaviorSubject<Role | null>(null);
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+
 
  
   utilizadorAtual$ = authState(this.auth);  //obtenção do estado de autenticação e armazenando no utilizadorAtual
@@ -77,8 +79,8 @@ export class AuthService  {
   registro(email: string, password: string, usuario: Usuario){
     return createUserWithEmailAndPassword(this.auth, email, password)
     .then(async (userCredential) => {
-      const user = userCredential.user;  //obs.
-
+      const user = userCredential.user;  
+      
 
       await updateProfile(user, {
         displayName: usuario.nomeUsuario
@@ -95,16 +97,21 @@ export class AuthService  {
       };
 
       const ref = doc(this.db, "usuarios", userCredential.user.uid); // Esta linha está criando uma referência direta a um documento no Firestore associado ao usuário autenticado. Isso é útil quando você deseja armazenar informações adicionais do usuário no Firestore ou recuperar informações específicas relacionadas ao usuário.
-        
+      
+      await setDoc(ref, novoUsuario);   // setDoc está cadastrando usuário
 
-      return setDoc(ref, novoUsuario).then(docRef =>{   // setDoc está cadastrando usuário
-        console.log('Usuario cadastrado com sucesso!');
-        this.router.navigate(['/login']); 
+      console.log('Usuario cadastrado com sucesso!');
+       
+
+      const usuarioAtual = await this.obterUsuarioAtual();
+
+       if (!usuarioAtual) {       
+        this.currentUserSubject.next(user);
       }
-
-      )}).catch(error =>{
+       
+     }).catch(error =>{
         console.error('Erro ao cadastrar usuario', error);
-       })
+       });
   }
   
 
@@ -132,7 +139,8 @@ export class AuthService  {
         const docSnapshot = await getDoc(userDocRef);
         if (docSnapshot.exists()) {
           const userRole = docSnapshot.data()['role'] as Role;
-          this.currentUserSubject.next(userRole);
+          //this.currentUserSubject.next(userRole);
+          this.currentUserSubject.next(user);
           return userRole;
         } else {
           console.error('Documento de usuário não encontrado no Firestore.');
@@ -153,6 +161,7 @@ export class AuthService  {
     return new Promise((resolve, reject) => {
       const aut = getAuth();
       onAuthStateChanged(aut, (user: User | null) => {
+        console.log('Usuário atual retornado:', user); // verificar o usuário atual
         resolve(user);
       }, (error) => {
         reject(error);
@@ -165,15 +174,12 @@ export class AuthService  {
     const user = auth.currentUser;
   
     if (user) {
-      console.log('Nome do usuário obtido:', user.displayName);
+     // console.log('Nome do usuário obtido:', user.displayName);
       return user.displayName || '';
     } else {
       console.log('Usuário não autenticado.');
       return '';
     }
   }
-
-
-
 
 }

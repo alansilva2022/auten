@@ -3,6 +3,7 @@ import { Usuario } from '../usuario';
 import { AuthService } from '../../servicos/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Role } from '../../role';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registrousuario',
@@ -26,9 +27,17 @@ export class RegistrousuarioComponent {
     cpf: '',
     endereco: ''
   }
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private router: Router){}
 
-  registrar(){
-    this.authService.registro(this.email, this.password, this.usuario);
+  registrar() {
+    this.authService.registro(this.email, this.password, this.usuario).then(() => {
+      // Redirecionar o usuário para a página principal após o registro
+      this.router.navigate(['/home']);
+    }).catch(error => {
+      console.error('Erro ao registrar usuário:', error);
+      // Em caso de erro ao registrar o usuário, não redirecionar o usuário para a página principal
+    });
   }
+  
+  
 }
