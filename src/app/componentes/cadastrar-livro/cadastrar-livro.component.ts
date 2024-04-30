@@ -6,11 +6,13 @@ import { LivroService } from '../../servicos/livro.service';
 import { UploadFotoService } from '../../servicos/upload-foto.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-cadastrar-livro',
   standalone: true,
-  imports: [FormsModule, HttpClientModule],
+  imports: [FormsModule, HttpClientModule, CommonModule],
   templateUrl: './cadastrar-livro.component.html',
   styleUrl: './cadastrar-livro.component.scss'
 })
