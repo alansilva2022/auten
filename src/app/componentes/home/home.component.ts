@@ -10,24 +10,28 @@ import { Role } from '../../role';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
- 
 export class HomeComponent {
 
-    somenteAdm: boolean = false;
-    somenteUsuarioComum: boolean = false;
 
-    //antes estava como private, mas para o html ter acesso foi preciso colocar como public
- constructor(public authService: AuthService){
+  somenteAdm: boolean = false;
+
+  somenteUsuarioComum: boolean = false;
+
+ //antes estava como private, mas para o html ter acesso foi preciso colocar como public
+  constructor(public authService: AuthService){
+
     this.authService.utilizadorAtual$.subscribe(user => {
-      console.log('Usuario atual:', user);
+      console.log('Usuário atual:', user);
       this.isAdmin();
       this.isUsuarioComum();
-
     });
-
- }
+  }
   user$ = this.authService.utilizadorAtual$; //para ver o email logado
 
+  logout(): void{
+    this.authService.logout();
+
+  }
 }
   isAdmin(): void {
     this.authService.getUserRole().then(role => {
@@ -43,8 +47,9 @@ export class HomeComponent {
       console.error('Error ao verificar permissões', error);
       //Em caso de erro, não mostrará o botão;
       this.somenteAdm = false;
-
+      
     });
+  }
   
   isUsuarioComum(): void {
     this.authService.getUserRole().then(role =>{
