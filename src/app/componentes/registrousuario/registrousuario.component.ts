@@ -3,11 +3,12 @@ import { Usuario } from '../usuario';
 import { AuthService } from '../../servicos/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Role } from '../../role';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registrousuario',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './registrousuario.component.html',
   styleUrl: './registrousuario.component.scss'
 })
