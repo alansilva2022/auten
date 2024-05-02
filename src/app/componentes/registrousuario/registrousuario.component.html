@@ -1,25 +1,27 @@
 <div>
     <h2>Cadastro Usuário</h2>
-    <label>Email:</label>
-    <input type="text" [(ngModel)]="email" [(ngModel)]="usuario.email" placeholder="Digite seu email">
-    <label>Senha:</label>
-    <input type="password" [(ngModel)]="password" [(ngModel)]="usuario.password" placeholder="Digite a senha">
+    
+    <label>Usuário:</label>
+    <input type="text" [(ngModel)]="usuario.nomeUsuario" placeholder="Nome do Usuário"><br /><br />
     <label>Nome Completo:</label>
-    <input type="text" [(ngModel)]="usuario.name" placeholder="Digite o nome completo">
-    <label>Nome Usuário:</label>
-    <input type="text" [(ngModel)]="usuario.nomeUsuario" placeholder="Digite o nome do usuário">
+    <input type="text" [(ngModel)]="usuario.name" placeholder="Nome e Sobrenome "><br /><br /> 
+    <label>Senha:</label>
+    <input type="password" [(ngModel)]="password" [(ngModel)]="usuario.password" placeholder="Crie uma Senha"><br /><br />
+    <label>Cel.:</label>
+    <input type="text"[(ngModel)]="usuario.telefone" placeholder="DDD + nº Celular" mask="(00) 00000-0000" /><br /> <br />
+    <!--<input type="text" [(ngModel)]="usuario.telefone" placeholder="DDD + Número do telefone"><br /><br />-->
+    <label>Email:</label>
+    <input type="text" [(ngModel)]="email" [(ngModel)]="usuario.email" placeholder="Digite um e-mail válido"><br /><br />
     <label>CPF:</label>
-    <input type="text" [(ngModel)]="usuario.cpf" placeholder="Digite o CPF do usuário">
-    <label>Telefone:</label>
-    <input type="text" [(ngModel)]="usuario.telefone" placeholder="Digite o telefone do usuário">
+    <input type="text" [(ngModel)]="usuario.cpf" mask="000.000.000-00" placeholder="Digite somente números"><br /><br />
     <label>Endereço:</label>
-    <input type="text" [(ngModel)]="usuario.endereco" placeholder="Digite endereco do usuário">
+    <input type="text" [(ngModel)]="usuario.endereco" placeholder="Digite endereco do usuário"><br /><br />
     <label>Função:</label>
    <select [(ngModel)]="usuario.role">
     <option value="usuario">Usuário</option>
     <option value="admin">Admin</option>
    </select>
-
+   <br /><br />
    <button (click)="registrar()">Registrar</button>
 
 </div>

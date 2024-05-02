@@ -7,11 +7,13 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore'; //importante colocar
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), 
               provideClientHydration(), 
+              provideEnvironmentNgxMask(),
               //importProvidersFrom(provideAuth(() => getAuth())), 
               importProvidersFrom(provideDatabase(() => getDatabase())), 
               //importProvidersFrom(

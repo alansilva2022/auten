@@ -4,13 +4,15 @@ import { AuthService } from '../../servicos/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Role } from '../../role';
 import { CommonModule } from '@angular/common';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-registrousuario',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, NgxMaskDirective],
   templateUrl: './registrousuario.component.html',
-  styleUrl: './registrousuario.component.scss'
+  styleUrl: './registrousuario.component.scss',
+  
 })
 export class RegistrousuarioComponent {
 
