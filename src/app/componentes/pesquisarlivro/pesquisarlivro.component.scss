@@ -1,0 +1,47 @@
+.card-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* distância entre os cards */
+    margin: 0 20px; /* distância nos lados */
+}
+
+.card {
+    width: 200px; /* Largura do card */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px; /* espaço no final de cada card */
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.pesquisa-container {
+    margin-top: 20px; /* distância do topo da tela */
+    margin-bottom: 20px; /* espaço entre o título de pesquisa e os cards */
+    padding-left: 20px; /* espaço à esquerda */
+    padding-right: 20px; /* espaço à direita */
+}
+
+
+.pesquisa-input input[type="text"] {
+    width: 100%; /* largura total da tela */
+    box-sizing: border-box; /* inclui padding e borda na largura total */
+    padding: 10px; /* adiciona algum espaço interno ao input */
+    border-radius: 10px; /* Adiciona o raio de borda */
+    text-align: center;
+    
+}
+
+.content-container {
+    margin-bottom: 20px; /* distância no fim da página */
+}
