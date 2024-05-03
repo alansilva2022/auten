@@ -7,6 +7,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore'; //importante colocar
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 export const appConfig: ApplicationConfig = {
@@ -25,6 +26,6 @@ export const appConfig: ApplicationConfig = {
                                 "messagingSenderId":"1018635080099"})),
                   provideFirestore(() => getFirestore()) //adicionaddo
                   ),
-              importProvidersFrom(provideStorage(() => getStorage()))],
+              importProvidersFrom(provideStorage(() => getStorage())), provideAnimationsAsync()],
              
 };
