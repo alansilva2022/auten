@@ -8,7 +8,7 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore'; //importante colocar
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
-
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), 
@@ -19,8 +19,11 @@ export const appConfig: ApplicationConfig = {
               //importProvidersFrom(
                 //provideFirebaseApp(() => 
                   //initializeApp({})),
-                  //provideFirestore(() => getFirestore()) //adicionaddo
+                 // provideFirestore(() => getFirestore()) //adicionaddo
                   //),
-              importProvidersFrom(provideStorage(() => getStorage())), importProvidersFrom(provideFirebaseApp(() => initializeApp({"projectId":"projetobiblioteca-2024tcc","appId":"1:575038282464:web:abb72903545aa6ee238e85","storageBucket":"projetobiblioteca-2024tcc.appspot.com","apiKey":"AIzaSyD_YGQ267pGW9dK99fAPXX7XbYaXA1TS_U","authDomain":"projetobiblioteca-2024tcc.firebaseapp.com","messagingSenderId":"575038282464"}))), importProvidersFrom(provideAuth(() => getAuth())), importProvidersFrom(provideFirestore(() => getFirestore())), importProvidersFrom(provideStorage(() => getStorage()))],
-             
+              importProvidersFrom(provideFirebaseApp(() => initializeApp({"projectId":"projetobiblioteca-2024tcc","appId":"1:575038282464:web:abb72903545aa6ee238e85","storageBucket":"projetobiblioteca-2024tcc.appspot.com","apiKey":"AIzaSyD_YGQ267pGW9dK99fAPXX7XbYaXA1TS_U","authDomain":"projetobiblioteca-2024tcc.firebaseapp.com","messagingSenderId":"575038282464"}))), importProvidersFrom(provideAuth(() => getAuth())), 
+               importProvidersFrom(provideFirestore(() => getFirestore())), 
+               //importProvidersFrom(provideStorage(() => getStorage()))],
+               importProvidersFrom(provideStorage(() => getStorage())), 
+               provideAnimationsAsync()],
 };
