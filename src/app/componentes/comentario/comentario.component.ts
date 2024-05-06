@@ -6,11 +6,12 @@ import { AuthService } from '../../servicos/auth.service';
 import { TransacaoService } from '../../servicos/transacao.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-comentario',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './comentario.component.html',
   styleUrl: './comentario.component.scss'
 })
@@ -21,6 +22,8 @@ export class ComentarioComponent {
   usuarioAtual: User | null = null;
   textoComentario: string = '';
   usuarioLogado: string = '';
+
+  estrelasSelecionadas: number = 0;
 
  
   constructor(private livroService: LivroService, private authService: AuthService, private transacaoService: TransacaoService) {
@@ -55,6 +58,11 @@ export class ComentarioComponent {
   async classificarLivro(livroId: string, rating: number) {
     try {
       await this.livroService.adicionarRating(livroId, rating);
+      
+      //atualizar o número de estrelas se a classificação atual for maior
+      if (rating > this.estrelasSelecionadas) {
+        this.estrelasSelecionadas = rating;
+    }
       console.log('Livro classificado com sucesso!');
     } catch (error) {
       console.error('Erro ao classificar o livro:', error);

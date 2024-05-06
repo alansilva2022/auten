@@ -11,14 +11,17 @@
       <textarea [(ngModel)]="textoComentario" name="textoComentario" placeholder="Digite seu comentário"></textarea>
       <button (click)="adicionarComentario(livro)">Adicionar Comentário</button>
 
-
+  
       <div>
-        <button *ngIf="livro.id" (click)="classificarLivro(livro.id, 5)">Classificar como 5 estrelas</button>
-        <button *ngIf="livro.id" (click)="classificarLivro(livro.id, 4)">Classificar como 4 estrelas</button>
-        <button *ngIf="livro.id" (click)="classificarLivro(livro.id, 3)">Classificar como 3 estrelas</button>
-        <button *ngIf="livro.id" (click)="classificarLivro(livro.id, 2)">Classificar como 2 estrelas</button>
-        <button *ngIf="livro.id" (click)="classificarLivro(livro.id, 1)">Classificar como 1 estrelas</button>
+        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 1)" [ngStyle]="{'color': estrelasSelecionadas >= 1 ? 'gold' : 'gray'}">star</mat-icon>
+        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 2)" [ngStyle]="{'color': estrelasSelecionadas >= 2 ? 'gold' : 'gray'}">star</mat-icon>
+        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 3)" [ngStyle]="{'color': estrelasSelecionadas >= 3 ? 'gold' : 'gray'}">star</mat-icon>
+        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 4)" [ngStyle]="{'color': estrelasSelecionadas >= 4 ? 'gold' : 'gray'}">star</mat-icon>
+        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 5)" [ngStyle]="{'color': estrelasSelecionadas >= 5 ? 'gold' : 'gray'}">star</mat-icon>
     </div>
+
+  
+    
 
     </div>
   </div>
