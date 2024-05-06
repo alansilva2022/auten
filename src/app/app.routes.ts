@@ -17,13 +17,14 @@ import { ConsultartrasacaoComponent } from './componentes/consultartrasacao/cons
 import { PesquisarlivroComponent } from './componentes/pesquisarlivro/pesquisarlivro.component';
 import { RelatoriolivroComponent } from './componentes/relatoriolivro/relatoriolivro.component';
 import { ComentarioComponent } from './componentes/comentario/comentario.component';
+import { DetalhesLivroComponent } from './detalhes-livro/detalhes-livro.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
 const redirecionarParaHome = () => redirectLoggedInTo(['home']);
 
 export const routes: Routes = [
-    {path: '', redirectTo: 'login', pathMatch: 'full'}, 
+    //{path: '', redirectTo: 'login', pathMatch: 'full'}, comentado 05/05/2024
     {path: 'naoautorizado', component: NaoautorizadoComponent},
     {path: 'home', component: HomeComponent, ...canActivate(redirecionarParaLogin)}, // só vai para página home de estiver logado
     
@@ -42,6 +43,8 @@ export const routes: Routes = [
     {path: 'pesquisarlivro', component: PesquisarlivroComponent},
     {path: 'relatoriolivro', component: RelatoriolivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
     {path: 'comentariolivro', component: ComentarioComponent, ...canActivate(redirecionarParaLogin)},
+    { path: 'detalhes-livro/:id', component: DetalhesLivroComponent },
+    { path: '', redirectTo: '/pesquisarlivro', pathMatch: 'full' }
   
   
 ];

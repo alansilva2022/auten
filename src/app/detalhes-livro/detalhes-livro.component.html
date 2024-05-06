@@ -1,0 +1,27 @@
+<div *ngIf="livro" class="detalhes-livro">
+    <h2>Detalhes do Livro</h2>
+    <div class="detalhes-card">
+      <img [src]="livro.foto" alt="{{ livro.titulo }}">
+      <h3>{{ livro.titulo }}</h3>
+      <p>Autor: {{ livro.autor }}</p>
+      <p>Ano de Lançamento: {{ livro.ano_lancamento }}</p>
+      <p>Quantidade: {{ livro.quantidade }}</p>
+      <p>Sinopse: {{livro.sinopse}}</p>
+      <p>Classificação: {{livro.rating}}</p>
+      
+      <div *ngIf="livro.comentarios && livro.comentarios.length > 0">
+        <h4>Comentários:</h4>
+        <ul>
+          <li *ngFor="let comentario of livro.comentarios">
+            {{ comentario.texto }} - {{ comentario.data }}
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+  
+  <div *ngIf="!livro" class="detalhes-livro-vazio">
+    <p>Carregando...</p>
+  </div>
+
+  <a  href='/pesquisarlivro'><button>Voltar</button></a>

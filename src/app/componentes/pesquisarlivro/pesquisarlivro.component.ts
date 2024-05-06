@@ -3,6 +3,7 @@ import { Livro } from '../livro';
 import { LivroService } from '../../servicos/livro.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pesquisarlivro',
@@ -16,15 +17,15 @@ export class PesquisarlivroComponent implements OnInit {
   termoPesquisa: string = '';
   livros: Livro[] = [];
 
-  constructor(private livroService: LivroService) {}
+  constructor(private livroService: LivroService, private router: Router) {}
 
   ngOnInit() {      
-   //this.pesquisarLivros();         comentado em 20/04/2024
+   
     this.carregarTodosLivros();
   }
 
   async carregarTodosLivros() {
-    //this.livros = await this.livroService.pesquisarLivros('');     comentado em 20/04/2024
+   
      this.livros = await this.livroService.relatorioLivro();
   }
 
@@ -36,6 +37,10 @@ export class PesquisarlivroComponent implements OnInit {
     if (!this.termoPesquisa) {
       this.carregarTodosLivros();
     }
+  }
+
+  exibirDetalhes(livroId: string) {
+    this.router.navigate(['/detalhes-livro', livroId]);
   }
 
 }

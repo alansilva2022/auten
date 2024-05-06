@@ -98,8 +98,12 @@ export class LivroService {
     const livros: Livro[] = [];
 
     livroSnapshot.forEach(doc => {
-      const livroData = doc.data();
+      
+      const livroData = doc.data() as Livro;
+    
+
       const livro: Livro = {
+        id: doc.id, 
         ano_lancamento: livroData['ano_lancamento'],
         titulo: livroData['titulo'],
         autor: livroData['autor'],
@@ -153,9 +157,35 @@ export class LivroService {
     }
 }
 
+async obterLivroPorId(livroId: string): Promise<Livro | null> {
+  const livroDoc = doc(this.firestore, 'livros', livroId);
+  const livroSnap = await getDoc(livroDoc);
+
+  if (livroSnap.exists()) {
+    const livroData = livroSnap.data() as Livro;
+   
+    livroData.id = livroSnap.id;  // adicione o id do livro aos dados
+
+    // Carregar comentários do livro
+    const comentariosQuery = query(collection(this.firestore, 'comentarios'), where('livroId', '==', livroId));
+    const comentariosSnap = await getDocs(comentariosQuery);
+    const comentarios: Comentario[] = [];
+    comentariosSnap.forEach(comentarioDoc => {
+      comentarios.push(comentarioDoc.data() as Comentario);
+    });
+    livroData.comentarios = comentarios;
+
+    
+    return livroData;
+  } else {
+    return null;
+  }
+}
 
 
 }
+
+
 
 
 
