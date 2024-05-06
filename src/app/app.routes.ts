@@ -17,7 +17,7 @@ import { ConsultartrasacaoComponent } from './componentes/consultartrasacao/cons
 import { PesquisarlivroComponent } from './componentes/pesquisarlivro/pesquisarlivro.component';
 import { RelatoriolivroComponent } from './componentes/relatoriolivro/relatoriolivro.component';
 import { ComentarioComponent } from './componentes/comentario/comentario.component';
-import { DetalhesLivroComponent } from './detalhes-livro/detalhes-livro.component';
+import { DetalhesLivroComponent } from './componentes/detalhes-livro/detalhes-livro.component';
 
 
 const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);

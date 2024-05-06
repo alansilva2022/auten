@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LivroService } from '../servicos/livro.service';
-import { Livro } from '../componentes/livro';
+import { LivroService } from '../../servicos/livro.service';
+import { Livro } from '../livro';
 import { CommonModule } from '@angular/common';
 
 @Component({
