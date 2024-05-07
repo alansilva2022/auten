@@ -30,8 +30,8 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
+              //"node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+             // "src/styles.scss"
           ],
             "scripts": [],
             "server": "src/main.server.ts",
@@ -97,7 +97,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"/
           ],
         
             "scripts": []
