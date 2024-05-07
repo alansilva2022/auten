@@ -3,11 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:auten": "node dist/auten/server/server.mjs"
+    "serve:ssr:auten": "node dist/auten/server/server.mjs",
+    "start": "ng serve && open node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+  
+    
   },
   "private": true,
   "dependencies": {
