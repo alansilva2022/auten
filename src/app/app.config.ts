@@ -25,5 +25,5 @@ export const appConfig: ApplicationConfig = {
                importProvidersFrom(provideFirestore(() => getFirestore())), 
                //importProvidersFrom(provideStorage(() => getStorage()))],
                importProvidersFrom(provideStorage(() => getStorage())), 
-               provideAnimationsAsync()],
+               provideAnimationsAsync(), provideAnimationsAsync()],
 };
