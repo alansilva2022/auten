@@ -17,6 +17,8 @@ export class HomeComponent {
 
   somenteUsuarioComum: boolean = false;
 
+  usuarioLogado: string = '';
+
  //antes estava como private, mas para o html ter acesso foi preciso colocar como public
   constructor(public authService: AuthService){
 
@@ -24,6 +26,10 @@ export class HomeComponent {
       console.log('Usuário atual:', user);
       this.isAdmin();
       this.isUsuarioComum();
+    });
+
+    this.authService.obterNomeUsuario().then((nomeUsuario) => {
+      this.usuarioLogado = nomeUsuario;
     });
   }
 

@@ -13,6 +13,8 @@
           <input id="livroNome" name="livroNome" [(ngModel)]="reserva.livroNome" (input)="buscarLivros(reserva.livroNome)">
           <ul *ngIf="livrosEncontrados.length > 0">
             <li *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</li>
+            <img *ngFor="let livro of livrosEncontrados" [src]="livro.foto">
+
           </ul>
         </div> <br /><br />
     
@@ -21,4 +23,4 @@
 
 </div>
 
-<a  href='/home'><button>Voltar</button></a>
+<a  href='/home'><button>Cancelar</button></a>

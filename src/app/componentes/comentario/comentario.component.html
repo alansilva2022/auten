@@ -1,3 +1,7 @@
+
+
+<h1>Avaliar & Classificar</h1>
+
 <div>
     <input type="text" [(ngModel)]="termoPesquisa" placeholder="Pesquisar livro" (keyup.enter)="buscarLivros(termoPesquisa)">
     <button (click)="buscarLivros(termoPesquisa)">Pesquisar</button><br /><br />
@@ -6,8 +10,6 @@
   <div *ngIf="livrosEncontrados.length > 0">
     <div *ngFor="let livro of livrosEncontrados">
       <h3>{{ livro.titulo }}</h3>
-      <p>{{ livro.autor }}</p>
-
       <textarea [(ngModel)]="textoComentario" name="textoComentario" placeholder="Digite seu comentário"></textarea>
       <button (click)="adicionarComentario(livro)">Adicionar Comentário</button>
 
@@ -30,4 +32,4 @@
     <p>Nenhum livro encontrado.</p>
   </div>
 
-  <a  href='/home'><button>Voltar</button></a>
+  <a  href='/home'><button>Cancelar</button></a>

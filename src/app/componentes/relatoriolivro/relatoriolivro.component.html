@@ -1,5 +1,10 @@
 <h1> Relatório de Livros</h1>
 
+
+<ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()">Sair</button>
+</ng-container>
+
 <div *ngIf="usuarioLogado">
     <p>Usuário Logado: {{ usuarioLogado }}</p>
 </div>

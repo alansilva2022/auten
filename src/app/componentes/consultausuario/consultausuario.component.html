@@ -4,6 +4,10 @@
     <p>Usuário Logado: {{ usuarioLogado }}</p>
   </div>
 
+  <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()">Sair</button>
+</ng-container>
+
 <div>
     <label for="usuarioNome">Nome do Usuário:</label>
     <input id="usuarioNome" name="usuarioNome" [(ngModel)]="usuario.name" (input)="buscarUsuarios(usuario.name)">

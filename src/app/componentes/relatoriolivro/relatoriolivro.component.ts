@@ -16,7 +16,7 @@ export class RelatoriolivroComponent implements OnInit{
   livros: Livro[] = [];
   usuarioLogado: string = '';
 
-  constructor(private livroServico: LivroService, private authService: AuthService) {
+  constructor(private livroServico: LivroService, public authService: AuthService) {
     this.authService.obterNomeUsuario().then((nomeUsuario) => {
       this.usuarioLogado = nomeUsuario;
     });
@@ -33,6 +33,11 @@ export class RelatoriolivroComponent implements OnInit{
     } catch (error) {
       console.error('Erro ao obter livros:', error);
     }
+  }
+
+  logout():void{
+    this.authService.logout();
+
   }
 
   

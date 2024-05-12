@@ -4,6 +4,10 @@
     <p>Usuário Logado: {{ usuarioLogado }}</p>
 </div>
 
+<ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()">Sair</button>
+</ng-container>
+
 <div *ngFor="let transacao of transacoes">
     <p>{{ transacao.tipo }} - {{ transacao.livroNome }} - {{ transacao.usuarioNome }} - {{ transacao.data }} - {{ transacao.quantidadeLivros }}</p>
 </div>

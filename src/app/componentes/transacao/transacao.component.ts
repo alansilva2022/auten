@@ -32,7 +32,7 @@ export class TransacaoComponent {
   livrosEncontrados: Livro[] = [];
   usuariosEncontrados: Usuario[] = [];
 
-  constructor(private authService: AuthService, private transacaoService: TransacaoService) {  //obter o usuário ao inicializar o componente
+  constructor(public authService: AuthService, private transacaoService: TransacaoService) {  //obter o usuário ao inicializar o componente
     this.authService.obterNomeUsuario().then((nomeUsuario) => {
       this.usuarioLogado = nomeUsuario;
     });
@@ -88,6 +88,11 @@ export class TransacaoComponent {
     } catch (error) {
       console.error('Erro ao realizar transação:', error);
     }
+  }
+
+  logout():void{
+    this.authService.logout();
+
   }
 
 }

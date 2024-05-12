@@ -1,3 +1,12 @@
+
+<div *ngIf="usuarioLogado">
+    <p>Usuário Logado: {{ usuarioLogado }}</p>
+</div>
+
+<ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()">Sair</button>
+</ng-container>
+
 <div>
     <h2>Cadastro Usuário</h2>
     <label>Email:</label>
@@ -20,6 +29,6 @@
     <option value="admin">Admin</option>
    </select>
 
-   <button (click)="registrar()">Registrar</button>
+   <button (click)="registrar()">Cadastrar</button>
 </div>
-<a  href='/home'><button>Voltar</button></a>
+<a  href='/home'><button>Cancelar</button></a>

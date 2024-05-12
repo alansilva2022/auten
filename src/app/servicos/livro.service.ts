@@ -35,8 +35,8 @@ export class LivroService {
     });
   }
 
-
-
+  
+  
 
   async pesquisarLivros(termo: string): Promise<Livro[]> {
     const livros: Livro[] = [];
@@ -64,6 +64,8 @@ export class LivroService {
     return livros;
  }
  
+ 
+
   
 
 

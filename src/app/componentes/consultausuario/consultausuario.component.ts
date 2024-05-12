@@ -30,10 +30,15 @@ export class ConsultausuarioComponent {
     role: Role.Usuario 
   };
 
-  constructor(private usuarioServico: UsuarioService, private authService: AuthService ){
+  constructor(private usuarioServico: UsuarioService, public authService: AuthService ){
     this.authService.obterNomeUsuario().then((nomeUsuario) => {
       this.usuarioLogado = nomeUsuario;
     });
+  }
+
+  logout():void{
+    this.authService.logout();
+
   }
 
   nomeEncontrados: Usuario[] = [];

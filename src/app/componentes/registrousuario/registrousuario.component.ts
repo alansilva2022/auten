@@ -4,11 +4,12 @@ import { AuthService } from '../../servicos/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Role } from '../../role';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registrousuario',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './registrousuario.component.html',
   styleUrl: './registrousuario.component.scss'
 })
@@ -16,6 +17,8 @@ export class RegistrousuarioComponent {
 
   email: string = '';
   password: string = '';
+
+  usuarioLogado: string = '';
   
   usuario: Usuario = {
     name: '',
@@ -27,7 +30,11 @@ export class RegistrousuarioComponent {
     cpf: '',
     endereco: ''
   }
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(public authService: AuthService, private router: Router){
+    this.authService.obterNomeUsuario().then((nomeUsuario) => {
+      this.usuarioLogado = nomeUsuario;
+    });
+  }
 
   registrar() {
     this.authService.registro(this.email, this.password, this.usuario).then(() => {
@@ -37,6 +44,11 @@ export class RegistrousuarioComponent {
       console.error('Erro ao registrar usuário:', error);
       // Em caso de erro ao registrar o usuário, não redirecionar o usuário para a página principal
     });
+  }
+
+  logout():void{
+    this.authService.logout();
+
   }
   
   

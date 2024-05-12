@@ -6,15 +6,22 @@ import { LivroService } from '../../servicos/livro.service';
 import { UploadFotoService } from '../../servicos/upload-foto.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../servicos/auth.service';
 
 @Component({
   selector: 'app-cadastrar-livro',
   standalone: true,
-  imports: [FormsModule, HttpClientModule],
+  imports: [FormsModule, HttpClientModule, CommonModule],
   templateUrl: './cadastrar-livro.component.html',
   styleUrl: './cadastrar-livro.component.scss'
 })
 export class CadastrarLivroComponent {
+
+
+  usuarioLogado: string = '';
+
+
   livroTitulo: string = '';
   livroAno: string = '';
   livroAutor: string = '';
@@ -43,11 +50,23 @@ export class CadastrarLivroComponent {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private livroServico: LivroService, private uploadFoto: UploadFotoService){
+  constructor(private livroServico: LivroService, private uploadFoto: UploadFotoService, public authService: AuthService){
       const livroColecao = collection(this.firestore, 'livros');
       const consultaLivros = query(livroColecao);
       this.livro$ = collectionData(consultaLivros) as Observable<Livro[]>;
+
+      this.authService.obterNomeUsuario().then((nomeUsuario) => {
+        this.usuarioLogado = nomeUsuario;
+      });
   }
+
+
+  logout():void{
+    this.authService.logout();
+
+  }
+
+
 
   adicionarLivro(){
     this.livro.foto = '';

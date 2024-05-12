@@ -17,7 +17,7 @@ export class ConsultartrasacaoComponent implements OnInit {
 
   usuarioLogado: string = '';
 
-  constructor(private transacaoService: TransacaoService, private authService: AuthService) {
+  constructor(private transacaoService: TransacaoService, public authService: AuthService) {
     this.authService.obterNomeUsuario().then((nomeUsuario) => {
       this.usuarioLogado = nomeUsuario;
     });
@@ -34,6 +34,11 @@ export class ConsultartrasacaoComponent implements OnInit {
     } catch (error) {
       console.error('Erro ao obter transações:', error);
     }
+  }
+
+  logout():void{
+    this.authService.logout();
+
   }
 
 
