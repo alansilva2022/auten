@@ -1,15 +1,23 @@
 <div *ngIf="livro" class="detalhes-livro">
-    <h2>Detalhes do Livro</h2>
-    <div class="detalhes-card">
-      <img [src]="livro.foto" alt="{{ livro.titulo }}">
-      <h3>{{ livro.titulo }}</h3>
-      <p>Autor: {{ livro.autor }}</p>
-      <p>Ano de Lançamento: {{ livro.ano_lancamento }}</p>
-      <p>Quantidade: {{ livro.quantidade }}</p>
-      <p>Sinopse: {{livro.sinopse}}</p>
-      <p>Classificação: {{livro.rating}}</p>
-      
-      <div *ngIf="livro.comentarios && livro.comentarios.length > 0">
+  <h2>Detalhes do Livro</h2>
+  <div class="detalhes-container">
+    <div class="livro-foto-nome">
+      <img [src]="livro.foto" alt="{{ livro.titulo }}" class="livro-foto">
+      <div class="livro-detalhes">
+        <h3>{{ livro.titulo }}</h3>
+        <p class="rating">Classificação: {{livro.rating}}</p>
+      </div>
+    </div>
+    <div class="info-sinopse-comentarios">
+      <div class="info-retangulo">
+        <p>Autor: {{ livro.autor }}</p>
+        <p>Ano de Lançamento: {{ livro.ano_lancamento }}</p>
+        <p>Quantidade: {{ livro.quantidade }}</p>
+      </div>
+      <div class="sinopse-retangulo">
+        <p>Sinopse: {{livro.sinopse}}</p>
+      </div>
+      <div *ngIf="livro.comentarios && livro.comentarios.length > 0" class="comentarios-retangulo">
         <h4>Comentários:</h4>
         <ul>
           <li *ngFor="let comentario of livro.comentarios">
@@ -18,10 +26,19 @@
         </ul>
       </div>
     </div>
-</div>
-  
-  <div *ngIf="!livro" class="detalhes-livro-vazio">
-    <p>Carregando...</p>
   </div>
+</div>
 
-  <a  href='/pesquisarlivro'><button>Voltar</button></a>
+<div *ngIf="!livro" class="detalhes-livro-vazio">
+  <p>Carregando...</p>
+</div>
+
+<a href='/pesquisarlivro'>
+  <button class="voltar-botao">Voltar</button>
+</a>
+
+
+
+
+
+ 

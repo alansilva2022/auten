@@ -1,36 +1,87 @@
 .detalhes-livro {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .detalhes-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .detalhes-card img {
-    width: 200px;
-    height: 300px;
-    object-fit: cover;
-    margin-bottom: 10px;
-  }
-  
-  .detalhes-card h3 {
-    font-size: 20px;
-    margin-bottom: 5px;
-  }
-  
-  .detalhes-card p {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .detalhes-livro-vazio {
-    text-align: center;
-    padding: 20px;
-  }
-  
+  padding: 20px; // espaço interno de 20px dentro do elemento 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); //sombra
+  position: relative;
+}
+
+.detalhes-container {
+  display: flex;
+  align-items: flex-start;
+  margin-left: 90px;
+}
+
+.livro-foto-nome {
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Centraliza os itens horizontalmente
+  margin-right: 20px;
+}
+
+.livro-foto {
+  width: 367px;
+  height: 512px;
+  object-fit: cover; //ajusta a imagem para cobrir todo o espaço do container
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.livro-detalhes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; 
+}
+
+.livro-detalhes h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  width: 367px; /* alinha a largura do título a largura da foto */
+}
+
+.rating {
+  font-size: 18px;
+  margin-bottom: 10px;
+  width: 367px; /* alinha a largura da classificação à largura da foto */
+}
+
+.info-sinopse-comentarios {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  max-width: 600px; /*  a largura máxima */
+  margin-left: 250px; /* espaço entre a foto e as informações */
+}
+
+.info-retangulo, .sinopse-retangulo, .comentarios-retangulo {
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detalhes-livro-vazio {
+  text-align: center;
+  padding: 20px;
+}
+
+.voltar-botao {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+
+
+
