@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 export class ReservaComponent {
 
   usuarioLogado: string = '';
+  
 
   reserva: Reserva = {
       livroNome: '',
@@ -29,7 +30,7 @@ export class ReservaComponent {
   livrosEncontrados: Livro[] = [];
   
 
-  constructor(private authService: AuthService, private reservaService: ReservaService, private transacaoService: TransacaoService){
+  constructor(public authService: AuthService, private reservaService: ReservaService, private transacaoService: TransacaoService){
     this.authService.obterNomeUsuario().then((nomeUsuario) => {
       this.usuarioLogado = nomeUsuario;
     });
@@ -75,6 +76,12 @@ export class ReservaComponent {
       console.error('Erro ao realizar reserva:', error);
     }
   }
+
+  logout():void{
+    this.authService.logout();
+
+  }
+
 
 
 

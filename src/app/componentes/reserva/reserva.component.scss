@@ -1,0 +1,118 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+  
+  .usuario-logado {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .titulo-centralizado {
+    text-align: center;
+    flex-grow: 1;
+    margin: 0;
+  }
+  
+  .detalhes-livro {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .content-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pesquisa-input {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .pesquisa-input input[type="text"] {
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .detalhes-container {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+  .livro-foto-nome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .livro-foto {
+    width: 367px;
+    height: 512px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .livro-foto-nome h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .info-sinopse-comentarios {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    max-width: 600px;
+    margin-left: 20px;
+  }
+  
+  .info-retangulo {
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
+    margin-top: 10px; 
+  }
+  
+  .action-button {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .sair-button {
+    margin-left: 10px;
+  }
+  

@@ -1,26 +1,40 @@
-<div>
-    <h2>Realizar Reserva</h2>
-
-    <div *ngIf="usuarioLogado">
-        <p>Usuário Logado: {{ usuarioLogado }}</p>
-      </div>
-
-
-      <form (ngSubmit)="realizarReserva()">
-    
-        <div>
-          <label for="livroNome">Nome do Livro:</label>
-          <input id="livroNome" name="livroNome" [(ngModel)]="reserva.livroNome" (input)="buscarLivros(reserva.livroNome)">
-          <ul *ngIf="livrosEncontrados.length > 0">
-            <li *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</li>
-            <img *ngFor="let livro of livrosEncontrados" [src]="livro.foto">
-
-          </ul>
-        </div> <br /><br />
-    
-        <button type="submit">Realizar Reserva</button><br /><br />
-      </form>
-
+<div class="header-container">
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
+  </div>
+  <h2 class="titulo-centralizado">Realizar Reserva</h2>
+  <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+  </ng-container>
 </div>
 
-<a  href='/home'><button>Cancelar</button></a>
+<div>
+  <form (ngSubmit)="realizarReserva()">
+    <div class="content-container">
+      <div class="pesquisa-input">
+        <input type="text" id="livroNome" name="livroNome" [(ngModel)]="reserva.livroNome" (input)="buscarLivros(reserva.livroNome)" placeholder="Nome do Livro">
+      </div>
+
+      <div class="detalhes-container" *ngIf="livrosEncontrados.length > 0">
+        <div class="livro-foto-nome">
+          <img *ngFor="let livro of livrosEncontrados" [src]="livro.foto" class="livro-foto">
+          <h3 *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</h3>
+        </div>
+
+        <div class="info-sinopse-comentarios">
+          <div class="info-retangulo">
+            <div *ngFor="let livro of livrosEncontrados">Nome: {{ livro.titulo }}</div>
+          </div>
+          <div class="button-container">
+            <button type="submit" class="action-button">Realizar Reserva</button>
+            <a href='/home'><button type="button" class="action-button">Cancelar</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
