@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin-top: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens horizontalmente */
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centraliza os botões */
+    gap: 20px; /* Espaçamento entre os botões */
+    max-width: 624px; /* Limita a largura para garantir que não exceda a tela */
+   
+}
+
+.big-button {
+    width: 200px; /* largura */
+    height: 80px; /* altura */
+    border-radius: 10px;
+    cursor: pointer; /* aparece uma mão ao passar o mouse */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+  
+  .usuario-logado {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .titulo-centralizado {
+    text-align: center;
+    flex-grow: 1;
+    margin: 0;
+  }
+
+  .action-button {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer; /* aparece uma mão ao passar o mouse */
+  }
+
+  .sair-button {
+    margin-left: 10px;
+  }

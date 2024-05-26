@@ -1,24 +1,30 @@
-<p>Página Principal</p>
 
-<ng-container *ngIf="authService.utilizadorAtual$ | async as user">
-    <button type="submit" (click)="logout()">Sair</button>
-</ng-container>
-
-  <div *ngIf="usuarioLogado">
-    <p>Usuário Logado: {{ usuarioLogado }}</p>
+<div class="header-container">
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
   </div>
+  <h2 class="titulo-centralizado">Página Principal</h2>
+  <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+  </ng-container>
+</div>
 
+  <div class="container">  
+  <h3 *ngIf="user$ | async as user"> Bem vindo, {{user.email}}</h3>
+  
+  <div class="button-group">
+    <a *ngIf="somenteAdm" href='/cadastrarlivro'><button class="big-button">Cadastrar Livro</button></a><br /><br />
+    <a *ngIf="somenteAdm" href='/transacao'><button class="big-button">Transacao</button></a><br /><br />
+    <a *ngIf="somenteAdm" href='/buscarusuario'><button class="big-button">Consultar Usuario</button></a><br /><br />
+    <a *ngIf="somenteAdm" href='/historicotransacoes'><button class="big-button">Histórico</button></a><br /><br />
+    <a *ngIf="somenteAdm" href='/relatoriolivro'><button class="big-button">Relatorio</button></a><br /><br />
+    <a  href='/reserva'><button class="big-button">Reservar Livro</button></a><br /><br />
+    <a *ngIf="somenteUsuarioComum" href='/comentariolivro'><button class="big-button">Avaliar & Classificar</button></a><br /><br />
+    <a  href='/reservaporusuario'><button class="big-button">Histórico Reserva</button></a><br /><br />
+  </div>
+ 
+</div>
 
-<h3 *ngIf="user$ | async as user"> Bem vindo, {{user.email}}</h3>
-
-<a *ngIf="somenteAdm" href='/cadastrarlivro'><button>Cadastrar Livro</button></a><br /><br />
-<a *ngIf="somenteAdm" href='/transacao'><button>Transacao</button></a><br /><br />
-<a *ngIf="somenteAdm" href='/buscarusuario'><button>Consultar Usuario</button></a><br /><br />
-<a *ngIf="somenteAdm" href='/historicotransacoes'><button>Histórico</button></a><br /><br />
-<a *ngIf="somenteAdm" href='/relatoriolivro'><button>Relatorio</button></a><br /><br />
-<a  href='/reserva'><button>Reservar Livro</button></a><br /><br />
-<a *ngIf="somenteUsuarioComum" href='/comentariolivro'><button>Avaliar & Classificar</button></a><br /><br />
-<a  href='/reservaporusuario'><button>Histórico Reserva</button></a><br /><br />
 
 
 
