@@ -1,0 +1,60 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 300px; //largura máxima do formulário
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+    width: 100%;
+   
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 16px;
+  }
+  
+  .rounded-input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  .rounded-button {
+    border-radius: 8px;
+  }
+
+  .enter-button {
+    width: 100%;
+    max-width: 150px;
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .back-button-group {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .back-button {
+    width: 100%;
+    max-width: 150px;
+    padding: 10px; /* aumenta o tamanho */
+    cursor: pointer;
+  }

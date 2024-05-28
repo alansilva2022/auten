@@ -1,14 +1,20 @@
-<div>
+<div class="container">
     <h2>Login</h2>
-    <form (submit)="login()">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" required>
+    <form (submit)="login()" class="login-form">
+        <div class="form-group">
+            <input type="email" id="email" name="email" placeholder="Email"   [(ngModel)]="email" required class="rounded-input">
+        </div>
+        <div class="form-group">
+            <input type="password" id="password" name="password" placeholder="Senha" [(ngModel)]="password" required class="rounded-input">
+        </div>
+        <div class="button-group">
+            <button type="submit" mat-raised-button color="primary" class="rounded-button enter-button" >Entrar</button>
+        </div>
+        <div class="back-button-group">
+            <a href='/pesquisarlivro'><button type="button" mat-raised-button color="accent" class="rounded-button back-button">Voltar</button></a>
+        </div>
 
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required>
         
-        <button type="submit">Entrar</button>
     </form>
 </div>
-<br /><br />
-<a  href='/pesquisarlivro'><button>Voltar</button></a> 
+
