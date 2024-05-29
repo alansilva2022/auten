@@ -1,44 +1,43 @@
-<div *ngIf="usuarioLogado">
-  <p>Usuário Logado: {{ usuarioLogado }}</p>
-</div> <br /> <br />
+<div class="header-container">
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
+  </div>
+  <h2 class="titulo-centralizado">CADASTRAR LIVRO</h2>
+  <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+</div>
 
-
-<ng-container *ngIf="authService.utilizadorAtual$ | async as user">
-  <button type="submit" (click)="logout()">Sair</button>
-</ng-container>
-
-
-<div>
-    <h2>Cadastrar Livro</h2>
+<div class="form-container">
+  <div class="left-side">
     <form (ngSubmit)="adicionarLivro()" #livroForm="ngForm">
-      <label for="titulo">Titulo:</label>
-      <input type="text" id="titulo" name="titulo" [(ngModel)]="livroTitulo" required>
-      <br/>
-      <br/>
-      <label for="idade">Quantidade:</label>
-      <input type="number" id="quantidade" name="quantidade" [(ngModel)]="livroQuantidade" required>
-      <br/>
-      <label for="ano">Ano de Lançamento:</label>
-      <input type="text" id="ano" name="ano" [(ngModel)]="livroAno" required>
-      <br/>
-      <label for="titulo">Autor:</label>
-      <input type="text" id="autor" name="autor" [(ngModel)]="livroAutor" required>
-      <br/>
-      <label for="titulo">ISBN:</label>
-      <input type="text" id="isbn" name="isbn" [(ngModel)]="livroIsbn" required>
-      <br/>
-      <label for="titulo">Editora:</label>
-      <input type="text" id="editora" name="editora" [(ngModel)]="livroEditora" required>
-      <br/>
-      <label for="titulo">Sinopse:</label>
-      <input type="text" id="sinopse" name="sinopse" [(ngModel)]="livroSinopse" required>
-      <br/>
-      <br/>
-      <input type="file" (change)=" carregamento_de_foto($event)">
-      <br/>
-      <br/>
-      <button type="submit" [disabled]="!livroForm.valid">Cadastrar</button>
+      <div class="form-group">
+        <input type="text" id="titulo" name="titulo" [(ngModel)]="livroTitulo" placeholder="Título" required>
+      </div>
+      <div class="form-group">
+        <input type="number" id="quantidade" name="quantidade" [(ngModel)]="livroQuantidade" placeholder="Quantidade" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="ano" name="ano" [(ngModel)]="livroAno" placeholder="Ano de Lançamento" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="autor" name="autor" [(ngModel)]="livroAutor" placeholder="Autor" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="isbn" name="isbn" [(ngModel)]="livroIsbn" placeholder="ISBN" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="editora" name="editora" [(ngModel)]="livroEditora" placeholder="Editora" required >
+      </div>
     </form>
   </div>
+  <div class="right-side">
+    <div class="form-group">
+      <textarea id="sinopse" name="sinopse" [(ngModel)]="livroSinopse" placeholder="Sinopse" required></textarea>
+      <input type="file" id="foto"  (change)="carregamento_de_foto($event)">
+    </div>
+    <div class="button-group">
+      <button type="submit" [disabled]="!livroForm.valid">Cadastrar</button>
+      <a href='/home'><button type="button">Cancelar</button></a>
+    </div>
+  </div>
+</div>
 
-  <a  href='/home'><button>Cancelar</button></a>
