@@ -1,51 +1,47 @@
-<div>
-    <h2>Realizar Transação</h2>
-
-
-    <div *ngIf="usuarioLogado">
-      <p>Usuário Logado: {{ usuarioLogado }}</p>
-    </div>
-
-    <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
-      <button type="submit" (click)="logout()">Sair</button>
-  </ng-container><br />
-
-    
+<div class="header-container">
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
+  </div>
+  <h2 class="titulo-centralizado">TRANSAÇÃO</h2>
+  <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+</div>
   
+<div class="form-container">
+  <div class="left-side">
     <form (ngSubmit)="realizarTransacao()">
-      <div>
-        <label for="tipo">Tipo:</label>
+      <div class="form-group">
         <select id="tipo" name="tipo" [(ngModel)]="transacao.tipo">
           <option value="emprestimo">Empréstimo</option>
           <option value="devolucao">Devolução</option>
         </select>
       </div>
   
-      <div>
-        <label for="livroNome">Nome do Livro:</label>
-        <input id="livroNome" name="livroNome" [(ngModel)]="transacao.livroNome" (input)="buscarLivros(transacao.livroNome)">
+      <div class="form-group">
+        <input id="livroNome" name="livroNome" [(ngModel)]="transacao.livroNome" class="styled-input" placeholder="Nome do Livro" (input)="buscarLivros(transacao.livroNome)">
         <ul *ngIf="livrosEncontrados.length > 0">
           <li *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</li>
         </ul>
       </div>
   
-      <div>
-        <label for="usuarioNome">Nome do Usuário:</label>
-        <input id="usuarioNome" name="usuarioNome" [(ngModel)]="transacao.usuarioNome" (input)="buscarUsuarios(transacao.usuarioNome)">
+      <div class="form-group">
+        <input id="usuarioNome" name="usuarioNome" [(ngModel)]="transacao.usuarioNome" class="styled-input" placeholder="Nome do Usuário" (input)="buscarUsuarios(transacao.usuarioNome)">
         <ul *ngIf="usuariosEncontrados.length > 0">
           <li *ngFor="let usuario of usuariosEncontrados">{{ usuario.nomeUsuario }}</li>
         </ul>
       </div>
   
-      <div>
-        <label for="quantidadeLivros">Quantidade de Livros:</label>
-        <input id="quantidadeLivros" name="quantidadeLivros" type="number" [(ngModel)]="transacao.quantidadeLivros">
+      <div class="form-group">
+        <input id="quantidadeLivros" name="quantidadeLivros" type="number" placeholder="Quantidade" [(ngModel)]="transacao.quantidadeLivros">
       </div>
-  
-      <button type="submit">Cadastrar</button>
+
+      <div class="form-group button-group">
+        <button type="submit">Cadastrar</button>
+        <a href='/home'><button type="button">Cancelar</button></a>
+      </div>
     </form>
   </div>
+</div>
 
-  <a  href='/home'><button>Cancelar</button></a>
+
 
   
