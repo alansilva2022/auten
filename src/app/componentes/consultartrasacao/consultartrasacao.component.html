@@ -1,15 +1,37 @@
-<h1> Consultar Transacoes </h1>
+<div class="header-container">
+    <div *ngIf="usuarioLogado" class="usuario-logado">
+      <p>{{ usuarioLogado }}</p>
+    </div>
+    <h2 class="titulo-centralizado">HISTÓRICO EMPRÉSTIMO E DEVOLUÇÃO</h2>
+    <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+  </div>
 
-<div *ngIf="usuarioLogado">
-    <p>Usuário Logado: {{ usuarioLogado }}</p>
-</div>
+<div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>TIPO</th>
+          <th>NOME DO LIVRO</th>
+          <th>DATA</th>
+          <th>NOME DO USUÁRIO</th>
+          <th>QUANTIDADE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transacao of transacoes">
+          <td>{{ transacao.tipo }}</td>
+          <td>{{ transacao.livroNome }}</td>
+          <td>{{ transacao.data }}</td>
+          <td>{{ transacao.usuarioNome }}</td>
+          <td>{{ transacao.quantidadeLivros }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<ng-container *ngIf="authService.utilizadorAtual$ | async as user">
-    <button type="submit" (click)="logout()">Sair</button>
-</ng-container>
 
-<div *ngFor="let transacao of transacoes">
-    <p>{{ transacao.tipo }} - {{ transacao.livroNome }} - {{ transacao.usuarioNome }} - {{ transacao.data }} - {{ transacao.quantidadeLivros }}</p>
-</div>
 
-<a  href='/home'><button>Voltar</button></a>
+
+<div class="button-group">
+    <a  href='/home'><button>Voltar</button></a>
+  </div>

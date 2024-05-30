@@ -1,0 +1,87 @@
+.usuario-logado {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+
+  .titulo-centralizado {
+    text-align: center;
+    flex-grow: 1;
+    margin: 0;
+  }
+
+  .action-button {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .sair-button {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+
+  //TABELA
+  .table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; 
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%; 
+  margin: 0 auto;
+}
+
+thead {
+  background-color: #f2f2f2; /* Cor do cabeçalho */
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center; /* centraliza o texto nas células */
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #222321; /* cor do cabeçalho */
+  color: white;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end; // alinha o botão à direita 
+    width: 100%; 
+    margin-bottom: 20px; //espaço entre o botão e a tabela 
+  }
+  
+  .button-group button {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-right: 100px; 
+    cursor: pointer;
+  }
+
