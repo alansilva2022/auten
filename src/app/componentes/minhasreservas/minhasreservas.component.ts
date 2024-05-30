@@ -33,6 +33,11 @@ export class MinhasreservasComponent implements OnInit {
     this.reservas = await this.reservaServico.exibirReservaUsuarioAtual();
   }
 
+  logout():void{
+    this.authService.logout();
+
+  }
+
 
 
 

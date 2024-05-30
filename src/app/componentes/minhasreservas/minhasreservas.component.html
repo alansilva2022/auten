@@ -1,14 +1,32 @@
 
-Minhas reservas
-<div *ngIf="usuarioLogado">
-    <p>Usuário Logado: {{ usuarioLogado }}</p>
+<div class="header-container">
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
   </div>
-
-
-<div *ngFor="let reserva of reservas">
-    <p>{{reserva.livroNome}} -- {{reserva.data}}</p>
-
+  <h2 class="titulo-centralizado">HISTÓRICO DE RESERVA</h2>
+  <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
 </div>
 
-<a  href='/home'><button>Voltar</button></a>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>NOME DO LIVRO</th>
+        <th>DATA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reserva of reservas">
+        <td>{{reserva.livroNome}}</td>
+        <td>{{reserva.data}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="button-group">
+  <a  href='/home'><button>Voltar</button></a>
+</div>
+
 
