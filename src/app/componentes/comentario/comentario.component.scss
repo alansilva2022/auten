@@ -1,11 +1,142 @@
-
 .rated {
-    color: gold; 
-  }
-  
-  .unrated {
-    color: gray; 
-  }
-  
+  color: gold; 
+}
 
-  
+.unrated {
+  color: gray; 
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+.usuario-logado {
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.titulo-centralizado {
+  text-align: center;
+  flex-grow: 1;
+  margin: 0;
+}
+
+.action-button {
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.sair-button {
+  margin-left: 10px;
+}
+
+.content-container {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pesquisa-input {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.pesquisa-input input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.pesquisa-input button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.livro-container {
+  width: 80%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.livro-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  background-color: #ffff;  // #f9f9f9
+  padding: 120px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.livro-label span {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.livro-label textarea {
+  width: calc(100% - 40px); /* ajuste a largura do textarea para ser menor que a label */
+  box-sizing: border-box;
+  margin-top: 5px;
+  padding: 80px;
+  border-radius: 10px;
+  resize: none;
+  background-color: #f9f9f9;
+}
+
+.estrelas-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.botoes-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+.botoes-container button {
+  width: 48%;
+}
+
+.botao-final{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+.botao-final button{
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-right: 100px; 
+  cursor: pointer;
+}
+
+
+
+
+

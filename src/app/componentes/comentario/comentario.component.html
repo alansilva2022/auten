@@ -1,32 +1,44 @@
+<div class="header-container">
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
+  </div>
+  <h2 class="titulo-centralizado">AVALIAR E CLASSIFICAR</h2>
+  <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
+    <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+  </ng-container>
+</div>
 
-
-<h1>Avaliar & Classificar</h1>
-
-<div>
+<div class="content-container">
+  <div class="pesquisa-input">
     <input type="text" [(ngModel)]="termoPesquisa" placeholder="Pesquisar livro" (keyup.enter)="buscarLivros(termoPesquisa)">
     <button (click)="buscarLivros(termoPesquisa)">Pesquisar</button><br /><br />
   </div>
-  
+       
   <div *ngIf="livrosEncontrados.length > 0">
-    <div *ngFor="let livro of livrosEncontrados">
-      <h3>{{ livro.titulo }}</h3>
-      <textarea [(ngModel)]="textoComentario" name="textoComentario" placeholder="Digite seu comentário"></textarea>
-      <button (click)="adicionarComentario(livro)">Adicionar Comentário</button>
-
-  
-      <div>
-        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 1)" [ngStyle]="{'color': estrelasSelecionadas >= 1 ? 'gold' : 'gray'}">star</mat-icon>
-        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 2)" [ngStyle]="{'color': estrelasSelecionadas >= 2 ? 'gold' : 'gray'}">star</mat-icon>
-        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 3)" [ngStyle]="{'color': estrelasSelecionadas >= 3 ? 'gold' : 'gray'}">star</mat-icon>
-        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 4)" [ngStyle]="{'color': estrelasSelecionadas >= 4 ? 'gold' : 'gray'}">star</mat-icon>
-        <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 5)" [ngStyle]="{'color': estrelasSelecionadas >= 5 ? 'gold' : 'gray'}">star</mat-icon>
-    </div>
-
+    <div *ngFor="let livro of livrosEncontrados" class="livro-container">
+      <label class="livro-label">
+        <span>Nome do Livro: {{ livro.titulo }}</span>
+        <textarea [(ngModel)]="textoComentario" name="textoComentario" placeholder="Texto [Opinião]"></textarea>
+       
+        <div class="estrelas-container">
+          <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 1)" [ngStyle]="{'color': estrelasSelecionadas >= 1 ? 'gold' : 'gray'}">star</mat-icon>
+          <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 2)" [ngStyle]="{'color': estrelasSelecionadas >= 2 ? 'gold' : 'gray'}">star</mat-icon>
+          <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 3)" [ngStyle]="{'color': estrelasSelecionadas >= 3 ? 'gold' : 'gray'}">star</mat-icon>
+          <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 4)" [ngStyle]="{'color': estrelasSelecionadas >= 4 ? 'gold' : 'gray'}">star</mat-icon>
+          <mat-icon *ngIf="livro.id" (click)="classificarLivro(livro.id, 5)" [ngStyle]="{'color': estrelasSelecionadas >= 5 ? 'gold' : 'gray'}">star</mat-icon>
+        </div>
+        
+      </label>
+      
+     
+      <div  class="botao-final">
+        <button (click)="adicionarComentario(livro)">Salvar</button>
+        <a href='/home'><button type="button">Cancelar</button></a>
+      </div>
     </div>
   </div>
   
   <div *ngIf="livrosEncontrados.length === 0 && termoPesquisa.trim() !== ''">
     <p>Nenhum livro encontrado.</p>
   </div>
-
-  <a  href='/home'><button>Cancelar</button></a>
+</div>

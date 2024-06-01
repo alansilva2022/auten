@@ -25,8 +25,9 @@ export class ComentarioComponent {
 
   estrelasSelecionadas: number = 0;
 
+
  
-  constructor(private livroService: LivroService, private authService: AuthService, private transacaoService: TransacaoService) {
+  constructor(private livroService: LivroService, public authService: AuthService, private transacaoService: TransacaoService) {
     this.authService.obterNomeUsuario().then(async (nomeUsuario) => {
       if (nomeUsuario) {
         this.usuarioLogado = nomeUsuario;
@@ -67,7 +68,9 @@ export class ComentarioComponent {
   }
 
    
-  
+  logout():void{
+    this.authService.logout();
+  }
 
 
   async adicionarComentario(livro: Livro) {
