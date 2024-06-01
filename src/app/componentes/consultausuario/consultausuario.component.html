@@ -1,28 +1,38 @@
-<p>Consulta de Usuário</p>
-
-<div *ngIf="usuarioLogado">
-    <p>Usuário Logado: {{ usuarioLogado }}</p>
+<div class="header-container">
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
   </div>
-
+  <h2 class="titulo-centralizado">CONSULTAR LEITOR</h2>
   <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
-    <button type="submit" (click)="logout()">Sair</button>
-</ng-container>
-
-<div>
-    <label for="usuarioNome">Nome do Usuário:</label>
-    <input id="usuarioNome" name="usuarioNome" [(ngModel)]="usuario.name" (input)="buscarUsuarios(usuario.name)">
-    <ul *ngIf="nomeEncontrados.length > 0">
-      <li *ngFor="let usuario of nomeEncontrados">
-        <div>
-            <p>Nome: {{ usuario.name }}</p>
-            <p>CPF: {{ usuario.cpf }}</p>
-            <p>Email: {{ usuario.email }}</p>
-        </div>
-      </li>
-    </ul>
+    <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+  </ng-container>
 </div>
 
-<a  href='/home'><button>Voltar</button></a>
 
-<a href='/registro'><button>Cadastrar Usuario</button></a>
+
+  <div  class="pesquisa-container">
+    <div  class="pesquisa-input">
+      <input type="text" id="usuarioNome" name="usuarioNome" [(ngModel)]="usuario.name" (input)="buscarUsuarios(usuario.name)" placeholder="Pesquisa">
+    </div>
+  </div>
+ 
+  <div class="detalhes-container" *ngIf="nomeEncontrados.length > 0">
+    <div class="dados-usuario">
+      <div  *ngFor="let usuario of nomeEncontrados">
+        <p>Nome do Leitor: {{ usuario.name }}</p>
+        <p>CPF: {{ usuario.cpf }}</p>
+        <p>Email: {{ usuario.email }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="form-group button-group">
+    <a href='/home'><button type="button">Voltar</button></a>
+    <a href='/registro'><button>Cadastrar Usuario</button></a>
+  </div>
+
+
+
 
