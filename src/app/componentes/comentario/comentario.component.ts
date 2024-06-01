@@ -58,12 +58,9 @@ export class ComentarioComponent {
   async classificarLivro(livroId: string, rating: number) {
     try {
       await this.livroService.adicionarRating(livroId, rating);
-      
-      //atualizar o número de estrelas se a classificação atual for maior
-      if (rating > this.estrelasSelecionadas) {
         this.estrelasSelecionadas = rating;
-    }
       console.log('Livro classificado com sucesso!');
+      
     } catch (error) {
       console.error('Erro ao classificar o livro:', error);
     }
