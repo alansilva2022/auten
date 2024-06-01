@@ -5,7 +5,7 @@
       <img [src]="livro.foto" alt="{{ livro.titulo }}" class="livro-foto">
       <div class="livro-detalhes">
         <h3>{{ livro.titulo }}</h3>
-        <p class="rating">Classificação: {{livro.rating}}</p>
+        <p class="rating"><app-classificacao-estrela [rating]="livro.rating"></app-classificacao-estrela></p>
       </div>
     </div>
     <div class="info-sinopse-comentarios">

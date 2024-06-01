@@ -3,11 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LivroService } from '../../servicos/livro.service';
 import { Livro } from '../livro';
 import { CommonModule } from '@angular/common';
+import { ClassificacaoEstrelaComponent } from '../classificacao-estrela/classificacao-estrela.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-detalhes-livro',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ClassificacaoEstrelaComponent, MatIconModule],
   templateUrl: './detalhes-livro.component.html',
   styleUrl: './detalhes-livro.component.scss'
 })
