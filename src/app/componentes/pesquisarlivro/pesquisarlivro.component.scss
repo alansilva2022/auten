@@ -7,8 +7,10 @@
 .card-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* distância entre os cards */
-    margin: 0 20px; /* distância nos lados */
+    gap: 50px; /* distância entre os cards */
+    margin: 0 auto; /* distância nos lados */
+    justify-content: center; /* centraliza os cards na linha */
+    width: 100%; /* garante que a largura da linha ocupe todo o espaço disponível */
 }
 
 .card {
@@ -23,6 +25,7 @@
 .card img {
     width: 100%;
     height: auto;
+    cursor: pointer;
 }
 
 .pesquisa-container {
@@ -44,4 +47,5 @@
 
 .content-container {
     margin-bottom: 20px; /* distância no fim da página */
+    
 }
