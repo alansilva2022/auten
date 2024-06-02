@@ -1,10 +1,10 @@
-<div class="header-container">
+<div class="estrutura_cabecalho">
   <div *ngIf="usuarioLogado" class="usuario-logado">
     <p>{{ usuarioLogado }}</p>
   </div>
   <h2 class="titulo-centralizado">AVALIAR E CLASSIFICAR</h2>
   <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
-    <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+    <button type="submit" (click)="logout()" class="botao_acao sair_botao">Sair</button>
   </ng-container>
 </div>
 
@@ -16,7 +16,7 @@
        
   <div *ngIf="livrosEncontrados.length > 0">
     <div *ngFor="let livro of livrosEncontrados" class="livro-container">
-      <label class="livro-label">
+      <label class="livro-rotulo">
         <span>Nome do Livro: {{ livro.titulo }}</span>
         <textarea [(ngModel)]="textoComentario" name="textoComentario" placeholder="Texto [Opinião]"></textarea>
        
