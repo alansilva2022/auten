@@ -9,15 +9,15 @@ body {
     margin-right: 100px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* centraliza os itens horizontalmente */
 }
 
 .button-group {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Centraliza os botões */
-    gap: 20px; /* Espaçamento entre os botões */
-    max-width: 624px; /* Limita a largura para garantir que não exceda a tela */
+    flex-wrap: wrap; //os itens dentro de .container devem ser dispostos em várias linhas 
+    justify-content: center; /* centraliza os botões */
+    gap: 20px; /* espaçamento entre os botões */
+    max-width: 624px; /* limita a largura para garantir que não exceda a tela */
    
 }
 
@@ -45,7 +45,7 @@ body {
   
   .titulo-centralizado {
     text-align: center;
-    flex-grow: 1;
+    flex-grow: 1; // valor de crescimento 1 - ocupará "uma" parte do espaço disponível.
     margin: 0;
   }
 
