@@ -73,7 +73,7 @@
 }
 
 .voltar-botao {
-  position: fixed;
+  position: static; //com "position: static", o botão fica fixo no local, quando a página rola, o botão permanece, com "static" o botão não acompanha o fluxo da página
   bottom: 20px;
   left: 20px;
   width: 150px;
