@@ -1,16 +1,16 @@
 /* Cabeçalho */
 .usuario-logado {
-    display: flex;
-    align-items: center;
+    display: flex;  //os itens internos se comportam como flexíveis
+    align-items: center; //alinhamento vertical
     padding: 10px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .header-container {
+  .estrutura_cabecalho {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;  // alinhamento horizontal - definido espaço intermediario entre os itens
     align-items: center;
     margin-bottom: 20px;
     padding: 0 20px;
@@ -18,12 +18,12 @@
   
   .titulo-centralizado {
     text-align: center;
-    flex-grow: 1;
+    flex-grow: 1; // valor de crescimento 1 - ocupará "uma" parte do espaço disponível.
     margin: 0;
   }
   
-  .action-button {
-    width: 150px;
+  .botao_acao {
+    width: 150px; 
     height: 40px;
     border-radius: 20px;
     background-color: #ffffff;
@@ -32,45 +32,45 @@
     cursor: pointer;
   }
   
-  .sair-button {
-    margin-left: auto;
-    margin-right: 20px;
+  .sair-botao {
+    margin-left: auto;    //esquerdo - usar o espaço restante a esquerda
+    margin-right: 20px;    //direito
   }
   
   /* Formulário */
-  .form-container {
+  .estrutura_formulario {
     display: flex;
     justify-content: space-between;
     padding: 20px;
   }
   
-  .left-side,
-  .right-side {
-    flex: 1;
+  .lado_esquerdo,
+  .lado_direito {
+    flex: 1; // o item vai crescer para ocupar o espaço restante
   }
   
-  .left-side {
+  .lado_esquerdo {
     padding-right: 20px;
     margin-left: 142px;
   }
   
-  .right-side {
+  .lado_direito {
     padding-left: 20px;
   }
   
-  .form-group {
+  .grupo_formulario {
     margin-bottom: 15px;
   }
   
-  .form-group label {
+  .grupo_formulario label {
     display: block;
     margin-bottom: 5px;
   }
   
-  .form-group input[type="text"],
-  .form-group input[type="number"],
-  .form-group input[type="file"],
-  .form-group textarea {
+  .grupo_formulario input[type="text"],
+  .grupo_formulario input[type="number"],
+  .grupo_formulario input[type="file"],
+  .grupo_formulario textarea {
     width: 464px;
     height: 60px;
     border-radius: 20px;
@@ -79,17 +79,17 @@
     box-sizing: border-box;
   }
   
-  .form-group textarea {
+  .grupo_formulario textarea {
     height: 143px;
   }
   
-  .button-group {
+  .grupo_botoes {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
   }
   
-  .button-group button {
+  .grupo_botoes button {
     width: 150px;
     height: 40px;
     border-radius: 20px;

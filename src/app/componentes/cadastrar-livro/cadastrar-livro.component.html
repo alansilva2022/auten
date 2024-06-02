@@ -1,40 +1,40 @@
-<div class="header-container">
+<div class="estrutura_cabecalho">
   <div *ngIf="usuarioLogado" class="usuario-logado">
     <p>{{ usuarioLogado }}</p>
   </div>
   <h2 class="titulo-centralizado">CADASTRAR LIVRO</h2>
-  <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+  <button type="submit" (click)="logout()" class="botao_acao sair_botao">Sair</button>
 </div>
 
-<div class="form-container">
-  <div class="left-side">
+<div class="estrutura_formulario">
+  <div class="lado_esquerdo">
     <form (ngSubmit)="adicionarLivro()" #livroForm="ngForm">
-      <div class="form-group">
+      <div class="grupo_formulario">
         <input type="text" id="titulo" name="titulo" [(ngModel)]="livroTitulo" placeholder="Título" required>
       </div>
-      <div class="form-group">
+      <div class="grupo_formulario">
         <input type="number" id="quantidade" name="quantidade" [(ngModel)]="livroQuantidade" placeholder="Quantidade" required>
       </div>
-      <div class="form-group">
+      <div class="grupo_formulario">
         <input type="text" id="ano" name="ano" [(ngModel)]="livroAno" placeholder="Ano de Lançamento" required>
       </div>
-      <div class="form-group">
+      <div class="grupo_formulario">
         <input type="text" id="autor" name="autor" [(ngModel)]="livroAutor" placeholder="Autor" required>
       </div>
-      <div class="form-group">
+      <div class="grupo_formulario">
         <input type="text" id="isbn" name="isbn" [(ngModel)]="livroIsbn" placeholder="ISBN" required>
       </div>
-      <div class="form-group">
+      <div class="grupo_formulario">
         <input type="text" id="editora" name="editora" [(ngModel)]="livroEditora" placeholder="Editora" required >
       </div>
     </form>
   </div>
-  <div class="right-side">
-    <div class="form-group">
+  <div class="lado_direito">
+    <div class="grupo_formulario">
       <textarea id="sinopse" name="sinopse" [(ngModel)]="livroSinopse" placeholder="Sinopse" required></textarea>
       <input type="file" id="foto"  (change)="carregamento_de_foto($event)">
     </div>
-    <div class="button-group">
+    <div class="grupo_botoes">
       <button type="submit" [disabled]="!livroForm.valid">Cadastrar</button>
       <a href='/home'><button type="button">Cancelar</button></a>
     </div>
