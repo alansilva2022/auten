@@ -24,7 +24,7 @@ const redirecionarParaLogin = () => redirectUnauthorizedTo(['login']);
 const redirecionarParaHome = () => redirectLoggedInTo(['home']);
 
 export const routes: Routes = [
-    //{path: '', redirectTo: 'login', pathMatch: 'full'}, comentado 05/05/2024
+   
     {path: 'naoautorizado', component: NaoautorizadoComponent},
     {path: 'home', component: HomeComponent, ...canActivate(redirecionarParaLogin)}, // só vai para página home de estiver logado
     
