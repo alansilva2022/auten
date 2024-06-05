@@ -43,7 +43,7 @@ export class ReservaService {
     if (user) {
       const consultarReserva = query(collection(this.firestore, 'reservas'), where('usuarioLogado', '==', user.uid));
       const capturaInstantanea = await getDocs(consultarReserva);
-      return capturaInstantanea.docs.map((doc) => doc.data() as Reserva);
+      return capturaInstantanea.docs.map((doc) => doc.data() as Reserva); //mapeia os documentos para objetos do tipo Reserva, responsável por transformar os documentos retornados pela consulta ao Firestore em uma lista de objetos do tipo Reserva. 
     } else {
       return [];
     }

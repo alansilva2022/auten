@@ -1,8 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { Role } from '../role';
 import { Router } from '@angular/router';
 import { Auth, User, authState, createUserWithEmailAndPassword,getAuth,onAuthStateChanged,signInWithEmailAndPassword, signOut, updateProfile} from '@angular/fire/auth'
-import { Firestore, addDoc, collection } from '@angular/fire/firestore';
+import { Firestore} from '@angular/fire/firestore';
 import { Usuario } from '../componentes/usuario';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
@@ -15,19 +15,22 @@ export class AuthService  {
 
   
 
-  db = getFirestore(); //ADICIONADO 28/02/2024 - 23:41
+  db = getFirestore(); 
 
-  //private currentUserSubject = new BehaviorSubject<Role | null>(null);
   private currentUserSubject = new BehaviorSubject<User | null>(null);
 
 
  
   utilizadorAtual$ = authState(this.auth);  //obtenção do estado de autenticação e armazenando no utilizadorAtual
   
+
+  /*constructor vai lidar com o estado de autenticação do usuario, obtendo o perfil do usuario e verificando se o mesmo estado com o papel definido (admin/usuario) 
+  para acessar as rotas*/
   constructor(private auth: Auth, private router: Router, private firestore: Firestore) { 
 
     const aut = getAuth();
-
+    
+    // "onAuthStateChanged" - faz o monitoramento nas mudanças no estado de autenticação do usuário
     onAuthStateChanged(aut, async (user: User | null) => {
       if (user) {
         try {
@@ -35,7 +38,6 @@ export class AuthService  {
           console.log('Papel do usuário:', userRole);
 
           if (userRole) {
-           
           } else {
             console.error('Papel do usuário não encontrado.');
             this.router.navigate(['/naoautorizado']);
@@ -53,36 +55,38 @@ export class AuthService  {
 
  
   login(email: string, password: string){
-    return signInWithEmailAndPassword(this.auth, email, password)
+    
+    return signInWithEmailAndPassword(this.auth, email, password) //signInWithEmailAndPassword: autentica o usuário com email e senha.
     .then(async () => {
 
       const user = this.auth.currentUser;
 
       if (user && user.displayName) {
         // Configure o nome do usuário no Firebase
-        await updateProfile(user, {
+        await updateProfile(user, {               //updateProfile: atualiza o perfil do usuário autenticado.
           displayName: user.displayName
         });
       }
       
       console.log('sucesso ao realizar login');   
       console.log('Usuário autenticado:', this.auth.currentUser);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/home']);                //redireciona o usuário para a página inicial após o login bem-sucedido.
     })
     .catch((error) => {
       console.error('Erro de fazer login:', error);
     })
   }
 
+
   
   // a ideia é fazer o cadastro (registro) do usuário tanto na coleção (Doc) quanto na autenticação. OK!
   registro(email: string, password: string, usuario: Usuario){
-    return createUserWithEmailAndPassword(this.auth, email, password)
+    return createUserWithEmailAndPassword(this.auth, email, password)  //createUserWithEmailAndPassword: Cria um novo usuário com email e senha.
     .then(async (userCredential) => {
       const user = userCredential.user;  
       
 
-      await updateProfile(user, {
+      await updateProfile(user, {      //updateProfile: atualiza o perfil do usuário criado recentemente.
         displayName: usuario.nomeUsuario
       });
 
@@ -96,17 +100,17 @@ export class AuthService  {
                                     cpf: usuario.cpf
       };
 
-      const ref = doc(this.db, "usuarios", userCredential.user.uid); // Esta linha está criando uma referência direta a um documento no Firestore associado ao usuário autenticado. Isso é útil quando você deseja armazenar informações adicionais do usuário no Firestore ou recuperar informações específicas relacionadas ao usuário.
+      const ref = doc(this.db, "usuarios", userCredential.user.uid); // criando uma referência direta a um documento no Firestore associado ao usuário autenticado. Isso é útil quando você deseja armazenar informações adicionais do usuário no Firestore ou recuperar informações específicas relacionadas ao usuário.
       
-      await setDoc(ref, novoUsuario);   // setDoc está cadastrando usuário
+      await setDoc(ref, novoUsuario);   // setDoc está cadastrando usuário  - salva os dados do usuário no Firestore
 
       console.log('Usuario cadastrado com sucesso!');
        
 
-      const usuarioAtual = await this.obterUsuarioAtual();
+      const usuarioAtual = await this.obterUsuarioAtual();  //espera a conclusão da função obterUsuarioAtual e obtém o usuário atual.
 
        if (!usuarioAtual) {       
-        this.currentUserSubject.next(user);
+        this.currentUserSubject.next(user); //atualiza o BehaviorSubject com o novo usuário, notificando todos os assinantes sobre a mudança no estado de autenticação.
       }
        
      }).catch(error =>{
@@ -125,7 +129,7 @@ export class AuthService  {
   
  
 
-  public async getUserRole(): Promise<Role> {
+  public async getUserRole(): Promise<Role> {    //getUserRole: obtém o papel do usuário autenticado a partir do Firestore
     const auth = getAuth();
     const user = auth.currentUser;
   
@@ -136,11 +140,11 @@ export class AuthService  {
       const userDocRef = doc(firestore, 'usuarios', uid);
   
       try {
-        const docSnapshot = await getDoc(userDocRef);
-        if (docSnapshot.exists()) {
+        const docSnapshot = await getDoc(userDocRef);  //getDoc: recupera o documento do usuário no Firestore.
+        if (docSnapshot.exists()) {         //docSnapshot.exists(): verifica se o documento do usuário existe.
           const userRole = docSnapshot.data()['role'] as Role;
-          //this.currentUserSubject.next(userRole);
-          this.currentUserSubject.next(user);
+          this.currentUserSubject.next(user);  //atualiza o estado do BehaviorSubject com o usuário atual.
+                                               //BehaviorSubject é usado para manter e distribuir o estado atual do usuário autenticado.
           return userRole;
         } else {
           console.error('Documento de usuário não encontrado no Firestore.');
@@ -160,7 +164,7 @@ export class AuthService  {
   public async obterUsuarioAtual(): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const aut = getAuth();
-      onAuthStateChanged(aut, (user: User | null) => {
+      onAuthStateChanged(aut, (user: User | null) => {  //monitora mudanças no estado de autenticação e resolve a Promise com o usuário atual
         console.log('Usuário atual retornado:', user); // verificar o usuário atual
         resolve(user);
       }, (error) => {
@@ -169,12 +173,11 @@ export class AuthService  {
     });
   }
 
-  async obterNomeUsuario(): Promise<string> {
+  async obterNomeUsuario(): Promise<string> {   //retorna o nome do usuário autenticado ou uma string vazia se o usuário não estiver autenticado.
     const auth = getAuth();
     const user = auth.currentUser;
   
     if (user) {
-     // console.log('Nome do usuário obtido:', user.displayName);
       return user.displayName || '';
     } else {
       console.log('Usuário não autenticado.');
