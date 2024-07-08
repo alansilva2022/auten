@@ -35,62 +35,37 @@ export class LivroService {
     });
   }
 
-  
-  
+
 
   async pesquisarLivros(termo: string): Promise<Livro[]> {
     const livros: Livro[] = [];
     const livroColecao = collection(this.firestore, 'livros');
-
-    if (termo) {
-
-      
-     // as consultas para título, autor e ISBN
-     const tituloConsulta = query(livroColecao, where('titulo', '>=', termo), where('titulo', '<=', termo + '\uf8ff'));
-     const autorConsulta = query(livroColecao, where('autor', '>=', termo), where('autor', '<=', termo + '\uf8ff'));
-     const isbnConsulta = query(livroColecao, where('isbn', '>=', termo), where('isbn', '<=', termo + '\uf8ff'));
-      
-     // os resultados de cada consulta
-     const tituloResultado = await this.efetuarConsulta(tituloConsulta);
-     const autorResultado = await this.efetuarConsulta(autorConsulta);
-     const isbnResultado = await this.efetuarConsulta(isbnConsulta);
+    const termo_Normalizado = termo.trim().toLowerCase();
 
 
-     // Combinar os resultados em uma única lista
-     livros.push(...tituloResultado, ...autorResultado, ...isbnResultado);
+    const livroSnapshot = await getDocs(livroColecao); //obtem todos os documentos da coleção "livros" sem aplicar filtros
 
-  }
+    livroSnapshot.forEach(doc => {                //aplicando filtro
+      const dados_livros = doc.data() as Livro;
+      if (this.buscartermo(dados_livros, termo_Normalizado)) {
+        livros.push({
+          id: doc.id,
+          ...dados_livros
+        });
+      }
+    });
 
     return livros;
  }
  
  
+ private buscartermo(livro: Livro, term: string): boolean {  //verifica se o termo de busca aparece em qualquer posição do campo 
+  return livro.titulo.toLowerCase().includes(term) ||
+         livro.autor.toLowerCase().includes(term) ||
+         livro.isbn.toLowerCase().includes(term);
+}
 
-  
 
-
-  private async efetuarConsulta(consulta: Query<DocumentData>): Promise<Livro[]> {
-    const resultado: Livro[] = [];
-    const consulta_instantanea = await getDocs(consulta);
-
-     consulta_instantanea.forEach((doc) => {
-      const livroData = doc.data();
-      resultado.push({
-        titulo: livroData['titulo'],
-        ano_lancamento: livroData['ano_lancamento'],
-        autor: livroData['autor'],
-        isbn: livroData['isbn'],
-        editora: livroData['editora'],
-        foto: livroData['foto'],
-        sinopse: livroData['sinopse'],
-        quantidade: livroData['quantidade'],
-        data: livroData['data'],
-        rating: livroData['rating']
-      });
-    });
-
-    return resultado;
-  }
 
 
   async relatorioLivro(): Promise<Livro[]> {
@@ -98,31 +73,16 @@ export class LivroService {
     const livroSnapshot = await getDocs(livroCollection);
 
     const livros: Livro[] = [];
-
     livroSnapshot.forEach(doc => {
-      
       const livroData = doc.data() as Livro;
-    
-
-      const livro: Livro = {
-        id: doc.id, 
-        ano_lancamento: livroData['ano_lancamento'],
-        titulo: livroData['titulo'],
-        autor: livroData['autor'],
-        isbn: livroData['isbn'],
-        sinopse: livroData['sinopse'],
-        editora: livroData['editora'],
-        quantidade: livroData['quantidade'],
-        data: livroData['data'], 
-        rating: livroData['rating'],
-        foto: livroData['foto'],
-      };
-      livros.push(livro);
+      livros.push({
+        id: doc.id,
+        ...livroData
+      });
     });
 
     return livros;
   }
-
 
   adicionarComentario(usuario: User, livroId: string, texto: string): Promise<any> {
     const dataAtual = new Date();
@@ -187,10 +147,6 @@ async obterLivroPorId(livroId: string): Promise<Livro | null> {
 
 }
 
-
-
-
-
 function formatarData(data: Date): string {
   const dia = data.getDate().toString().padStart(2, '0');
   const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // Os meses começam do zero
@@ -201,5 +157,4 @@ function formatarData(data: Date): string {
 
   return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
 }
-
 
