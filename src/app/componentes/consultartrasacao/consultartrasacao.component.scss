@@ -1,87 +1,78 @@
 .usuario-logado {
-    display: flex;   //os itens internos se comportam como flexíveis
-    align-items: center;
-    padding: 10px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0 20px;
-  }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  padding-top: 20px; 
+}
 
-  .titulo-centralizado {
-    text-align: center;
-    flex-grow: 1;
-    margin: 0;
-  }
+.titulo-centralizado {
+  text-align: center;
+  flex-grow: 1;
+  margin: 0;
+}
 
-  .action-button {
-    width: 150px;
-    height: 40px;
-    border-radius: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .sair-button {
-    margin-left: auto;
-    margin-right: 20px;
-  }
+.action-button {
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  margin-left: auto; 
+  margin-right: 20px;
+}
 
-  //TABELA
-  .table-container {
+.table-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh; 
+  margin-top: 20px; 
 }
 
 table {
-  border-collapse: collapse; //as bordas das células da tabela devem ser mescladas em uma única borda.
-  width: 80%; 
+  border-collapse: collapse;
+  width: 80%;
   margin: 0 auto;
 }
 
 thead {
-  background-color: #f2f2f2; /* cor do cabeçalho */
+  background-color: #f2f2f2;
 }
 
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: center; /* centraliza o texto nas células */
+  text-align: center;
 }
 
 th {
   padding-top: 12px;
   padding-bottom: 12px;
-  background-color: #222321; /* cor do cabeçalho */
+  background-color: #222321;
   color: white;
 }
 
 .button-group {
-    display: flex;
-    justify-content: flex-end; // alinha o botão à direita 
-    width: 100%; 
-    margin-bottom: 20px; //espaço entre o botão e a tabela 
-  }
-  
-  .button-group button {
-    width: 150px;
-    height: 40px;
-    border-radius: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    margin-right: 100px; 
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: right; 
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.voltar-button {
+  margin-left: auto; 
+  margin-right: 20px; 
+}
 
