@@ -56,21 +56,22 @@ export class TransacaoComponent {
 
   async realizarTransacao() {
     try {
-      const livroId = await this.transacaoService.obterLivroIdPorNome(this.transacao.livroNome);
+      
+      const livro = await this.transacaoService.obterLivroPorNome(this.transacao.livroNome);
+      const livroId = livro.id;
       const usuarioId = await this.transacaoService.obterUsuarioIdPorNome(this.transacao.usuarioNome);
-
-      // Agora tem o livroId e usuarioId, continuar com a transação
+  
+      
       const dataAtual = new Date();
       this.transacao.data = formatarData(dataAtual);
-
-
+  
       const usuarioLogado = await this.transacaoService.obterUsuarioAtual();
       this.transacao.usuarioLogado = usuarioLogado;
-
+  
       const transacaoParaAdicionar: Transacao = { ...this.transacao, livroId, usuarioId }; 
       await this.transacaoService.adicionarTransacao(transacaoParaAdicionar);
-
-      // Limpar os campos após a transação 
+  
+      
       this.transacao = {
         livroNome: '',
         usuarioNome: '',
@@ -80,11 +81,11 @@ export class TransacaoComponent {
         tipo: 'emprestimo',
         usuarioLogado: ''
       };
-
-      // Limpar os resultados da busca
+  
+      
       this.livrosEncontrados = [];
       this.usuariosEncontrados = [];
-
+  
     } catch (error) {
       console.error('Erro ao realizar transação:', error);
     }

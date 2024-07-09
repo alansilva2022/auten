@@ -90,35 +90,47 @@ export class TransacaoService {
   }
   
 
-  async obterLivroIdPorNome(nomeLivro: string): Promise<string> {
-    const livroQuery = query(
-      collection(this.firestore, 'livros'),
-      where('titulo', '>=', nomeLivro),
-      where('titulo', '<=', nomeLivro + '\uf8ff')
-    );
-    const livroSnapshot = await getDocs(livroQuery);
-
-    if (!livroSnapshot.empty) {
-      const livroDoc = livroSnapshot.docs[0];
-      return livroDoc.id;
+  async obterLivroPorNome(nomeLivro: string): Promise<{id: string, titulo: string }> {
+    const nome_Normalizado = nomeLivro.trim().toLowerCase();
+    const livrosRef = collection(this.firestore, 'livros');
+    const livroSnapshot = await getDocs(livrosRef);
+  
+    
+    const livroDoc = livroSnapshot.docs.find(doc => {
+      const dadosLivro = doc.data() as Livro;
+      const tituloNormalizado = dadosLivro.titulo.trim().toLowerCase();
+      return tituloNormalizado.includes(nome_Normalizado);
+    });
+  
+    if (livroDoc) {
+      const dadosLivro = livroDoc.data() as Livro;
+      return { id: livroDoc.id, titulo: dadosLivro.titulo };
     } else {
       throw new Error(`Livro '${nomeLivro}' não encontrado`);
     }
   }
 
   async buscarLivrosPorNomeParcial(nomeLivro: string): Promise<Livro[]> {
-    const livroQuery = query(
-      collection(this.firestore, 'livros'),
-      where('titulo', '>=', nomeLivro),
-      where('titulo', '<=', nomeLivro + '\uf8ff')
-    );
-    const livroSnapshot = await getDocs(livroQuery);
+  
+  const termo_Normalizado = nomeLivro.trim().toLowerCase();
+  const livroColecao = collection(this.firestore, 'livros');
 
-    return livroSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data() as Livro,
-    }));
+  const livroSnapshot = await getDocs(livroColecao);
+
+  
+  const livros = livroSnapshot.docs.filter(doc => {
+    const dadosLivro = doc.data() as Livro;
+    const tituloNormalizado = dadosLivro.titulo.trim().toLowerCase();
+    return tituloNormalizado.includes(termo_Normalizado);
+  }).map(doc => ({
+    id: doc.id,
+    ...doc.data() as Livro,
+  }));
+
+  return livros;
   }
+
+  
 
   async buscarUsuariosPorNomeParcial(nomeUsuario: string): Promise<Usuario[]> {
     const usuarioQuery = query(
