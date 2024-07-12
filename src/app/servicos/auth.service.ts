@@ -35,15 +35,15 @@ export class AuthService  {
       if (user) {
         try {
           const userRole = await this.getUserRole();
-          console.log('Papel do usuário:', userRole);
+       //   console.log('Papel do usuário:', userRole);
 
           if (userRole) {
           } else {
-            console.error('Papel do usuário não encontrado.');
+       //     console.error('Papel do usuário não encontrado.');
             this.router.navigate(['/naoautorizado']);
           }
         } catch (error) {
-          console.error('Erro ao obter o papel do usuário:', error);
+       //   console.error('Erro ao obter o papel do usuário:', error);
           this.router.navigate(['/naoautorizado']);
         }
       } else {
@@ -68,8 +68,8 @@ export class AuthService  {
         });
       }
       
-      console.log('sucesso ao realizar login');   
-      console.log('Usuário autenticado:', this.auth.currentUser);
+        console.log('sucesso ao realizar login');   
+     // console.log('Usuário autenticado:', this.auth.currentUser);
       this.router.navigate(['/home']);                //redireciona o usuário para a página inicial após o login bem-sucedido.
     })
     .catch((error) => {
@@ -104,7 +104,7 @@ export class AuthService  {
       
       await setDoc(ref, novoUsuario);   // setDoc está cadastrando usuário  - salva os dados do usuário no Firestore
 
-      console.log('Usuario cadastrado com sucesso!');
+      //console.log('Usuario cadastrado com sucesso!');
        
 
       const usuarioAtual = await this.obterUsuarioAtual();  //espera a conclusão da função obterUsuarioAtual e obtém o usuário atual.
@@ -180,7 +180,7 @@ export class AuthService  {
     if (user) {
       return user.displayName || '';
     } else {
-      console.log('Usuário não autenticado.');
+    //  console.log('Usuário não autenticado.');
       return '';
     }
   }

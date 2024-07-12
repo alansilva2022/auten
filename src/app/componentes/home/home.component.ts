@@ -23,7 +23,7 @@ export class HomeComponent {
   constructor(public authService: AuthService){
 
     this.authService.utilizadorAtual$.subscribe(user => {
-      console.log('Usuário atual:', user);
+    //  console.log('Usuário atual:', user);
       this.isAdmin();
       this.isUsuarioComum();
     });
