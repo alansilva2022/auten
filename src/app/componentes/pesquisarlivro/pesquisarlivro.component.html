@@ -4,12 +4,7 @@
   <div class="pesquisa-container">
     <h2>Pesquisar Livro</h2>
     <div class="pesquisa-input">
-      <input 
-        type="text" 
-        [(ngModel)]="termoPesquisa" 
-        placeholder="Pesquisar Livro por nome, autor, isbn" 
-        (input)="pesquisarLivros(); onInput()"
-      />
+      <input type="text" [(ngModel)]="termoPesquisa"  placeholder="Pesquisar Livro por nome, autor, isbn"  (input)="pesquisarLivros(); onInput()"/>
     </div>
   </div>
 
