@@ -13,78 +13,89 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, HttpClientModule, CommonModule],
   templateUrl: './reserva.component.html',
-  styleUrl: './reserva.component.scss'
+  styleUrls: ['./reserva.component.scss']
 })
 export class ReservaComponent {
 
+   
+  
   usuarioLogado: string = '';
   
-
   reserva: Reserva = {
-      livroNome: '',
-      usuarioLogado: '',
-      data:'',
+    livroNome: '',
+    usuarioLogado: '',
+    data: '',
   };
 
   livrosEncontrados: Livro[] = [];
-  
 
-  constructor(public authService: AuthService, private reservaService: ReservaService, private transacaoService: TransacaoService){
-    this.authService.obterNomeUsuario().then((nomeUsuario) => {
-      this.usuarioLogado = nomeUsuario;
-    });
+  constructor(
+    public authService: AuthService, 
+    private reservaService: ReservaService, 
+    private transacaoService: TransacaoService
+  ) {
+    this.initializeUser();
+  }
+
+
+  private async initializeUser() {
+    try {
+      this.usuarioLogado = await this.authService.obterNomeUsuario();
+    } catch (error) {
+      console.error('Erro ao obter nome de usuário:', error);
+    }
   }
 
   async buscarLivros(nomeLivro: string) {
-    if (nomeLivro.trim() !== '') {
-      this.livrosEncontrados = await this.transacaoService.buscarLivrosPorNomeParcial(nomeLivro);
-    } else {
+    if (nomeLivro.trim() === '') {
       this.livrosEncontrados = [];
+      return;
+    }
+    try {
+      this.livrosEncontrados = await this.transacaoService.buscarLivrosPorNomeParcial(nomeLivro);
+    } catch (error) {
+      console.error('Erro ao buscar livros:', error);
     }
   }
 
   async realizarReserva() {
     try {
-      
+      if (!this.reserva.livroNome) {
+        throw new Error('Nome do livro é obrigatório');
+      }
+
       const livro = await this.transacaoService.obterLivroPorNome(this.reserva.livroNome);
-  
-      
       const livroId = livro.id;
       const tituloCompleto = livro.titulo;
-  
-      
+
       this.reserva.livroNome = tituloCompleto;
-      const dataAtual = new Date();
-      this.reserva.data = formatarData(dataAtual);
-  
+      this.reserva.data = formatarData(new Date());
       const usuarioLogado = await this.transacaoService.obterUsuarioAtual();
+
       this.reserva.usuarioLogado = usuarioLogado;
-  
+
+
       const reservaParaAdicionar: Reserva = { ...this.reserva, livroId }; 
       await this.reservaService.adicionarReserva(reservaParaAdicionar);
-  
-     
-      this.reserva = {
-        livroNome: '',
-        data: '',
-        usuarioLogado: '',
-      };
-  
-      this.livrosEncontrados = [];
-  
+
+      this.resetForm();
     } catch (error) {
       console.error('Erro ao realizar reserva:', error);
     }
-      
   }
 
-  logout():void{
+  private resetForm() {
+    this.reserva = {
+      livroNome: '',
+      data: '',
+      usuarioLogado: '',
+    };
+    this.livrosEncontrados = [];
+  }
+
+  logout(): void {
     this.authService.logout();
-
   }
-
-
-
 
 }
 
@@ -98,3 +109,4 @@ function formatarData(data: Date): string {
 
   return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
 }
+

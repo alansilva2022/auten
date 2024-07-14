@@ -1,48 +1,40 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { DocumentData, DocumentSnapshot, Firestore, addDoc, collection, doc, getDoc, getDocs, query, runTransaction, updateDoc, where } from '@angular/fire/firestore';
 import { Transacao } from '../componentes/transacao';
 import { Livro } from '../componentes/livro';
 import { Usuario } from '../componentes/usuario';
 import { AuthService } from './auth.service';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class TransacaoService {
-
-  constructor(private authService: AuthService) { }
-
-  firestore: Firestore = inject(Firestore);
-
-
+  constructor(private authService: AuthService, private firestore: Firestore) { }
 
   async obterUsuarioAtual(): Promise<string> {
     const usuarioAtual = await this.authService.obterUsuarioAtual();
     return usuarioAtual?.uid || '';
   }
 
-  async adicionarTransacao(transacao: Transacao){
+  async adicionarTransacao(transacao: Transacao) {
     const colecaotransacao = collection(this.firestore, 'transacoes');
 
-    try{
-      if(transacao.livroId){
+    try {
+      if (transacao.livroId) {
         const livroRef = doc(this.firestore, 'livros', transacao.livroId);
         const livroResumo = await getDoc(livroRef);
 
-        if(!livroResumo.exists()){
-          throw new Error(`Livro '${transacao.livroId}' não encontrado`);      
+        if (!livroResumo.exists()) {
+          throw new Error(`Livro '${transacao.livroId}' não encontrado`);
         }
       }
-      await runTransaction(this.firestore, async (transaction) => {
 
-        /*
+      await runTransaction(this.firestore, async (transaction) => {
+         /*
         A função runTransaction() pega na instância do Firestore e executa uma transação na base de dados.
          Esta função garante que o valor correto é atualizado.
-        */
-         
-        if (transacao.livroId) {
+        */        
+       if (transacao.livroId) {
           const livroRef = doc(this.firestore, 'livros', transacao.livroId);
           const livroDocSnapshot = await transaction.get(livroRef);
 
@@ -62,23 +54,20 @@ export class TransacaoService {
         console.log('Transação realizada com sucesso! ID:', transacaoRef.id);
       });
 
-    
-    } catch (error){
+    } catch (error) {
       console.error('Erro ao realizar transacao:', error);
-        throw error;
+      throw error;
     }
   }
 
-
   async obterUsuarioPorId(transaction: any, usuarioId: string): Promise<void> {
-    const usuarioRef = doc(this.firestore, 'usuarios', usuarioId);  
+    const usuarioRef = doc(this.firestore, 'usuarios', usuarioId);
     const usuarioDocSnapshot: DocumentSnapshot<DocumentData> = await transaction.get(usuarioRef);
     if (!usuarioDocSnapshot.exists()) {
       throw new Error(`Usuário '${usuarioId}' não encontrado`);
     }
   }
 
-  
   async obterLivroPorId(transaction: any, livroId: string): Promise<void> {
     const livroRef = doc(this.firestore, 'livros', livroId);
     const livroDocSnapshot: DocumentSnapshot<DocumentData> = await transaction.get(
@@ -88,20 +77,18 @@ export class TransacaoService {
       throw new Error(`Livro '${livroId}' não encontrado`);
     }
   }
-  
 
-  async obterLivroPorNome(nomeLivro: string): Promise<{id: string, titulo: string }> {
+  async obterLivroPorNome(nomeLivro: string): Promise<{ id: string, titulo: string }> {
     const nome_Normalizado = nomeLivro.trim().toLowerCase();
     const livrosRef = collection(this.firestore, 'livros');
     const livroSnapshot = await getDocs(livrosRef);
-  
-    
+
     const livroDoc = livroSnapshot.docs.find(doc => {
       const dadosLivro = doc.data() as Livro;
       const tituloNormalizado = dadosLivro.titulo.trim().toLowerCase();
       return tituloNormalizado.includes(nome_Normalizado);
     });
-  
+
     if (livroDoc) {
       const dadosLivro = livroDoc.data() as Livro;
       return { id: livroDoc.id, titulo: dadosLivro.titulo };
@@ -111,26 +98,22 @@ export class TransacaoService {
   }
 
   async buscarLivrosPorNomeParcial(nomeLivro: string): Promise<Livro[]> {
-  
-  const termo_Normalizado = nomeLivro.trim().toLowerCase();
-  const livroColecao = collection(this.firestore, 'livros');
+    const termo_Normalizado = nomeLivro.trim().toLowerCase();
+    const livroColecao = collection(this.firestore, 'livros');
 
-  const livroSnapshot = await getDocs(livroColecao);
+    const livroSnapshot = await getDocs(livroColecao);
 
-  
-  const livros = livroSnapshot.docs.filter(doc => {
-    const dadosLivro = doc.data() as Livro;
-    const tituloNormalizado = dadosLivro.titulo.trim().toLowerCase();
-    return tituloNormalizado.includes(termo_Normalizado);
-  }).map(doc => ({
-    id: doc.id,
-    ...doc.data() as Livro,
-  }));
+    const livros = livroSnapshot.docs.filter(doc => {
+      const dadosLivro = doc.data() as Livro;
+      const tituloNormalizado = dadosLivro.titulo.trim().toLowerCase();
+      return tituloNormalizado.includes(termo_Normalizado);
+    }).map(doc => ({
+      id: doc.id,
+      ...doc.data() as Livro,
+    }));
 
-  return livros;
+    return livros;
   }
-
-  
 
   async buscarUsuariosPorNomeParcial(nomeUsuario: string): Promise<Usuario[]> {
     const usuarioQuery = query(
@@ -188,11 +171,8 @@ export class TransacaoService {
 
       await updateDoc(livroRef, { quantidade: quantidadeAtualizada });
     }
-
   }
 
-
-  
   async consultarTransacoes(): Promise<Transacao[]> {
     const transacoesCollection = collection(this.firestore, 'transacoes');
     const transacoesSnapshot = await getDocs(transacoesCollection);
@@ -216,6 +196,5 @@ export class TransacaoService {
 
     return transacoes;
   }
- 
 }
-  
+
