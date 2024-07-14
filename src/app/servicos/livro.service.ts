@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { DocumentData, Firestore, Query, addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Livro } from '../componentes/livro';
 import { Comentario } from '../componentes/comentario';
 import { User } from 'firebase/auth';
