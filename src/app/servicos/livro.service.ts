@@ -32,7 +32,9 @@ export class LivroService implements OnDestroy {
       sinopse: livro.sinopse,
       quantidade: livro.quantidade,
       data: livro.data,
-      rating: livro.rating || 0  // garante que o rating seja sempre um número
+      rating: livro.rating || 0,
+      totalRatings: livro.totalRatings,
+      numRatings: livro.numRatings
     };
 
     const livroColecao = collection(this.firestore, 'livros');
@@ -97,16 +99,30 @@ export class LivroService implements OnDestroy {
   async adicionarRating(livroId: string, rating: number): Promise<void> {
     const livroRef = doc(this.firestore, 'livros', livroId);
     const captura_estado_livro = await getDoc(livroRef);
-
+  
     if (captura_estado_livro.exists()) {
       const livroData = captura_estado_livro.data() as Livro;
-      const novoRating = (livroData.rating || 0 + rating) / 2;  // evita problemas se rating for undefined
-      await setDoc(livroRef, { ...livroData, rating: novoRating });
+  
+      // obter a soma das avaliações e o número total de avaliações
+      const somaAvaliacoes = (livroData.totalRatings || 0) + rating;
+      const totalAvaliacoes = (livroData.numRatings || 0) + 1;
+  
+      // calcula a nova média de avaliações
+      const novoRating = somaAvaliacoes / totalAvaliacoes;
+  
+      // atualiza o documento no firebase com a nova média e o número total de avaliações
+      await setDoc(livroRef, {
+        ...livroData,
+        rating: novoRating,
+        totalRatings: somaAvaliacoes,
+        numRatings: totalAvaliacoes
+      });
     } else {
       console.error('Livro não encontrado.');
       throw new Error('Livro não encontrado.');
     }
   }
+  
 
   async obterLivroPorId(livroId: string): Promise<Livro | null> {
     const livro_documento = doc(this.firestore, 'livros', livroId);

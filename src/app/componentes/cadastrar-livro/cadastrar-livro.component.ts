@@ -31,6 +31,8 @@ export class CadastrarLivroComponent implements OnDestroy {
   livroQuantidade!: number;
   livroData: string = ''; 
   livroRating: number = 0;  
+  livroTotalRatings: number = 0; 
+  livroNumRatings: number = 0; 
 
   livro: Livro = {
     titulo: '', 
@@ -42,7 +44,9 @@ export class CadastrarLivroComponent implements OnDestroy {
     quantidade: 0, 
     foto: '',
     data: '', 
-    rating: 0,  
+    rating: 0,
+    totalRatings: 0,
+    numRatings: 0
   };
 
   livro$!: Observable<Livro[]>;
@@ -94,7 +98,9 @@ export class CadastrarLivroComponent implements OnDestroy {
         quantidade: this.livroQuantidade,
         foto: this.livro.foto,
         data: this.livro.data,
-        rating: this.livroRating  
+        rating: this.livroRating,  
+        totalRatings: this.livroTotalRatings,
+        numRatings: this.livroNumRatings
       };
 
       await this.livroServico.adicionarLivro(novoLivro);
@@ -115,6 +121,8 @@ export class CadastrarLivroComponent implements OnDestroy {
     this.livroSinopse = '';
     this.livroData = ''; 
     this.livroRating = 0;  
+    this.livroNumRatings = 0;
+    this.livroTotalRatings = 0
   }
 }
 
