@@ -1,41 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Livro } from '../livro';
 import { LivroService } from '../../servicos/livro.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pesquisarlivro',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './pesquisarlivro.component.html',
-  styleUrl: './pesquisarlivro.component.scss'
+  styleUrls: ['./pesquisarlivro.component.scss']
 })
-export class PesquisarlivroComponent implements OnInit {
+export class PesquisarlivroComponent implements OnInit, OnDestroy {
 
   termoPesquisa: string = '';
-  livros: Livro[] = [];
+  livros$: Observable<Livro[]> = new Observable(); //  para armazenar a lista de livros
+
+  private PesquisaSubject = new Subject<string>(); //  para gerenciar o termo de pesquisa
+  private cancelar_inscricao$ = new Subject<void>(); // para gerenciamento de memória
 
   constructor(private livroService: LivroService, private router: Router) {}
 
-  ngOnInit() {      
-   
-    this.carregarTodosLivros();
+  ngOnInit() {
+    // carregar todos os livros inicialmente
+    this.livros$ = this.livroService.relatorioLivro();
+
+    // configurar o Subject para lidar com a pesquisa
+    this.PesquisaSubject.pipe(
+      debounceTime(300), // tempo para esperar antes de realizar a pesquisa
+      distinctUntilChanged(), // evitar pesquisas repetidas para o mesmo termo
+      switchMap(termo => termo ? this.livroService.pesquisarLivros(termo) : this.livroService.relatorioLivro()),
+      takeUntil(this.cancelar_inscricao$)  // limpar a assinatura quando o componente for destruído
+    ).subscribe(livros => {
+      this.livros$ = of(livros);  // atualiza o Observable com os novos dados
+    });
   }
 
-  async carregarTodosLivros() {
-   
-     this.livros = await this.livroService.relatorioLivro();
+  pesquisarLivros() {
+    this.PesquisaSubject.next(this.termoPesquisa.trim().toLowerCase());
   }
 
-  async pesquisarLivros() {
-    this.livros = await this.livroService.pesquisarLivros(this.termoPesquisa);
-  }
-
-  onInput() {   //quando o input estiber vazio, deve carregar todos os livros
+  onInput() {
     if (!this.termoPesquisa) {
-      this.carregarTodosLivros();
+      this.PesquisaSubject.next('');
     }
   }
 
@@ -43,4 +53,12 @@ export class PesquisarlivroComponent implements OnInit {
     this.router.navigate(['/detalhes-livro', livroId]);
   }
 
+  ngOnDestroy() {
+    this.cancelar_inscricao$.next();
+    this.cancelar_inscricao$.complete();
+  }
 }
+
+
+
+

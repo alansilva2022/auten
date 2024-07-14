@@ -7,11 +7,12 @@ export interface Livro {
     autor: string;
     isbn: string;
     editora: string;
-    foto?: string;
+    foto?: string; //foto como opcional
     sinopse: string;
     quantidade: number;
-    data: string; 
-    comentarios?: Comentario[];  //adicionado
-    id?: string; //adicionado
-    rating: 0; // adicionado
+    data: string;
+    comentarios?: Comentario[];  
+    id?: string;  
+    rating: number; 
 }
+

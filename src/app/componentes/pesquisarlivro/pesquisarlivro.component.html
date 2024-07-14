@@ -1,29 +1,39 @@
-<a  href='/login'><button>Login</button></a> <br /><br />
+<a href="/login"><button>Login</button></a> <br /><br />
 
 <div class="content-container">
-  <div  class="pesquisa-container">
+  <div class="pesquisa-container">
     <h2>Pesquisar Livro</h2>
-    <div  class="pesquisa-input">
-      <input type="text" [(ngModel)]="termoPesquisa" placeholder="Pesquisar Livro por nome, autor, isbn" (input)="pesquisarLivros(); onInput()">
+    <div class="pesquisa-input">
+      <input 
+        type="text" 
+        [(ngModel)]="termoPesquisa" 
+        placeholder="Pesquisar Livro por nome, autor, isbn" 
+        (input)="pesquisarLivros(); onInput()"
+      />
     </div>
   </div>
+
   
-    
-  <div *ngIf="livros.length > 0" class="card-container">
-      <h2>Resultados da Pesquisa</h2>
-  
-      <div  class="card-row">
-        <div *ngFor="let livro of livros"  class="card" (click)="livro.id && exibirDetalhes(livro.id)">
-          <img [src]="livro.foto" alt="{{ livro.titulo }}">
-          <h3>{{ livro.titulo }}</h3>
-          <p>Autor: {{ livro.autor }}</p>
-          <p>Quantidade: {{ livro.quantidade }}</p>
-        </div>
+  <div *ngIf="(livros$ | async) as livros; else loading" class="card-container">
+    <h2>Resultados da Pesquisa</h2>
+    <div class="card-row">
+     
+      <div *ngFor="let livro of livros" class="card" (click)="livro.id && exibirDetalhes(livro.id)">
+        <img [src]="livro.foto" alt="{{ livro.titulo }}">
+        <h3>{{ livro.titulo }}</h3>
+        <p>Autor: {{ livro.autor }}</p>
+        <p>Quantidade: {{ livro.quantidade }}</p>
       </div>
+    </div>
   </div>
-    
-  <div *ngIf="livros.length === 0 && termoPesquisa">
-      <p>Nenhum livro encontrado para "{{ termoPesquisa }}"</p>
-  </div>
+
   
+  <ng-template #loading>
+    <div *ngIf="termoPesquisa">
+      <p>Nenhum livro encontrado para "{{ termoPesquisa }}"</p>
+    </div>
+  </ng-template>
 </div>
+
+
+

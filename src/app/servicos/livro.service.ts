@@ -1,20 +1,27 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Firestore, addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Livro } from '../componentes/livro';
 import { Comentario } from '../componentes/comentario';
 import { User } from 'firebase/auth';
+import { Observable, Subject, from } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LivroService {
- 
+export class LivroService implements OnDestroy {
 
+  private cancelar_inscricao$ = new Subject<void>();
   firestore: Firestore = inject(Firestore);
 
   constructor() { }
 
-  adicionarLivro(livro: Livro){
+  ngOnDestroy(): void {
+    this.cancelar_inscricao$.next();
+    this.cancelar_inscricao$.complete();
+  }
+
+  adicionarLivro(livro: Livro): Promise<void> {
     const novoLivro: Livro = {
       titulo: livro.titulo,
       ano_lancamento: livro.ano_lancamento,
@@ -25,9 +32,11 @@ export class LivroService {
       sinopse: livro.sinopse,
       quantidade: livro.quantidade,
       data: livro.data,
-      rating: livro.rating
-    }
+      rating: livro.rating || 0  // garante que o rating seja sempre um número
+    };
+
     const livroColecao = collection(this.firestore, 'livros');
+
     return addDoc(livroColecao, novoLivro).then(docRef => {
       console.log('Livro adicionado com sucesso!, Documento ID:', docRef.id);
     }).catch(error => {
@@ -35,121 +44,97 @@ export class LivroService {
     });
   }
 
-
-
-  async pesquisarLivros(termo: string): Promise<Livro[]> {
-    const livros: Livro[] = [];
+  relatorioLivro(): Observable<Livro[]> {
     const livroColecao = collection(this.firestore, 'livros');
-    const termo_Normalizado = termo.trim().toLowerCase();
-
-
-    const livroSnapshot = await getDocs(livroColecao); //obtem todos os documentos da coleção "livros" sem aplicar filtros
-
-    livroSnapshot.forEach(doc => {                //aplicando filtro
-      const dados_livros = doc.data() as Livro;
-      if (this.buscartermo(dados_livros, termo_Normalizado)) {
-        livros.push({
-          id: doc.id,
-          ...dados_livros
-        });
-      }
-    });
-
-    return livros;
- }
- 
- 
- private buscartermo(livro: Livro, term: string): boolean {  //verifica se o termo de busca aparece em qualquer posição do campo 
-  return livro.titulo.toLowerCase().includes(term) ||
-         livro.autor.toLowerCase().includes(term) ||
-         livro.isbn.toLowerCase().includes(term);
-}
-
-
-
-
-  async relatorioLivro(): Promise<Livro[]> {
-    const livroCollection = collection(this.firestore, 'livros');
-    const livroSnapshot = await getDocs(livroCollection);
-
-    const livros: Livro[] = [];
-    livroSnapshot.forEach(doc => {
-      const livroData = doc.data() as Livro;
-      livros.push({
+    const q = query(livroColecao);
+    return from(getDocs(q)).pipe(
+      map(snapshot => snapshot.docs.map(doc => ({
         id: doc.id,
-        ...livroData
-      });
-    });
-
-    return livros;
+        ...doc.data() as Livro
+      }))),
+      takeUntil(this.cancelar_inscricao$)  // garante a limpeza ao destruir o serviço
+    );
   }
 
-  adicionarComentario(usuario: User, livroId: string, texto: string): Promise<any> {
-    const dataAtual = new Date();
+  pesquisarLivros(termo: string): Observable<Livro[]> {
+    const livroColecao = collection(this.firestore, 'livros');
+    const termo_Normalizado = termo.trim().toLowerCase();
+    const q = query(livroColecao);
 
+    return from(getDocs(q)).pipe(
+      map(snapshot => snapshot.docs
+        .filter(doc => {
+          const dados_livros = doc.data() as Livro;
+          return dados_livros.titulo.toLowerCase().includes(termo_Normalizado) ||
+                 dados_livros.autor.toLowerCase().includes(termo_Normalizado) ||
+                 dados_livros.isbn.toLowerCase().includes(termo_Normalizado);
+        })
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data() as Livro
+        }))
+      ),
+      takeUntil(this.cancelar_inscricao$)  // garante a limpeza ao destruir o serviço
+    );
+  }
+
+  adicionarComentario(usuario: User, livroId: string, texto: string): Promise<void> {
+    const dataAtual = new Date();
     const comentario: Comentario = {
       userId: usuario.uid,
       texto: texto,
       data: formatarData(dataAtual),
       livroId: livroId
     };
-
-    return addDoc(collection(this.firestore, 'comentarios'), comentario);
+    return addDoc(collection(this.firestore, 'comentarios'), comentario)
+      .then(() => Promise.resolve())  // ignora o DocumentReference e resolve o Promise
+      .catch(error => {
+        console.error('Erro ao adicionar comentário', error);
+        return Promise.reject(error);  // propaga o erro, caso ocorra
+      });
   }
-
 
   async adicionarRating(livroId: string, rating: number): Promise<void> {
     const livroRef = doc(this.firestore, 'livros', livroId);
-    const livroSnapshot = await getDoc(livroRef);
+    const captura_estado_livro = await getDoc(livroRef);
 
-    if (livroSnapshot.exists()) {
-        const livroData = livroSnapshot.data() as Livro;
-        
-        if (livroData.rating !== undefined) { //verificando que o rating existe no documento do firestore
-            const novoRating = (livroData.rating + rating) / 2; 
-
-            await setDoc(livroRef, { ...livroData, rating: novoRating });
-        } else {
-            console.error('Campo de rating não encontrado no documento do livro.');
-            throw new Error('Campo de rating não encontrado no documento do livro.');
-        }
+    if (captura_estado_livro.exists()) {
+      const livroData = captura_estado_livro.data() as Livro;
+      const novoRating = (livroData.rating || 0 + rating) / 2;  // evita problemas se rating for undefined
+      await setDoc(livroRef, { ...livroData, rating: novoRating });
     } else {
-        console.error('Livro não encontrado.');
-        throw new Error('Livro não encontrado.');
+      console.error('Livro não encontrado.');
+      throw new Error('Livro não encontrado.');
     }
-}
-
-async obterLivroPorId(livroId: string): Promise<Livro | null> {
-  const livroDoc = doc(this.firestore, 'livros', livroId);
-  const livroSnap = await getDoc(livroDoc);
-
-  if (livroSnap.exists()) {
-    const livroData = livroSnap.data() as Livro;
-   
-    livroData.id = livroSnap.id;  // adicione o id do livro aos dados
-
-    // Carregar comentários do livro
-    const comentariosQuery = query(collection(this.firestore, 'comentarios'), where('livroId', '==', livroId));
-    const comentariosSnap = await getDocs(comentariosQuery);
-    const comentarios: Comentario[] = [];
-    comentariosSnap.forEach(comentarioDoc => {
-      comentarios.push(comentarioDoc.data() as Comentario);
-    });
-    livroData.comentarios = comentarios;
-
-    
-    return livroData;
-  } else {
-    return null;
   }
-}
 
+  async obterLivroPorId(livroId: string): Promise<Livro | null> {
+    const livro_documento = doc(this.firestore, 'livros', livroId);
+    const livro_captura = await getDoc(livro_documento);
 
+    if (livro_captura.exists()) {
+      const livroData = livro_captura.data() as Livro;
+      livroData.id = livro_captura.id;  // Adiciona o id do livro aos dados
+
+      // carregar comentários do livro
+      const comentariosQuery = query(collection(this.firestore, 'comentarios'), where('livroId', '==', livroId));
+      const comentarios_Captura = await getDocs(comentariosQuery);
+      const comentarios: Comentario[] = [];
+      comentarios_Captura.forEach(comentarioDoc => {
+        comentarios.push(comentarioDoc.data() as Comentario);
+      });
+      livroData.comentarios = comentarios;
+
+      return livroData;
+    } else {
+      return null;
+    }
+  }
 }
 
 function formatarData(data: Date): string {
   const dia = data.getDate().toString().padStart(2, '0');
-  const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // Os meses começam do zero
+  const mes = (data.getMonth() + 1).toString().padStart(2, '0'); 
   const ano = data.getFullYear();
   const horas = data.getHours().toString().padStart(2, '0');
   const minutos = data.getMinutes().toString().padStart(2, '0');
@@ -157,4 +142,6 @@ function formatarData(data: Date): string {
 
   return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
 }
+
+
 

@@ -1,33 +1,33 @@
 <div class="header-container">
-    <div *ngIf="usuarioLogado" class="usuario-logado">
-      <p>{{ usuarioLogado }}</p>
-    </div>
-    <h2 class="titulo-centralizado">RELATÓRIO</h2>
-    <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+  <div *ngIf="usuarioLogado" class="usuario-logado">
+    <p>{{ usuarioLogado }}</p>
   </div>
-  
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>NOME DO LIVRO</th>
-          <th>QUANTIDADE</th>
-          <th>DATA DE CADASTRO</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let livro of livros">
-          <td>{{ livro.titulo }}</td>
-          <td>{{ livro.quantidade }}</td>
-          <td>{{ livro.data }}</td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <div class="button-group">
-      <a href="/home"><button>Voltar</button></a>
-    </div>
+  <h2 class="titulo-centralizado">RELATÓRIO</h2>
+  <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>TÍTULO DO LIVRO</th>
+        <th>QUANTIDADE</th>
+        <th>DATA DE CADASTRO</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let livro of (livros$ | async)">
+        <td>{{ livro.titulo }}</td>
+        <td>{{ livro.quantidade }}</td>
+        <td>{{ livro.data }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="button-group">
+    <a href="/home"><button>Voltar</button></a>
   </div>
-  
+</div>
+
   
   
