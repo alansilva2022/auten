@@ -32,12 +32,13 @@
   <div class="lado_direito">
     <div class="grupo_formulario">
       <textarea id="sinopse" name="sinopse" [(ngModel)]="livroSinopse" placeholder="Sinopse" required></textarea>
-      <input type="file" id="foto"  (change)="carregamento_de_foto($event)">
+      <input type="file" id="foto" (change)="carregamento_de_foto($event)">
     </div>
     <div class="grupo_botoes">
-      <button type="submit" [disabled]="!livroForm.valid">Cadastrar</button>
+      <button type="submit" (click)="adicionarLivro()" [disabled]="!livroForm.valid">Cadastrar</button>
       <a href='/home'><button type="button">Cancelar</button></a>
     </div>
   </div>
 </div>
+
 

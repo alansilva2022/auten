@@ -9,11 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../servicos/auth.service';
 import { takeUntil } from 'rxjs/operators';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-cadastrar-livro',
   standalone: true,
-  imports: [FormsModule, HttpClientModule, CommonModule],
+  imports: [FormsModule, HttpClientModule, CommonModule, MatSnackBarModule],
   templateUrl: './cadastrar-livro.component.html',
   styleUrls: ['./cadastrar-livro.component.scss']
 })
@@ -53,7 +55,7 @@ export class CadastrarLivroComponent implements OnDestroy {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private livroServico: LivroService, private uploadFoto: UploadFotoService, public authService: AuthService) {
+  constructor(private livroServico: LivroService, private uploadFoto: UploadFotoService, public authService: AuthService,  private snackBar: MatSnackBar) {
     const livroColecao = collection(this.firestore, 'livros');
     const consultaLivros = query(livroColecao);
     this.livro$ = collectionData(consultaLivros) as Observable<Livro[]>;
@@ -72,11 +74,42 @@ export class CadastrarLivroComponent implements OnDestroy {
     this.authService.logout();
   }
 
-  adicionarLivro() {
-    this.livro.foto = '';
-    this.livro.data = '';
+  async adicionarLivro() {
+    if (!this.livro.foto) {
+      this.snackBar.open('Por favor, carregue a foto do livro antes de cadastrar.', 'Fechar', {
+        duration: 5000, // 5 segundos
+      });
+      return;
+    }
 
-    console.log("Adicionando Livro", this.livro);
+    const novoLivro: Livro = {
+      titulo: this.livroTitulo,
+      ano_lancamento: this.livroAno,
+      autor: this.livroAutor,
+      isbn: this.livroIsbn,
+      editora: this.livroEditora,
+      sinopse: this.livroSinopse,
+      quantidade: this.livroQuantidade,
+      foto: this.livro.foto,
+      data: this.livro.data,
+      rating: this.livroRating,  
+      totalRatings: this.livroTotalRatings,
+      numRatings: this.livroNumRatings
+    };
+
+    try {
+      await this.livroServico.adicionarLivro(novoLivro);
+      console.log("Livro adicionado com sucesso", novoLivro);
+      this.snackBar.open('Livro cadastrado com sucesso!', 'Fechar', {
+        duration: 5000, // 5 segundos
+      });
+      this.limparFormulario();
+    } catch (error) {
+      console.error('Erro ao adicionar livro', error);
+      this.snackBar.open('Erro ao cadastrar o livro. Tente novamente.', 'Fechar', {
+        duration: 5000, // 5 segundos
+      });
+    }
   }
 
   carregamento_de_foto(event: any) {
@@ -86,27 +119,7 @@ export class CadastrarLivroComponent implements OnDestroy {
       this.livro.foto = url;
       this.livro.data = formatarData(new Date());
 
-      console.log("Carregamento de Foto - NovoLivro:", this.livro);
-
-      const novoLivro: Livro = {
-        titulo: this.livroTitulo,
-        ano_lancamento: this.livroAno,
-        autor: this.livroAutor,
-        isbn: this.livroIsbn,
-        editora: this.livroEditora,
-        sinopse: this.livroSinopse,
-        quantidade: this.livroQuantidade,
-        foto: this.livro.foto,
-        data: this.livro.data,
-        rating: this.livroRating,  
-        totalRatings: this.livroTotalRatings,
-        numRatings: this.livroNumRatings
-      };
-
-      await this.livroServico.adicionarLivro(novoLivro);
-      console.log("Livro adicionado com sucesso", novoLivro);
-
-      this.limparFormulario();
+      console.log("Carregamento de Foto - URL da Foto:", this.livro.foto);
     });
   }
 
