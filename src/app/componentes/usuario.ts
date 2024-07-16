@@ -8,5 +8,6 @@ export interface Usuario {
    endereco: string;
    email: string;
    password: string;
-   role: Role  
+   role: Role;
+   id?: string;
 }

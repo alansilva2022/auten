@@ -5,7 +5,7 @@
   <h2 class="titulo-centralizado">TRANSAÇÃO</h2>
   <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
 </div>
-  
+
 <div class="form-container">
   <div class="left-side">
     <form (ngSubmit)="realizarTransacao()">
@@ -18,15 +18,15 @@
   
       <div class="form-group">
         <input id="livroNome" name="livroNome" [(ngModel)]="transacao.livroNome" class="styled-input" placeholder="Nome do Livro" (input)="buscarLivros(transacao.livroNome)">
-        <ul *ngIf="livrosEncontrados.length > 0">
-          <li *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</li>
+        <ul *ngIf="livrosEncontrados.length > 0" class="dropdown-list">
+          <li *ngFor="let livro of livrosEncontrados" (click)="selecionarLivro(livro)">{{ livro.titulo }}</li>
         </ul>
       </div>
   
       <div class="form-group">
         <input id="usuarioNome" name="usuarioNome" [(ngModel)]="transacao.usuarioNome" class="styled-input" placeholder="Nome do Usuário" (input)="buscarUsuarios(transacao.usuarioNome)">
-        <ul *ngIf="usuariosEncontrados.length > 0">
-          <li *ngFor="let usuario of usuariosEncontrados">{{ usuario.nomeUsuario }}</li>
+        <ul *ngIf="usuariosEncontrados.length > 0" class="dropdown-list">
+          <li *ngFor="let usuario of usuariosEncontrados" (click)="selecionarUsuario(usuario)">{{ usuario.nomeUsuario }}</li>
         </ul>
       </div>
   
