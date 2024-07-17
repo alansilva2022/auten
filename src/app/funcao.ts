@@ -1,7 +1,7 @@
 
 //todos os papeis de usuário na aplicacao
 
-export enum Role {
+export enum Funcao {
 
     Usuario = 'usuario',
     Admin = 'admin'

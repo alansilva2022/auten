@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../servicos/auth.service';
 import { CommonModule } from '@angular/common';
-import { Role } from '../../role';
+import { Funcao } from '../../funcao';
 
 @Component({
   selector: 'app-home',
@@ -19,11 +19,9 @@ export class HomeComponent {
 
   usuarioLogado: string = '';
 
- //antes estava como private, mas para o html ter acesso foi preciso colocar como public
   constructor(public authService: AuthService){
 
     this.authService.utilizadorAtual$.subscribe(user => {
-    //  console.log('Usuário atual:', user);
       this.isAdmin();
       this.isUsuarioComum();
     });
@@ -43,8 +41,8 @@ export class HomeComponent {
   }
 
   isAdmin(): void {
-    this.authService.getUserRole().then(role => {
-      if (role === Role.Admin) {
+    this.authService.obter_funcao_usuario().then(funcao => {
+      if (funcao === Funcao.Admin) {
         // Usuário é admin, mostrar o botão 
         this.somenteAdm = true;
       } else {
@@ -59,8 +57,8 @@ export class HomeComponent {
   }
 
   isUsuarioComum(): void {
-    this.authService.getUserRole().then(role => {
-      if (role !== Role.Admin) {
+    this.authService.obter_funcao_usuario().then(funcao => {
+      if (funcao !== Funcao.Admin) {
         // Usuário não é adm, mostrar o botão 
         this.somenteUsuarioComum = true;
       } else {

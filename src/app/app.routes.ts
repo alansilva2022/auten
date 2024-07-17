@@ -3,7 +3,7 @@ import { NaoautorizadoComponent } from './componentes/naoautorizado/naoautorizad
 import { HomeComponent } from './componentes/home/home.component';
 import { AdminComponent } from './componentes/admin/admin.component';
 import { hasRoleGuard } from './has-role.guard';
-import { Role } from './role';
+import { Funcao } from './funcao';
 import { RegistrousuarioComponent } from './componentes/registrousuario/registrousuario.component';
 import { LoginComponent } from './componentes/login/login.component';
 
@@ -28,20 +28,20 @@ export const routes: Routes = [
     {path: 'naoautorizado', component: NaoautorizadoComponent},
     {path: 'home', component: HomeComponent, ...canActivate(redirecionarParaLogin)}, // só vai para página home de estiver logado
     
-    { path: 'admin', component: AdminComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] } },
+    { path: 'admin', component: AdminComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { funcao: [Funcao.Admin] } },
     //canActive para verificar se o utilizador atual tem permissão para acessar o componente
     //data --> dados adicionais
     //hasRoleGuard para a Route possa verificar se o utilizador pode acessar a este componente
-    {path: 'registro', component: RegistrousuarioComponent,...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
+    {path: 'registro', component: RegistrousuarioComponent,...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { funcao: [Funcao.Admin] }},
     {path: 'login', component: LoginComponent, ...canActivate(redirecionarParaHome)}, //se fizer login, redireciona para home
-    {path: 'cadastrarlivro', component: CadastrarLivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
-    {path: 'transacao', component: TransacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
+    {path: 'cadastrarlivro', component: CadastrarLivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { funcao: [Funcao.Admin] }},
+    {path: 'transacao', component: TransacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { funcao: [Funcao.Admin] }},
     {path: 'reserva', component: ReservaComponent, ...canActivate(redirecionarParaLogin)},
     {path: 'reservaporusuario', component: MinhasreservasComponent, ...canActivate(redirecionarParaLogin)},
-    {path: 'buscarusuario', component: ConsultausuarioComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
-    {path: 'historicotransacoes', component: ConsultartrasacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
+    {path: 'buscarusuario', component: ConsultausuarioComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { funcao: [Funcao.Admin] }},
+    {path: 'historicotransacoes', component: ConsultartrasacaoComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { funcao: [Funcao.Admin] }},
     {path: 'pesquisarlivro', component: PesquisarlivroComponent},
-    {path: 'relatoriolivro', component: RelatoriolivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { roles: [Role.Admin] }},
+    {path: 'relatoriolivro', component: RelatoriolivroComponent, ...canActivate(redirecionarParaLogin), canActivate: [hasRoleGuard], data: { funcao: [Funcao.Admin] }},
     {path: 'comentariolivro', component: ComentarioComponent, ...canActivate(redirecionarParaLogin)},
     { path: 'detalhes-livro/:id', component: DetalhesLivroComponent },
     { path: '', redirectTo: '/pesquisarlivro', pathMatch: 'full' }

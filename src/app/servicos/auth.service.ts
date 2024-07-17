@@ -1,171 +1,137 @@
-import { Injectable} from '@angular/core';
-import { Role } from '../role';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Funcao } from '../funcao';
 import { Router } from '@angular/router';
-import { Auth, User, authState, createUserWithEmailAndPassword,getAuth,onAuthStateChanged,signInWithEmailAndPassword, signOut, updateProfile} from '@angular/fire/auth'
-import { Firestore} from '@angular/fire/firestore';
+import { Auth, User, authState, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from '@angular/fire/auth';
 import { Usuario } from '../componentes/usuario';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
-import { BehaviorSubject } from 'rxjs';
-
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService  {
-
-  
+export class AuthService implements OnDestroy {
 
   db = getFirestore(); 
+  private assunto_usuario_atual = new BehaviorSubject<User | null>(null);
+  utilizadorAtual$ = authState(this.auth);
+  private destruir$ = new Subject<void>();
 
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-
-
- 
-  utilizadorAtual$ = authState(this.auth);  //obtenção do estado de autenticação e armazenando no utilizadorAtual
-  
-
-  /*constructor vai lidar com o estado de autenticação do usuario, obtendo o perfil do usuario e verificando se o mesmo estado com o papel definido (admin/usuario) 
-  para acessar as rotas*/
-  constructor(private auth: Auth, private router: Router, private firestore: Firestore) { 
-
+  constructor(private auth: Auth, private router: Router) { 
     const aut = getAuth();
-    
-    // "onAuthStateChanged" - faz o monitoramento nas mudanças no estado de autenticação do usuário
     onAuthStateChanged(aut, async (user: User | null) => {
       if (user) {
         try {
-          const userRole = await this.getUserRole();
-       //   console.log('Papel do usuário:', userRole);
-
-          if (userRole) {
+          const papel_usuario = await this.obter_funcao_usuario();
+          if (papel_usuario) {
+            
           } else {
-       //     console.error('Papel do usuário não encontrado.');
             this.router.navigate(['/naoautorizado']);
           }
         } catch (error) {
-       //   console.error('Erro ao obter o papel do usuário:', error);
           this.router.navigate(['/naoautorizado']);
         }
       } else {
-        this.currentUserSubject.next(null);
+        this.assunto_usuario_atual.next(null);
       }
     });
+  }
 
-   }
-
- 
-  login(email: string, password: string){
-    
-    return signInWithEmailAndPassword(this.auth, email, password) //signInWithEmailAndPassword: autentica o usuário com email e senha.
+  login(email: string, password: string): Promise<void> {
+    return signInWithEmailAndPassword(this.auth, email, password)
     .then(async () => {
-
       const user = this.auth.currentUser;
-
       if (user && user.displayName) {
-        // Configure o nome do usuário no Firebase
-        await updateProfile(user, {               //updateProfile: atualiza o perfil do usuário autenticado.
-          displayName: user.displayName
-        });
+        await updateProfile(user, { displayName: user.displayName });
       }
-      
-        console.log('sucesso ao realizar login');   
-     // console.log('Usuário autenticado:', this.auth.currentUser);
-      this.router.navigate(['/home']);                //redireciona o usuário para a página inicial após o login bem-sucedido.
+      this.router.navigate(['/home']);
     })
     .catch((error) => {
       console.error('Erro de fazer login:', error);
-    })
+      throw error;
+    });
   }
 
+  async registrarNovoUsuario(email: string, password: string, usuario: Usuario): Promise<void> {
+    const authAtual = getAuth();
+    const usuarioAtual = authAtual.currentUser;
+    const senhaAtual = password; //armazenar senha
 
-  
-  // a ideia é fazer o cadastro (registro) do usuário tanto na coleção (Doc) quanto na autenticação. OK!
-  registro(email: string, password: string, usuario: Usuario){
-    return createUserWithEmailAndPassword(this.auth, email, password)  //createUserWithEmailAndPassword: Cria um novo usuário com email e senha.
-    .then(async (userCredential) => {
-      const user = userCredential.user;  
+    try {
       
-
-      await updateProfile(user, {      //updateProfile: atualiza o perfil do usuário criado recentemente.
-        displayName: usuario.nomeUsuario
-      });
-
-      const novoUsuario: Usuario = { name: usuario.name, 
-                                    email: usuario.email, 
-                                    password: usuario.password, 
-                                    role: usuario.role, 
-                                    nomeUsuario: usuario.nomeUsuario,
-                                    telefone: usuario.telefone, 
-                                    endereco: usuario.endereco, 
-                                    cpf: usuario.cpf
+      const credencial_usuario = await createUserWithEmailAndPassword(this.auth, email, password);
+      const user = credencial_usuario.user;
+  
+      // atualizar usuário perfil
+      await updateProfile(user, { displayName: usuario.nomeUsuario });
+  
+      
+      const novoUsuario: Usuario = {
+        name: usuario.name,
+        email: usuario.email,
+        password: usuario.password,
+        funcao: usuario.funcao,
+        nomeUsuario: usuario.nomeUsuario,
+        telefone: usuario.telefone,
+        endereco: usuario.endereco,
+        cpf: usuario.cpf
       };
-
-      const ref = doc(this.db, "usuarios", userCredential.user.uid); // criando uma referência direta a um documento no Firestore associado ao usuário autenticado. Isso é útil quando você deseja armazenar informações adicionais do usuário no Firestore ou recuperar informações específicas relacionadas ao usuário.
-      
-      await setDoc(ref, novoUsuario);   // setDoc está cadastrando usuário  - salva os dados do usuário no Firestore
-
-      //console.log('Usuario cadastrado com sucesso!');
-       
-
-      const usuarioAtual = await this.obterUsuarioAtual();  //espera a conclusão da função obterUsuarioAtual e obtém o usuário atual.
-
-       if (!usuarioAtual) {       
-        this.currentUserSubject.next(user); //atualiza o BehaviorSubject com o novo usuário, notificando todos os assinantes sobre a mudança no estado de autenticação.
+  
+      const referencia = doc(this.db, "usuarios", user.uid);
+      await setDoc(referencia, novoUsuario);
+  
+      // restaurar o estado de autenticação
+      if (usuarioAtual) {
+        await signInWithEmailAndPassword(this.auth, usuarioAtual.email as string, senhaAtual);
       }
-       
-     }).catch(error =>{
-        console.error('Erro ao cadastrar usuario', error);
-       });
-  }
-  
 
-  logout(){
-    return signOut(this.auth).then(() =>{
-      this.router.navigate(['/pesquisarlivro']); 
-    }).catch((error) =>{
-      console.error('Erro durante logout', error);
-    })
-  }
-  
- 
-
-  public async getUserRole(): Promise<Role> {    //getUserRole: obtém o papel do usuário autenticado a partir do Firestore
-    const auth = getAuth();
-    const user = auth.currentUser;
-  
-    if (user) {
-      const uid = user.uid;
-  
-      const firestore = getFirestore();
-      const userDocRef = doc(firestore, 'usuarios', uid);
-  
-      try {
-        const docSnapshot = await getDoc(userDocRef);  //getDoc: recupera o documento do usuário no Firestore.
-        if (docSnapshot.exists()) {         //docSnapshot.exists(): verifica se o documento do usuário existe.
-          const userRole = docSnapshot.data()['role'] as Role;
-          this.currentUserSubject.next(user);  //atualiza o estado do BehaviorSubject com o usuário atual.
-                                               //BehaviorSubject é usado para manter e distribuir o estado atual do usuário autenticado.
-          return userRole;
-        } else {
-          console.error('Documento de usuário não encontrado no Firestore.');
-          return Role.Usuario; 
-        }
-      } catch (error) {
-        console.error('Erro ao obter o papel do usuário no Firestore:', error);
-        return Role.Usuario; 
-      }
-    } else {
-      console.error('Usuário não autenticado.');
-      return Role.Usuario; 
+    } catch (error) {
+      console.error('Erro ao registrar novo usuário:', error);
+      throw error;
     }
   }
 
+  logout() {
+    return signOut(this.auth).then(() => {
+      this.router.navigate(['/pesquisarlivro']); 
+    }).catch((error) => {
+      console.error('Erro durante logout', error);
+    });
+  }
+
+  public async obter_funcao_usuario(): Promise<Funcao> {    
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      const uid = user.uid;
+
+      const firestore = getFirestore();
+      const documento_do_utilizador = doc(firestore, 'usuarios', uid);
+
+      try {
+        const resumo_documento = await getDoc(documento_do_utilizador);
+        if (resumo_documento.exists()) {
+          const funcao_usuario = resumo_documento.data()['funcao'] as Funcao;
+          this.assunto_usuario_atual.next(user);
+          return funcao_usuario;
+        } else {
+          console.error('Documento de usuário não encontrado no Firestore.');
+          return Funcao.Usuario; 
+        }
+      } catch (error) {
+        console.error('Erro ao obter o papel do usuário no Firestore:', error);
+        return Funcao.Usuario; 
+      }
+    } else {
+      return Funcao.Usuario; 
+    }
+  }
 
   public async obterUsuarioAtual(): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const aut = getAuth();
-      onAuthStateChanged(aut, (user: User | null) => {  //monitora mudanças no estado de autenticação e resolve a Promise com o usuário atual
-        console.log('Usuário atual retornado:', user); // verificar o usuário atual
+      onAuthStateChanged(aut, (user: User | null) => {
+        console.log('Usuário atual retornado:', user); 
         resolve(user);
       }, (error) => {
         reject(error);
@@ -173,16 +139,21 @@ export class AuthService  {
     });
   }
 
-  async obterNomeUsuario(): Promise<string> {   //retorna o nome do usuário autenticado ou uma string vazia se o usuário não estiver autenticado.
-    const auth = getAuth();
-    const user = auth.currentUser;
-  
-    if (user) {
-      return user.displayName || '';
-    } else {
-    //  console.log('Usuário não autenticado.');
-      return '';
-    }
+  async obterNomeUsuario(): Promise<string> {
+    const user = this.auth.currentUser;
+    return user ? user.displayName || '' : '';
   }
 
+  ngOnDestroy(): void {
+    this.destruir$.next();
+    this.destruir$.complete();
+  }
 }
+
+
+
+
+
+
+
+

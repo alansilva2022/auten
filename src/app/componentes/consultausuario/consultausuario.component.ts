@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UsuarioService } from '../../servicos/usuario.service';
 import { AuthService } from '../../servicos/auth.service';
 import { Usuario } from '../usuario';
-import { Role } from '../../role';
+import { Funcao } from '../../funcao';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,7 @@ export class ConsultausuarioComponent {
     endereco: '',
     email: '',
     password: '',
-    role: Role.Usuario 
+    funcao: Funcao.Usuario 
   };
 
   constructor(private usuarioServico: UsuarioService, public authService: AuthService ){

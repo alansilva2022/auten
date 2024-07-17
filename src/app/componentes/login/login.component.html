@@ -13,8 +13,9 @@
         <div class="back-button-group">
             <a href='/pesquisarlivro'><button type="button" mat-raised-button color="accent" class="rounded-button back-button">Voltar</button></a>
         </div>
-
-        
     </form>
+    <div *ngIf="errorMessage" class="error">
+        {{ errorMessage }}
+    </div>
 </div>
 

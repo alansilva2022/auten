@@ -1,17 +1,15 @@
-
 <div class="header-container">
     <div *ngIf="usuarioLogado" class="usuario-logado">
-      <p>{{ usuarioLogado }}</p>
+        <p>{{ usuarioLogado }}</p>
     </div>
     <h2 class="titulo-centralizado">CADASTRAR USUÁRIO</h2>
     <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
-      <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
+        <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
     </ng-container>
 </div>
 
 <div class="form-container">
     <div class="left-side">
-
         <div class="form-group">
             <input type="text" [(ngModel)]="usuario.nomeUsuario" placeholder="Nome Usuário">
         </div>
@@ -21,15 +19,15 @@
         </div>
 
         <div class="form-group">
-            <input type="password" [(ngModel)]="password" [(ngModel)]="usuario.password" placeholder="Senha">
-        </div>
-
-        <div class="form-group">
             <input type="text" [(ngModel)]="usuario.telefone" placeholder="Telefone">
         </div>
 
         <div class="form-group">
-            <input type="text" [(ngModel)]="email" [(ngModel)]="usuario.email" placeholder="Email">
+            <input type="email" [(ngModel)]="usuario.email" placeholder="E-mail">
+        </div>
+
+        <div class="form-group">
+            <input type="password" [(ngModel)]="usuario.password" placeholder="Senha">
         </div>
 
         <div class="form-group">
@@ -37,26 +35,27 @@
         </div>
 
         <div class="form-group">
-             <input type="text" [(ngModel)]="usuario.endereco" placeholder="Endereço">
+            <input type="text" [(ngModel)]="usuario.endereco" placeholder="Endereço">
         </div>
 
         <div class="form-group">
-                <select [(ngModel)]="usuario.role">
-                    <option value="usuario">Função Usuário</option>
-                    <option value="admin">Função Admin</option>
-                </select>
+            <select [(ngModel)]="usuario.funcao">
+                <option value="usuario">Função Usuário</option>
+                <option value="admin">Função Admin</option>
+            </select>
         </div>
     </div>
 
     <div class="right-side">
         <div class="form-group button-group">
             <button (click)="registrar()">Cadastrar</button>
-            <a  href='/home'><button>Cancelar</button></a>
+            <button (click)="cancelar()">Cancelar</button>
         </div>
     </div>
-        
-     
-       
-   
 </div>
+
+
+
+
+
 

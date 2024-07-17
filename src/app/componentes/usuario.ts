@@ -1,4 +1,4 @@
-import { Role } from "../role";
+import { Funcao } from "../funcao";
 
 export interface Usuario {
    name: string;
@@ -8,6 +8,6 @@ export interface Usuario {
    endereco: string;
    email: string;
    password: string;
-   role: Role;
+   funcao: Funcao;
    id?: string;
 }
