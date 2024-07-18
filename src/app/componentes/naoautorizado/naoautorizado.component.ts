@@ -5,7 +5,10 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './naoautorizado.component.html',
-  styleUrl: './naoautorizado.component.scss'
+  styleUrl: './naoautorizado.component.scss',
+  host: {
+    'ngSkipHydration': ''
+  }
 })
 export class NaoautorizadoComponent {
 

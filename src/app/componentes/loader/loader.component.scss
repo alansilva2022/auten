@@ -1,0 +1,19 @@
+.loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #333; /* Cor da borda esquerda */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px; /* Metade da altura */
+    margin-left: -20px; /* Metade da largura */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

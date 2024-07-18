@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Auth, User, authState, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from '@angular/fire/auth';
 import { Usuario } from '../componentes/usuario';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +15,20 @@ export class AuthService implements OnDestroy {
   private assunto_usuario_atual = new BehaviorSubject<User | null>(null);
   utilizadorAtual$ = authState(this.auth);
   private destruir$ = new Subject<void>();
+  private cacheFuncaoUsuario: Funcao | null = null;
 
   constructor(private auth: Auth, private router: Router) { 
     const aut = getAuth();
     onAuthStateChanged(aut, async (user: User | null) => {
       if (user) {
         try {
-          const papel_usuario = await this.obter_funcao_usuario();
-          if (papel_usuario) {
-            
-          } else {
-            this.router.navigate(['/naoautorizado']);
-          }
+          this.assunto_usuario_atual.next(user);
         } catch (error) {
-          this.router.navigate(['/naoautorizado']);
+          console.error('Erro ao obter o papel do usuário:', error);
         }
       } else {
         this.assunto_usuario_atual.next(null);
+        this.cacheFuncaoUsuario = null;
       }
     });
   }
@@ -98,7 +95,12 @@ export class AuthService implements OnDestroy {
     });
   }
 
-  public async obter_funcao_usuario(): Promise<Funcao> {    
+  public async obter_funcao_usuario(): Promise<Funcao> {   
+    
+    if (this.cacheFuncaoUsuario) {
+      return this.cacheFuncaoUsuario;
+    }
+
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -112,7 +114,7 @@ export class AuthService implements OnDestroy {
         const resumo_documento = await getDoc(documento_do_utilizador);
         if (resumo_documento.exists()) {
           const funcao_usuario = resumo_documento.data()['funcao'] as Funcao;
-          this.assunto_usuario_atual.next(user);
+          this.cacheFuncaoUsuario = funcao_usuario;
           return funcao_usuario;
         } else {
           console.error('Documento de usuário não encontrado no Firestore.');
@@ -127,17 +129,15 @@ export class AuthService implements OnDestroy {
     }
   }
 
-  public async obterUsuarioAtual(): Promise<User | null> {
-    return new Promise((resolve, reject) => {
-      const aut = getAuth();
-      onAuthStateChanged(aut, (user: User | null) => {
-        console.log('Usuário atual retornado:', user); 
-        resolve(user);
-      }, (error) => {
-        reject(error);
-      });
-    });
+  public async verificarPermissao(funcaoPermitidas: Funcao[]): Promise<boolean> {
+    const funcao_usuario = await this.obter_funcao_usuario();
+    return funcaoPermitidas.includes(funcao_usuario);
   }
+
+  public async obterUsuarioAtual(): Promise<User | null> {
+    return firstValueFrom(this.utilizadorAtual$);
+  }
+ 
 
   async obterNomeUsuario(): Promise<string> {
     const user = this.auth.currentUser;

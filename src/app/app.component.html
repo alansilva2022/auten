@@ -1,3 +1,6 @@
 
-<!--controle de rota-->
-<router-outlet></router-outlet>
+<div *ngIf="isLoading" class="loader-container">
+    <app-loader></app-loader>
+</div>
+  <router-outlet></router-outlet>
+  
