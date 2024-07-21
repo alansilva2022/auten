@@ -18,7 +18,7 @@
     <tbody>
       <tr *ngFor="let livro of (livros$ | async)">
         <td>{{ livro.titulo }}</td>
-        <td>{{ livro.quantidade }}</td>
+        <td>{{ livro.quantidadeInicial }}</td>
         <td>{{ livro.data }}</td>
       </tr>
     </tbody>

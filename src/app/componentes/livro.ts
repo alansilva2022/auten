@@ -9,6 +9,7 @@ export interface Livro {
     editora: string;
     foto?: string; // foto como opcional
     sinopse: string;
+    quantidadeInicial: number;
     quantidade: number;
     data: string;
     comentarios?: Comentario[];

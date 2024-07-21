@@ -30,6 +30,7 @@ export class LivroService implements OnDestroy {
       editora: livro.editora,
       foto: livro.foto,
       sinopse: livro.sinopse,
+      quantidadeInicial: livro.quantidade,
       quantidade: livro.quantidade,
       data: livro.data,
       rating: livro.rating || 0,

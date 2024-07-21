@@ -14,7 +14,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   standalone: true,
   imports: [FormsModule, HttpClientModule, CommonModule, MatSnackBarModule],
   templateUrl: './transacao.component.html',
-  styleUrls: ['./transacao.component.scss'] 
+  styleUrls: ['./transacao.component.scss']
 })
 export class TransacaoComponent implements OnInit {
   usuarioLogado: string = '';
@@ -42,7 +42,10 @@ export class TransacaoComponent implements OnInit {
 
   public async initializeUser() {
     try {
-      this.usuarioLogado = await this.authService.obterNomeUsuario();
+      const usuarioAtual = await this.authService.obterUsuarioAtual(); 
+      if (usuarioAtual) {
+        this.usuarioLogado = await this.authService.obterNomeUsuario();
+      }
     } catch (error) {
       console.error('Erro ao obter nome de usuário:', error);
     }
@@ -93,23 +96,31 @@ export class TransacaoComponent implements OnInit {
       if (!this.transacao.livroNome || !this.transacao.usuarioNome) {
         throw new Error('Nome do livro e do usuário são obrigatórios');
       }
-
+  
       const livro = await this.transacaoService.obterLivroPorNome(this.transacao.livroNome);
-      const livroId = livro.id || ''; 
+      const livroId = livro.id; 
+      if (!livroId) {
+        throw new Error('ID do livro não definido');
+      }
+      console.log('Livro ID:', livroId);
+  
       const usuarioId = await this.transacaoService.obterUsuarioIdPorNome(this.transacao.usuarioNome);
-
+      if (!usuarioId) {
+        throw new Error('ID do usuário não definido');
+      }
+      console.log('Usuário ID:', usuarioId);
+  
       this.transacao.data = this.formatarData(new Date());
-
       const usuarioLogado = await this.authService.obterUsuarioAtual();
       this.transacao.usuarioLogado = usuarioLogado?.uid || '';
-
+  
       const transacaoParaAdicionar: Transacao = { ...this.transacao, livroId, usuarioId }; 
       await this.transacaoService.adicionarTransacao(transacaoParaAdicionar);
      
       this.snackBar.open('Transacao Realizada com sucesso!', 'Fechar', {
         duration: 5000, // 5 segundos
       });
-
+  
       this.resetForm();
     } catch (error) {
       console.error('Erro ao realizar transação:', error);
@@ -118,6 +129,9 @@ export class TransacaoComponent implements OnInit {
       });
     }
   }
+  
+  
+  
 
   public resetForm() {
     this.transacao = {
@@ -149,6 +163,8 @@ export class TransacaoComponent implements OnInit {
     this.authService.logout();
   }
 }
+
+
 
 
 

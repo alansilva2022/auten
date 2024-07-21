@@ -18,47 +18,61 @@ export class TransacaoService {
 
   async adicionarTransacao(transacao: Transacao) {
     const colecaotransacao = collection(this.firestore, 'transacoes');
-
+  
     try {
+      if (!transacao.livroId || !transacao.usuarioId) {
+        throw new Error('IDs do livro ou do usuário não definidos.');
+      }
+  
       if (transacao.livroId) {
         const livroRef = doc(this.firestore, 'livros', transacao.livroId);
         const livroResumo = await getDoc(livroRef);
-
+  
         if (!livroResumo.exists()) {
           throw new Error(`Livro '${transacao.livroId}' não encontrado`);
         }
       }
-
+  
       await runTransaction(this.firestore, async (transaction) => {
          /*
         A função runTransaction() pega na instância do Firestore e executa uma transação na base de dados.
          Esta função garante que o valor correto é atualizado.
-        */        
-       if (transacao.livroId) {
+        */ 
+        if (transacao.livroId) {
           const livroRef = doc(this.firestore, 'livros', transacao.livroId);
           const livroDocSnapshot = await transaction.get(livroRef);
-
+  
           if (livroDocSnapshot.exists()) {
             const livroData: any = livroDocSnapshot.data();
-            const quantidadeAtualizada =
-              transacao.tipo === 'emprestimo'
-                ? livroData.quantidade - transacao.quantidadeLivros
-                : livroData.quantidade + transacao.quantidadeLivros;
-
-            transaction.update(livroRef, { quantidade: quantidadeAtualizada });
+            const quantidadeInicial = livroData.quantidadeInicial || 0;
+            let novaQuantidade: number;
+  
+            if (transacao.tipo === 'emprestimo') {
+              if (livroData.quantidade < transacao.quantidadeLivros) {
+                throw new Error('Quantidade de livros insuficiente para empréstimo.');
+              }
+              novaQuantidade = livroData.quantidade - transacao.quantidadeLivros;
+            } else if (transacao.tipo === 'devolucao') {
+              novaQuantidade = Math.min(livroData.quantidade + transacao.quantidadeLivros, quantidadeInicial);
+            } else {
+              throw new Error('Tipo de transação inválido.');
+            }
+  
+            transaction.update(livroRef, { quantidade: novaQuantidade });
           }
         }
-
+  
         const transacaoRef = await addDoc(colecaotransacao, transacao);
-
         console.log('Transação realizada com sucesso! ID:', transacaoRef.id);
       });
-
+  
     } catch (error) {
-      console.error('Erro ao realizar transacao:', error);
+      console.error('Erro ao realizar transação:', error);
       throw error;
     }
   }
+  
+  
 
   async obterUsuarioPorId(transaction: any, usuarioId: string): Promise<void> {
     const usuarioRef = doc(this.firestore, 'usuarios', usuarioId);
@@ -70,9 +84,7 @@ export class TransacaoService {
 
   async obterLivroPorId(transaction: any, livroId: string): Promise<void> {
     const livroRef = doc(this.firestore, 'livros', livroId);
-    const livroDocSnapshot: DocumentSnapshot<DocumentData> = await transaction.get(
-      livroRef
-    );
+    const livroDocSnapshot: DocumentSnapshot<DocumentData> = await transaction.get(livroRef);
     if (!livroDocSnapshot.exists()) {
       throw new Error(`Livro '${livroId}' não encontrado`);
     }
@@ -82,13 +94,13 @@ export class TransacaoService {
     const nome_Normalizado = nomeLivro.trim().toLowerCase();
     const livrosRef = collection(this.firestore, 'livros');
     const livroSnapshot = await getDocs(livrosRef);
-
+  
     const livroDoc = livroSnapshot.docs.find(doc => {
       const dadosLivro = doc.data() as Livro;
       const tituloNormalizado = dadosLivro.titulo.trim().toLowerCase();
       return tituloNormalizado.includes(nome_Normalizado);
     });
-
+  
     if (livroDoc) {
       const dadosLivro = livroDoc.data() as Livro;
       return { id: livroDoc.id, titulo: dadosLivro.titulo };
@@ -96,6 +108,7 @@ export class TransacaoService {
       throw new Error(`Livro '${nomeLivro}' não encontrado`);
     }
   }
+  
 
   async buscarLivrosPorNomeParcial(nomeLivro: string): Promise<Livro[]> {
     const termo_Normalizado = nomeLivro.trim().toLowerCase();
@@ -136,7 +149,7 @@ export class TransacaoService {
       where('nomeUsuario', '<=', nomeUsuario + '\uf8ff')
     );
     const usuarioSnapshot = await getDocs(usuarioQuery);
-
+  
     if (!usuarioSnapshot.empty) {
       const usuarioDoc = usuarioSnapshot.docs[0];
       return usuarioDoc.id;
@@ -146,32 +159,35 @@ export class TransacaoService {
   }
 
   async atualizarQuantidadeLivro(
-    transaction: any,
     livroId: string,
     tipoTransacao: string,
     quantidadeTransacao: number
   ): Promise<void> {
     const livroRef = doc(this.firestore, 'livros', livroId);
-
-    const livroDocSnapshot: DocumentSnapshot<DocumentData> = await transaction.get(
-      livroRef
-    );
-
+    const livroDocSnapshot: DocumentSnapshot<DocumentData> = await getDoc(livroRef);
+  
     if (livroDocSnapshot.exists()) {
       const livroData: any = livroDocSnapshot.data();
       const quantidadeAtualizada =
         tipoTransacao === 'emprestimo'
           ? livroData.quantidade - quantidadeTransacao
           : livroData.quantidade + quantidadeTransacao;
-
-      console.log('Quantidade Atualizada:', quantidadeAtualizada);
+  
+      // Garantindo que a quantidade não seja negativa e não passe do máximo cadastrado
+      const quantidadeInicial = livroData.quantidadeInicial || 0;
+      const quantidadeFinal = tipoTransacao === 'emprestimo'
+        ? Math.max(quantidadeAtualizada, 0)
+        : Math.min(quantidadeAtualizada, quantidadeInicial);
+  
+      console.log('Quantidade Atualizada:', quantidadeFinal);
       console.log('livroId:', livroId);
       console.log('tipoTransacao:', tipoTransacao);
       console.log('quantidadeTransacao:', quantidadeTransacao);
-
-      await updateDoc(livroRef, { quantidade: quantidadeAtualizada });
+  
+      await updateDoc(livroRef, { quantidade: quantidadeFinal });
     }
   }
+  
 
   async consultarTransacoes(): Promise<Transacao[]> {
     const transacoesCollection = collection(this.firestore, 'transacoes');
@@ -197,4 +213,5 @@ export class TransacaoService {
     return transacoes;
   }
 }
+
 
