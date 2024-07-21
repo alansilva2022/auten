@@ -4,12 +4,14 @@ import { Transacao } from '../componentes/transacao';
 import { Livro } from '../componentes/livro';
 import { Usuario } from '../componentes/usuario';
 import { AuthService } from './auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransacaoService {
-  constructor(private authService: AuthService, private firestore: Firestore) { }
+  constructor(private authService: AuthService, private firestore: Firestore, private snackBar: MatSnackBar) { }
 
   async obterUsuarioAtual(): Promise<string> {
     const usuarioAtual = await this.authService.obterUsuarioAtual();
@@ -34,16 +36,16 @@ export class TransacaoService {
       }
   
       await runTransaction(this.firestore, async (transaction) => {
-         /*
+        /*
         A função runTransaction() pega na instância do Firestore e executa uma transação na base de dados.
          Esta função garante que o valor correto é atualizado.
         */ 
         if (transacao.livroId) {
-          const livroRef = doc(this.firestore, 'livros', transacao.livroId);
-          const livroDocSnapshot = await transaction.get(livroRef);
+          const livroReferencia = doc(this.firestore, 'livros', transacao.livroId);
+          const documento_livro= await transaction.get(livroReferencia);
   
-          if (livroDocSnapshot.exists()) {
-            const livroData: any = livroDocSnapshot.data();
+          if (documento_livro.exists()) {
+            const livroData: any = documento_livro.data();
             const quantidadeInicial = livroData.quantidadeInicial || 0;
             let novaQuantidade: number;
   
@@ -54,11 +56,14 @@ export class TransacaoService {
               novaQuantidade = livroData.quantidade - transacao.quantidadeLivros;
             } else if (transacao.tipo === 'devolucao') {
               novaQuantidade = Math.min(livroData.quantidade + transacao.quantidadeLivros, quantidadeInicial);
+              if (livroData.quantidade >= quantidadeInicial) {
+                throw new Error('A quantidade devolvida excede a quantidade inicial do livro.');
+              }
             } else {
               throw new Error('Tipo de transação inválido.');
             }
   
-            transaction.update(livroRef, { quantidade: novaQuantidade });
+            transaction.update(livroReferencia, { quantidade: novaQuantidade });
           }
         }
   
@@ -68,12 +73,19 @@ export class TransacaoService {
   
     } catch (error) {
       console.error('Erro ao realizar transação:', error);
+      let errorMessage = 'Erro desconhecido ao realizar a transação.';
+      if (error instanceof Error) {
+        errorMessage = `Erro ao realizar transação: ${error.message}`;
+      }
+      this.snackBar.dismiss(); 
+      this.snackBar.open(errorMessage, 'Fechar', {
+        duration: 5000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center'
+      });
       throw error;
     }
   }
-  
-  
-
   async obterUsuarioPorId(transaction: any, usuarioId: string): Promise<void> {
     const usuarioRef = doc(this.firestore, 'usuarios', usuarioId);
     const usuarioDocSnapshot: DocumentSnapshot<DocumentData> = await transaction.get(usuarioRef);

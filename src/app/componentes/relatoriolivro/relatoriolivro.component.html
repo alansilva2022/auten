@@ -7,27 +7,36 @@
 </div>
 
 <div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>TÍTULO DO LIVRO</th>
-        <th>QUANTIDADE</th>
-        <th>DATA DE CADASTRO</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let livro of (livros$ | async)">
-        <td>{{ livro.titulo }}</td>
-        <td>{{ livro.quantidadeInicial }}</td>
-        <td>{{ livro.data }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>TÍTULO DO LIVRO</th>
+          <th>QUANTIDADE</th>
+          <th>DATA DE CADASTRO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let livro of (livros$ | async)">
+          <td>{{ livro.titulo }}</td>
+          <td>{{ livro.quantidadeInicial }}</td>
+          <td>{{ livro.data }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="button-group">
     <a href="/home"><button>Voltar</button></a>
   </div>
 </div>
+
+
+
+
+
+
+
 
   
   
