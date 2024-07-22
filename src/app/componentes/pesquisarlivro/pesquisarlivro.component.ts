@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Livro } from '../livro';
 import { LivroService } from '../../servicos/livro.service';
 import { CommonModule } from '@angular/common';
@@ -22,20 +22,24 @@ export class PesquisarlivroComponent implements OnInit, OnDestroy {
   private PesquisaSubject = new Subject<string>(); //  para gerenciar o termo de pesquisa
   private cancelar_inscricao$ = new Subject<void>(); // para gerenciamento de memória
 
-  constructor(private livroService: LivroService, private router: Router) {}
+  constructor(private livroService: LivroService, private router: Router, private ngZone: NgZone) {}
 
   ngOnInit() {
     // carregar todos os livros inicialmente
     this.livros$ = this.livroService.relatorioLivro();
 
     // configurar o Subject para lidar com a pesquisa
-    this.PesquisaSubject.pipe(
-      debounceTime(300), // tempo para esperar antes de realizar a pesquisa
-      distinctUntilChanged(), // evitar pesquisas repetidas para o mesmo termo
-      switchMap(termo => termo ? this.livroService.pesquisarLivros(termo) : this.livroService.relatorioLivro()),
-      takeUntil(this.cancelar_inscricao$)  // limpar a assinatura quando o componente for destruído
-    ).subscribe(livros => {
-      this.livros$ = of(livros);  // atualiza o Observable com os novos dados
+    this.ngZone.runOutsideAngular(() => {
+      this.PesquisaSubject.pipe(
+        debounceTime(300), // tempo para esperar antes de realizar a pesquisa
+        distinctUntilChanged(), // evitar pesquisas repetidas para o mesmo termo
+        switchMap(termo => termo ? this.livroService.pesquisarLivros(termo) : this.livroService.relatorioLivro()),
+        takeUntil(this.cancelar_inscricao$) // limpar a assinatura quando o componente for destruído
+      ).subscribe(livros => {
+        this.ngZone.run(() => {
+          this.livros$ = of(livros); // atualiza o Observable com os novos dados
+        });
+      });
     });
   }
 
