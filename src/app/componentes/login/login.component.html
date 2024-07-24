@@ -1,5 +1,9 @@
+<div class="header">
+    <div class="header-center">
+      <h1>LIB - ESCOLA</h1>
+    </div>
+</div>
 <div class="container">
-    <h2>Login</h2>
     <form (submit)="login()" class="login-form">
         <div class="form-group">
             <input type="email" id="email" name="email" placeholder="Email"   [(ngModel)]="email" required class="rounded-input">
@@ -11,7 +15,7 @@
             <button type="submit" mat-raised-button color="primary" class="rounded-button enter-button" >Entrar</button>
         </div>
         <div class="back-button-group">
-            <a href='/pesquisarlivro'><button type="button" mat-raised-button color="accent" class="rounded-button back-button">Voltar</button></a>
+            <a href='/pesquisarlivro'><button type="button" mat-raised-button color="primary" class="rounded-button back-button">Voltar</button></a>
         </div>
     </form>
     <div *ngIf="errorMessage" class="error">

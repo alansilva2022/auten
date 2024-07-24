@@ -1,4 +1,58 @@
-.card-container{
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-image: url('/assets/capa.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+  
+  html, body, app-root {
+    height: 100%;
+  }
+  
+  app-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    z-index: 1; 
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 2; /* coloca o header acima do app-root */
+  }
+  
+  .header-left h1 {
+    margin: 0;
+    font-family: 'Anton', sans-serif;
+    color: red;
+    font-size: 2em;
+  }
+  
+  .header-right a button {
+    font-size: 1em;
+    padding: 10px 20px;
+    background-color: #9c0f1b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .header-right a button:hover {
+    background-color: #bd6041;
+  }
+  
+.card-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,31 +75,24 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px; /* espaço no final de cada card */
 }
-
 .card img {
     width: 100%;
     height: auto;
     cursor: pointer;
 }
-
 .pesquisa-container {
     margin-top: 20px; /* distância do topo da tela */
     margin-bottom: 20px; /* espaço entre o título de pesquisa e os cards */
     padding-left: 20px; /* espaço à esquerda */
     padding-right: 20px; /* espaço à direita */
 }
-
-
 .pesquisa-input input[type="text"] {
     width: 100%; /* largura total da tela */
     box-sizing: border-box; /* inclui padding e borda na largura total */
     padding: 10px; /* adiciona algum espaço interno ao input */
     border-radius: 10px; /* Adiciona o raio de borda */
     text-align: center;
-    
 }
-
 .content-container {
     margin-bottom: 20px; /* distância no fim da página */
-    
 }

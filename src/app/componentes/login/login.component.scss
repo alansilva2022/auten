@@ -1,3 +1,27 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 2; 
+  width: 100%; 
+  box-sizing: border-box; 
+}
+
+.header-center {
+  flex: 1; 
+  text-align: center; 
+}
+
+.header-center h1 {
+  margin: 0;
+  font-family: 'Anton', sans-serif;
+  color: red;
+  font-size: 2em;
+}
+
+
+
+
 .container {
     display: flex;
     flex-direction: column;
@@ -53,9 +77,11 @@
   }
 
   .back-button {
-    width: 100%;
-    max-width: 150px;
-    padding: 10px; /* aumenta o tamanho */
+    font-size: 1em;
+    padding: 10px 20px;
+    border: 1px solid black;   //aqui
+    box-sizing: border-box;
+    border-radius: 8px;
     cursor: pointer;
   }
 
