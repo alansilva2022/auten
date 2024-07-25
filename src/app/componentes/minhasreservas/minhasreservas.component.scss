@@ -13,12 +13,14 @@
     align-items: center;
     margin-bottom: 20px;
     padding: 0 20px;
+    margin-top: 20px;
   }
 
   .titulo-centralizado {
     text-align: center;
     flex-grow: 1;
     margin: 0;
+    color: #ffffff;
   }
 
   .action-button {
@@ -49,10 +51,11 @@
     border-collapse: collapse;
     width: 80%; 
     margin: 0 auto;
+    background-color: #ffffff;
   }
   
   thead {
-    background-color: #f2f2f2; /* Cor do cabeçalho */
+    background-color: #f2f2f2; /* cor do cabeçalho */
   }
   
   th, td {
@@ -64,7 +67,7 @@
   th {
     padding-top: 12px;
     padding-bottom: 12px;
-    background-color: #222321; /* cor do cabeçalho */
+    background-color:#877166; /* cor do cabeçalho */
     color: white;
   }
   

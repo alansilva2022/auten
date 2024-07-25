@@ -2,7 +2,7 @@
     <div *ngIf="usuarioLogado" class="usuario-logado">
         <p>{{ usuarioLogado }}</p>
     </div>
-    <h2 class="titulo-centralizado">CADASTRAR USUÁRIO</h2>
+    <h2 class="titulo-centralizado"><strong>CADASTRO USUÁRIO</strong></h2>
     <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
         <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
     </ng-container>

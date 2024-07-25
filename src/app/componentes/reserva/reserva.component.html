@@ -2,7 +2,7 @@
   <div *ngIf="usuarioLogado" class="usuario-logado">
     <p>{{ usuarioLogado }}</p>
   </div>
-  <h2 class="titulo-centralizado">Realizar Reserva</h2>
+  <h2 class="titulo-centralizado"><strong>REALIZAR RESERVA</strong></h2>
   <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
     <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
   </ng-container>
@@ -18,7 +18,6 @@
       <div class="detalhes-container" *ngIf="livrosEncontrados.length > 0">
         <div class="livro-foto-nome">
           <img *ngFor="let livro of livrosEncontrados" [src]="livro.foto" class="livro-foto">
-          <h3 *ngFor="let livro of livrosEncontrados">{{ livro.titulo }}</h3>
         </div>
 
         <div class="info-sinopse-comentarios">

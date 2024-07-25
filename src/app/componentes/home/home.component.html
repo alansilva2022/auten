@@ -3,14 +3,14 @@
   <div *ngIf="usuarioLogado" class="usuario-logado">
     <p>{{ usuarioLogado }}</p>
   </div>
-  <h2 class="titulo-centralizado">Página Principal</h2>
+  <h2 class="titulo-centralizado"><strong>PÁGINA PRINCIPAL</strong></h2>
   <ng-container *ngIf="authService.utilizadorAtual$ | async as user">
     <button type="submit" (click)="logout()" class="action-button sair-button">Sair</button>
   </ng-container>
 </div>
 
   <div class="container">  
-  <h3 *ngIf="user$ | async as user"> Bem vindo, {{user.email}}</h3>
+  <h3 *ngIf="user$ | async as user"> Bem vindo, {{user.displayName}}</h3>
   
   <div class="button-group">
     <a *ngIf="somenteAdm" href='/cadastrarlivro'><button class="big-button">Cadastrar Livro</button></a><br /><br />
