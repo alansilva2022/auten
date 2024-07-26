@@ -170,11 +170,7 @@ export class TransacaoService {
     }
   }
 
-  async atualizarQuantidadeLivro(
-    livroId: string,
-    tipoTransacao: string,
-    quantidadeTransacao: number
-  ): Promise<void> {
+  async atualizarQuantidadeLivro(livroId: string, tipoTransacao: string, quantidadeTransacao: number): Promise<void> {
     const livroRef = doc(this.firestore, 'livros', livroId);
     const livroDocSnapshot: DocumentSnapshot<DocumentData> = await getDoc(livroRef);
   
