@@ -22,7 +22,6 @@
       <div *ngFor="let livro of livros" class="card" (click)="livro.id && exibirDetalhes(livro.id)">
         <img [src]="livro.foto" alt="{{ livro.titulo }}">
         <h3>{{ livro.titulo }}</h3>
-        <p>Autor: {{ livro.autor }}</p>
         <p>Quantidade: {{ livro.quantidade }}</p>
       </div>
     </div>
