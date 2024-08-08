@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comentario',
@@ -27,7 +28,7 @@ export class ComentarioComponent implements OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private livroService: LivroService, public authService: AuthService, private transacaoService: TransacaoService) { 
+  constructor(private livroService: LivroService, public authService: AuthService, private transacaoService: TransacaoService, private router: Router) { 
    
     const nomeUsuarioPromise = this.authService.obterNomeUsuario().then(async (nomeUsuario) => {
       if (nomeUsuario) {
@@ -77,6 +78,7 @@ export class ComentarioComponent implements OnDestroy {
         await this.livroService.adicionarComentario(this.usuarioAtual, livro.id, this.textoComentario);
         console.log('Comentário adicionado com sucesso');
         this.textoComentario = '';
+        this.router.navigate(['/home']); 
       } else {
         console.error('ID do livro não definido');
       }

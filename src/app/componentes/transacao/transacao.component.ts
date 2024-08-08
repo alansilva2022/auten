@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../servicos/auth.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transacao',
@@ -33,7 +34,7 @@ export class TransacaoComponent implements OnInit {
   usuariosEncontrados: Usuario[] = [];
   dataAtualFormatada: string = '';
 
-  constructor(public authService: AuthService, private transacaoService: TransacaoService, private snackBar: MatSnackBar) {}
+  constructor(public authService: AuthService, private transacaoService: TransacaoService, private snackBar: MatSnackBar, private router: Router) {}
 
   ngOnInit() {
     this.initializeUser();
@@ -122,6 +123,7 @@ export class TransacaoComponent implements OnInit {
       });
   
       this.resetForm();
+      this.router.navigate(['/home']); 
     } catch (error) {
       console.error('Erro ao realizar transação:', error);
       this.snackBar.open('Erro ao realizar Transação!', 'Fechar', {
