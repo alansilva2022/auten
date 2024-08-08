@@ -7,6 +7,7 @@ import { TransacaoService } from '../../servicos/transacao.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reserva',
@@ -32,7 +33,8 @@ export class ReservaComponent {
   constructor(
     public authService: AuthService, 
     private reservaService: ReservaService, 
-    private transacaoService: TransacaoService
+    private transacaoService: TransacaoService,
+    private router: Router
   ) {
     this.initializeUser();
   }
@@ -79,6 +81,7 @@ export class ReservaComponent {
       await this.reservaService.adicionarReserva(reservaParaAdicionar);
 
       this.resetForm();
+      this.router.navigate(['/home']); 
     } catch (error) {
       console.error('Erro ao realizar reserva:', error);
     }
