@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../servicos/auth.service';
 import { takeUntil } from 'rxjs/operators';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -56,7 +57,7 @@ export class CadastrarLivroComponent implements OnDestroy {
 
   firestore: Firestore = inject(Firestore);
 
-  constructor(private livroServico: LivroService, private uploadFoto: UploadFotoService, public authService: AuthService,  private snackBar: MatSnackBar) {
+  constructor(private livroServico: LivroService, private uploadFoto: UploadFotoService, public authService: AuthService,  private snackBar: MatSnackBar, private router: Router) {
     const livroColecao = collection(this.firestore, 'livros');
     const consultaLivros = query(livroColecao);
     this.livro$ = collectionData(consultaLivros) as Observable<Livro[]>;
@@ -106,6 +107,7 @@ export class CadastrarLivroComponent implements OnDestroy {
         duration: 5000, // 5 segundos
       });
       this.limparFormulario();
+      this.router.navigate(['/home']); 
     } catch (error) {
       console.error('Erro ao adicionar livro', error);
       this.snackBar.open('Erro ao cadastrar o livro. Tente novamente.', 'Fechar', {
@@ -139,6 +141,7 @@ export class CadastrarLivroComponent implements OnDestroy {
     this.livroNumRatings = 0;
     this.livroTotalRatings = 0
   }
+
 }
 
 function formatarData(data: Date): string {
