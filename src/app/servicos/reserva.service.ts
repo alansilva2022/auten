@@ -28,8 +28,8 @@ export class ReservaService {
       }
 
         const reservaRef = await addDoc(colecaoreserva, reserva);
-
-        console.log('Reserva realizada com sucesso! ID:', reservaRef.id);
+     // console.log('Reserva realizada com sucesso! ID:', reservaRef.id);
+        return reservaRef.id;
       }
       catch (error){
       console.error('Erro ao realizar Reserva:', error);

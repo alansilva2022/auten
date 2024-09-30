@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reserva',
@@ -34,7 +35,8 @@ export class ReservaComponent {
     public authService: AuthService, 
     private reservaService: ReservaService, 
     private transacaoService: TransacaoService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.initializeUser();
   }
@@ -79,6 +81,9 @@ export class ReservaComponent {
 
       const reservaParaAdicionar: Reserva = { ...this.reserva, livroId }; 
       await this.reservaService.adicionarReserva(reservaParaAdicionar);
+      this.snackBar.open('Reserva realizado com sucesso!', 'Fechar', {
+        duration: 5000, // 5 segundos
+      });
 
       this.resetForm();
       this.router.navigate(['/home']); 

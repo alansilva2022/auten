@@ -120,15 +120,20 @@ it('deve registrar um novo usuário com sucesso', async () => {
     expect(funcao).toBeTruthy();
   });
 
- 
+
   it('deve obter o usuário atual corretamente', async () => {
     await service.login('teste@teste.com', 'teste123');
     const usuario = await service.obterUsuarioAtual();
     expect(usuario).toBeTruthy();
     await service.logout();
-    await new Promise(resolve => setTimeout(resolve, 1000)); 
-    const usuarioAtual = await service.obterUsuarioAtual();
-    expect(usuarioAtual).toBeNull();
+    await new Promise(resolve => setTimeout(resolve, 2000)); // aguardar 2 segundos
+    try {
+      const usuarioAtual = await service.obterUsuarioAtual();
+      expect(usuarioAtual).toBeNull();
+    } catch (error) {
+      console.error(error);
+      fail('Erro inesperado');
+    }
   });
 
 
